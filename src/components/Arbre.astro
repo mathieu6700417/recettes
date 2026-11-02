@@ -1,0 +1,96 @@
+---
+import { AXES, NOMS_AXES, ascendance, genealogie } from '../lib/arbre';
+import NoeudArbre from './NoeudArbre.astro';
+
+interface Props {
+  /** Clé « technique:slug » ou « recette:slug » de la page courante. */
+  courant?: string;
+  /** Axe à afficher par défaut (avant lecture de la préférence). */
+  axeCourant?: 'cuisson' | 'base';
+}
+const { courant } = Astro.props;
+const g = await genealogie();
+
+// Nœuds à déplier côté serveur : les ascendants de la page courante.
+const ouverts = {
+  cuisson: new Set<string>(),
+  base: new Set<string>(),
+};
+if (courant) {
+  for (const axe of AXES) {
+    const chaine = ascendance(g, axe, courant);
+    chaine.forEach((n) => ouverts[axe].add(`${n.type}:${n.slug}`));
+  }
+}
+---
+<nav class="arbre" aria-label="Arbre généalogique">
+  <div class="bascule-axes" role="group" aria-label="Axe de l'arbre">
+    {AXES.map((axe) => (
+      <button type="button" class="bascule" data-axe={axe} aria-pressed="false">{NOMS_AXES[axe]}</button>
+    ))}
+  </div>
+  {AXES.map((axe) => (
+    <div class="axe" data-axe={axe}>
+      <h2 class="visually-hidden">{NOMS_AXES[axe]}</h2>
+      <ul class="racines">
+        {g.arbres[axe].map((n) => (
+          <NoeudArbre noeud={n} axe={axe} ouverts={ouverts[axe]} courant={courant} racine={n.type === 'technique'} />
+        ))}
+      </ul>
+    </div>
+  ))}
+</nav>
+
+<script>
+  const CLE_AXE = 'recettes:axe';
+  const CLE_OUVERTS = 'recettes:ouverts';
+  const lire = (k: string) => { try { return localStorage.getItem(k); } catch { return null; } };
+  const ecrire = (k: string, v: string) => { try { localStorage.setItem(k, v); } catch { /* stockage indisponible */ } };
+
+  function choisirAxe(axe: string, memoriser = true) {
+    document.documentElement.dataset.axe = axe;
+    document.querySelectorAll<HTMLButtonElement>('.bascule').forEach((b) => {
+      b.setAttribute('aria-pressed', String(b.dataset.axe === axe));
+    });
+    if (memoriser) ecrire(CLE_AXE, axe);
+  }
+  choisirAxe(document.documentElement.dataset.axe || lire(CLE_AXE) || 'cuisson', false);
+  document.querySelectorAll<HTMLButtonElement>('.bascule').forEach((b) => {
+    b.addEventListener('click', () => choisirAxe(b.dataset.axe!));
+  });
+
+  let ouverts: string[] = [];
+  try { ouverts = JSON.parse(lire(CLE_OUVERTS) || '[]'); } catch { ouverts = []; }
+  const ensemble = new Set(ouverts);
+
+  function basculer(btn: HTMLButtonElement, ouvrir: boolean) {
+    const cible = document.getElementById(btn.getAttribute('aria-controls')!);
+    if (!cible) return;
+    btn.setAttribute('aria-expanded', String(ouvrir));
+    cible.hidden = !ouvrir;
+    const libelle = btn.querySelector('.visually-hidden');
+    if (libelle) libelle.textContent = libelle.textContent!.replace(/^(Replier|Déplier)/, ouvrir ? 'Replier' : 'Déplier');
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('.arbre .deplier').forEach((btn) => {
+    const id = btn.dataset.id!;
+    if (ensemble.has(id)) basculer(btn, true);
+    if (btn.getAttribute('aria-expanded') === 'true') ensemble.add(id);
+    btn.addEventListener('click', () => {
+      const ouvrir = btn.getAttribute('aria-expanded') !== 'true';
+      basculer(btn, ouvrir);
+      if (ouvrir) ensemble.add(id); else ensemble.delete(id);
+      ecrire(CLE_OUVERTS, JSON.stringify([...ensemble]));
+    });
+  });
+  ecrire(CLE_OUVERTS, JSON.stringify([...ensemble]));
+
+  // Faire apparaître le nœud courant dans la zone visible de la barre latérale.
+  const lateral = document.querySelector<HTMLElement>('.lateral-defilant');
+  const courant = document.querySelector<HTMLElement>(`.axe[data-axe="${document.documentElement.dataset.axe}"] .noeud.courant > .ligne`);
+  if (lateral && courant && lateral.scrollHeight > lateral.clientHeight) {
+    const r = courant.getBoundingClientRect();
+    const rl = lateral.getBoundingClientRect();
+    if (r.bottom > rl.bottom || r.top < rl.top) lateral.scrollTop += r.top - rl.top - rl.height / 2;
+  }
+</script>

@@ -1,0 +1,61 @@
+---
+import '../styles/global.css';
+import Arbre from '../components/Arbre.astro';
+import Recherche from '../components/Recherche.astro';
+import { url } from '../lib/arbre';
+
+interface Props {
+  titre: string;
+  description?: string;
+  courant?: string;
+  classe?: string;
+}
+const { titre, description = 'Les recettes classées par technique, comme une généalogie.', courant, classe } = Astro.props;
+const titreComplet = titre === 'Généalogie des recettes' ? titre : `${titre} — Généalogie des recettes`;
+---
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{titreComplet}</title>
+  <meta name="description" content={description} />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
+  <script is:inline>
+    try { document.documentElement.dataset.axe = localStorage.getItem('recettes:axe') || 'cuisson'; }
+    catch (e) { document.documentElement.dataset.axe = 'cuisson'; }
+    document.documentElement.classList.add('js');
+  </script>
+  <noscript><style>.enfants[hidden]{display:block!important}.axe{display:block!important}.bascule-axes,.ouvrir-arbre{display:none!important}.lateral{display:block!important}</style></noscript>
+</head>
+<body class={classe}>
+  <a class="evitement" href="#contenu">Aller au contenu</a>
+  <div class="page">
+    <aside class="lateral" id="lateral">
+      <div class="lateral-entete">
+        <a class="marque" href={url('')}>Généalogie <span>des recettes</span></a>
+        <button type="button" class="ouvrir-arbre" aria-expanded="false" aria-controls="lateral-corps">
+          <span aria-hidden="true">☰</span> Arbre<span class="visually-hidden"> et recherche</span>
+        </button>
+      </div>
+      <div class="lateral-corps lateral-defilant" id="lateral-corps">
+        <Recherche />
+        <Arbre courant={courant} />
+      </div>
+    </aside>
+    <main id="contenu" class="contenu" tabindex="-1">
+      <slot />
+    </main>
+  </div>
+  <script>
+    const bouton = document.querySelector<HTMLButtonElement>('.ouvrir-arbre');
+    const corps = document.getElementById('lateral-corps');
+    bouton?.addEventListener('click', () => {
+      const ouvrir = bouton.getAttribute('aria-expanded') !== 'true';
+      bouton.setAttribute('aria-expanded', String(ouvrir));
+      corps?.classList.toggle('ouvert', ouvrir);
+    });
+  </script>
+</body>
+</html>

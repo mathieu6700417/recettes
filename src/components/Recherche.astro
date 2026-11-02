@@ -1,0 +1,123 @@
+---
+import { url } from '../lib/arbre';
+---
+<div class="recherche" data-index={url('recherche.json')} data-base={url('')}>
+  <label for="champ-recherche" class="visually-hidden">Rechercher une recette, un ingrédient ou une technique</label>
+  <input id="champ-recherche" type="search" placeholder="Ingrédient, recette, technique…" autocomplete="off"
+    role="combobox" aria-expanded="false" aria-controls="resultats-recherche" aria-autocomplete="list" />
+  <ul id="resultats-recherche" class="resultats" role="listbox" aria-label="Résultats" hidden></ul>
+  <p class="visually-hidden" aria-live="polite" id="statut-recherche"></p>
+</div>
+
+<script>
+  interface EntreeRecette { type: 'recette'; titre: string; slug: string; origine: string; drapeau: string; ingredients: string[]; techniques: string[] }
+  interface EntreeTechnique { type: 'technique'; titre: string; slug: string; axe: string; resume: string }
+  type Entree = EntreeRecette | EntreeTechnique;
+
+  const racine = document.querySelector<HTMLElement>('.recherche')!;
+  const champ = racine.querySelector<HTMLInputElement>('input')!;
+  const liste = racine.querySelector<HTMLUListElement>('.resultats')!;
+  const statut = racine.querySelector<HTMLElement>('#statut-recherche')!;
+  const base = racine.dataset.base!;
+  let index: Entree[] | null = null;
+  let chargement: Promise<void> | null = null;
+  let actif = -1;
+
+  const normaliser = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/œ/g, 'oe').replace(/æ/g, 'ae');
+
+  function charger() {
+    chargement ??= fetch(racine.dataset.index!)
+      .then((r) => r.json())
+      .then((d: Entree[]) => { index = d; })
+      .catch(() => { index = []; });
+    return chargement;
+  }
+
+  const echapper = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+
+  /** Met en évidence la requête (insensible aux accents) dans le texte d'origine. */
+  function surligner(texte: string, q: string) {
+    // La normalisation NFD + suppression des diacritiques peut changer la longueur : on mappe les indices.
+    const carte: number[] = [];
+    let norm = '';
+    for (let i = 0; i < texte.length; i++) {
+      const n = normaliser(texte[i]);
+      for (let k = 0; k < n.length; k++) { norm += n[k]; carte.push(i); }
+    }
+    const p = norm.indexOf(q);
+    if (p < 0) return echapper(texte);
+    const debut = carte[p];
+    const fin = carte[p + q.length - 1] + 1;
+    return `${echapper(texte.slice(0, debut))}<mark>${echapper(texte.slice(debut, fin))}</mark>${echapper(texte.slice(fin))}`;
+  }
+
+  function fermer() {
+    liste.hidden = true;
+    champ.setAttribute('aria-expanded', 'false');
+    champ.removeAttribute('aria-activedescendant');
+    actif = -1;
+  }
+
+  function activer(i: number) {
+    const options = liste.querySelectorAll<HTMLElement>('[role="option"]');
+    if (!options.length) return;
+    actif = (i + options.length) % options.length;
+    options.forEach((o, k) => o.setAttribute('aria-selected', String(k === actif)));
+    champ.setAttribute('aria-activedescendant', options[actif].id);
+    options[actif].scrollIntoView({ block: 'nearest' });
+  }
+
+  async function chercher() {
+    const q = normaliser(champ.value.trim());
+    if (q.length < 2) { fermer(); liste.innerHTML = ''; statut.textContent = ''; return; }
+    await charger();
+    if (normaliser(champ.value.trim()) !== q) return;
+    const recettes: string[] = [];
+    const techniques: string[] = [];
+    let n = 0;
+    for (const e of index ?? []) {
+      if (e.type === 'recette') {
+        const dansTitre = normaliser(e.titre).includes(q);
+        const ingredients = e.ingredients.filter((i) => normaliser(i).includes(q));
+        if (!dansTitre && !ingredients.length) continue;
+        const detail = ingredients.length
+          ? `<span class="detail">${ingredients.slice(0, 2).map((i) => surligner(i, q)).join(' · ')}</span>`
+          : '';
+        recettes.push(`<li role="option" id="res-${n++}" aria-selected="false"><a href="${base}recettes/${e.slug}/" tabindex="-1">
+          <span class="drapeau" aria-hidden="true">${e.drapeau}</span> <span>${surligner(e.titre, q)}</span>${detail}</a></li>`);
+      } else if (normaliser(e.titre).includes(q)) {
+        techniques.push(`<li role="option" id="res-${n++}" aria-selected="false"><a href="${base}techniques/${e.slug}/" tabindex="-1">
+          <span>${surligner(e.titre, q)}</span><span class="detail">${echapper(e.resume)}</span></a></li>`);
+      }
+    }
+    let html = '';
+    if (recettes.length) html += `<li class="groupe" role="presentation">Recettes</li>${recettes.join('')}`;
+    if (techniques.length) html += `<li class="groupe" role="presentation">Techniques</li>${techniques.join('')}`;
+    if (!html) html = '<li class="vide" role="presentation">Aucun résultat</li>';
+    liste.innerHTML = html;
+    liste.hidden = false;
+    champ.setAttribute('aria-expanded', 'true');
+    actif = -1;
+    statut.textContent = `${recettes.length} recette${recettes.length > 1 ? 's' : ''}, ${techniques.length} technique${techniques.length > 1 ? 's' : ''}`;
+  }
+
+  champ.addEventListener('focus', () => { charger(); if (liste.innerHTML && champ.value.trim().length >= 2) { liste.hidden = false; champ.setAttribute('aria-expanded', 'true'); } });
+  champ.addEventListener('input', chercher);
+  champ.addEventListener('keydown', (ev) => {
+    if (ev.key === 'ArrowDown') { ev.preventDefault(); if (liste.hidden) chercher(); else activer(actif + 1); }
+    else if (ev.key === 'ArrowUp') { ev.preventDefault(); activer(actif - 1); }
+    else if (ev.key === 'Enter') {
+      const options = liste.querySelectorAll<HTMLElement>('[role="option"] a');
+      const cible = options[actif >= 0 ? actif : 0];
+      if (cible && !liste.hidden) { ev.preventDefault(); window.location.href = cible.getAttribute('href')!; }
+    } else if (ev.key === 'Escape') { if (!liste.hidden) { ev.preventDefault(); fermer(); } else champ.value = ''; }
+  });
+  liste.addEventListener('mousedown', (ev) => ev.preventDefault()); // garder le focus pendant le clic
+  champ.addEventListener('blur', () => setTimeout(fermer, 100));
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key === '/' && !(ev.target instanceof HTMLInputElement || ev.target instanceof HTMLTextAreaElement)) {
+      ev.preventDefault();
+      champ.focus();
+    }
+  });
+</script>

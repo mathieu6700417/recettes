@@ -1,0 +1,288 @@
+:root {
+  --fond: #ffffff;
+  --fond-lateral: #f7f6f4;
+  --texte: #222222;
+  --texte-doux: #5f5f5f;
+  --texte-pale: #767676;
+  --trait: #e4e2de;
+  --trait-leger: #eeece9;
+  --accent: #a8482a;        /* terracotta, contraste AA sur blanc */
+  --accent-fond: #f6e9e3;
+  --marque: #fff3c2;
+  --focus: #a8482a;
+  --police: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --largeur-lateral: 20rem;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fond: #181716;
+    --fond-lateral: #201f1d;
+    --texte: #e9e6e2;
+    --texte-doux: #b3aea8;
+    --texte-pale: #9a948d;
+    --trait: #36332f;
+    --trait-leger: #2b2926;
+    --accent: #e48a68;
+    --accent-fond: #3a2620;
+    --marque: #5a4a12;
+    --focus: #e48a68;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--fond);
+  color: var(--texte);
+  font-family: var(--police);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+a { color: var(--accent); text-underline-offset: 0.15em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 2px; }
+button { font: inherit; color: inherit; }
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+.evitement { position: absolute; left: -999px; top: 0.5rem; z-index: 10; background: var(--fond); padding: 0.4rem 0.8rem; }
+.evitement:focus { left: 0.5rem; }
+
+/* ---------- Mise en page ---------- */
+.page { display: grid; grid-template-columns: var(--largeur-lateral) minmax(0, 1fr); min-height: 100vh; }
+.lateral {
+  background: var(--fond-lateral);
+  border-right: 1px solid var(--trait);
+  position: sticky; top: 0; height: 100vh;
+  display: flex; flex-direction: column;
+}
+.lateral-entete { padding: 1.1rem 1.1rem 0.6rem; }
+.lateral-corps { padding: 0 0.6rem 2rem 1.1rem; overflow-y: auto; flex: 1; }
+.marque { white-space: nowrap; color: var(--texte); text-decoration: none; font-weight: 300; font-size: 1.25rem; letter-spacing: -0.01em; }
+.marque span { color: var(--texte-pale); }
+.ouvrir-arbre { display: none; }
+.contenu { padding: 2.5rem clamp(1rem, 4vw, 3.5rem) 4rem; max-width: 60rem; width: 100%; }
+.contenu:focus { outline: none; }
+
+@media (max-width: 799px) {
+  .page { display: block; }
+  .lateral { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--trait); }
+  .lateral-entete { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.75rem 1rem; }
+  .ouvrir-arbre {
+    display: inline-flex; gap: 0.4rem; align-items: center;
+    background: var(--fond); border: 1px solid var(--trait); border-radius: 999px;
+    padding: 0.35rem 0.85rem; font-size: 0.875rem; cursor: pointer; white-space: nowrap;
+  }
+  .ouvrir-arbre[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
+  .js .lateral-corps { display: none; }
+  .lateral-corps.ouvert { display: block; max-height: 70vh; padding: 0 1rem 1rem; }
+  .contenu { padding: 1.5rem 1rem 3rem; }
+}
+
+/* ---------- Recherche ---------- */
+.recherche { position: relative; margin: 0.4rem 0 0.9rem; }
+.recherche input {
+  width: 100%; font: inherit; font-size: 0.9rem;
+  padding: 0.5rem 0.75rem; border: 1px solid var(--trait); border-radius: 6px;
+  background: var(--fond); color: var(--texte);
+}
+.recherche input:focus-visible { outline-offset: 0; border-color: var(--focus); }
+.resultats {
+  position: absolute; z-index: 5; left: 0; right: 0; top: calc(100% + 4px);
+  list-style: none; margin: 0; padding: 0.3rem 0;
+  background: var(--fond); border: 1px solid var(--trait); border-radius: 6px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.12); max-height: 60vh; overflow-y: auto;
+  font-size: 0.875rem;
+}
+.resultats .groupe { padding: 0.4rem 0.75rem 0.2rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--texte-pale); font-weight: 600; }
+.resultats .vide { padding: 0.5rem 0.75rem; color: var(--texte-doux); }
+.resultats a { display: block; padding: 0.35rem 0.75rem; color: var(--texte); text-decoration: none; }
+.resultats [aria-selected="true"] a, .resultats a:hover { background: var(--accent-fond); }
+.resultats .detail { display: block; color: var(--texte-doux); font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+mark { background: var(--marque); color: inherit; border-radius: 2px; padding: 0 1px; }
+
+/* ---------- Arbre ---------- */
+.bascule-axes { display: flex; border: 1px solid var(--trait); border-radius: 6px; overflow: hidden; margin-bottom: 0.8rem; }
+.bascule {
+  flex: 1; border: 0; background: transparent; padding: 0.4rem 0.3rem; font-size: 0.78rem; cursor: pointer; color: var(--texte-doux);
+}
+.bascule + .bascule { border-left: 1px solid var(--trait); }
+.bascule[aria-pressed="true"] { background: var(--fond); color: var(--accent); font-weight: 600; }
+html[data-axe="cuisson"] .axe[data-axe="base"],
+html[data-axe="base"] .axe[data-axe="cuisson"] { display: none; }
+
+.arbre ul { list-style: none; margin: 0; padding: 0; }
+.arbre .enfants { padding-left: 0.85rem; margin-left: 0.6rem; border-left: 1px solid var(--trait); }
+.arbre .racines > .noeud { margin-bottom: 0.25rem; }
+.arbre .ligne { display: flex; align-items: center; gap: 0.15rem; min-height: 1.9rem; }
+.deplier, .deplier-vide { flex: 0 0 1.4rem; height: 1.4rem; }
+.deplier {
+  border: 0; background: transparent; cursor: pointer; padding: 0; border-radius: 4px; color: var(--texte-pale);
+  display: inline-grid; place-items: center;
+}
+.deplier::before { content: ""; width: 0.4rem; height: 0.4rem; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(-45deg); transition: transform 0.15s; }
+.deplier[aria-expanded="true"]::before { transform: rotate(45deg); }
+.deplier:hover { background: var(--trait-leger); color: var(--texte); }
+.arbre .ligne a {
+  flex: 1; display: flex; align-items: baseline; gap: 0.35rem; min-width: 0;
+  color: var(--texte); text-decoration: none; padding: 0.15rem 0.35rem; border-radius: 4px; font-size: 0.9rem;
+}
+.arbre .ligne a:hover { background: var(--trait-leger); }
+.arbre .racines > .noeud-technique > .ligne a { font-weight: 600; }
+.arbre .noeud-recette > .ligne a { color: var(--texte-doux); }
+.arbre .titre { overflow: hidden; text-overflow: ellipsis; }
+.arbre .compteur { margin-left: auto; font-size: 0.7rem; color: var(--texte-pale); font-variant-numeric: tabular-nums; }
+.arbre .mutation { font-size: 0.72rem; color: var(--texte-pale); padding-left: 1.95rem; margin-top: -0.3rem; margin-bottom: 0.15rem; line-height: 1.3; font-style: italic; }
+.arbre .courant > .ligne a { background: var(--accent-fond); color: var(--accent); font-weight: 600; }
+.drapeau { font-style: normal; }
+
+/* ---------- Typographie commune ---------- */
+h1 { font-weight: 300; font-size: clamp(1.9rem, 4vw, 2.6rem); letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 0.4rem; }
+h2 { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--texte-pale); margin: 2rem 0 0.8rem; }
+h3 { font-size: 0.85rem; font-weight: 600; margin: 1rem 0 0.3rem; color: var(--texte-doux); }
+.meta { color: var(--texte-pale); font-size: 0.9rem; margin: 0 0 1.2rem; padding-bottom: 0.9rem; border-bottom: 1px solid var(--trait); }
+.meta span { white-space: nowrap; }
+.meta span + span::before { content: "·"; margin: 0 0.6rem; }
+.fil-mutation { font-style: italic; color: var(--texte-doux); }
+.manquant { color: var(--texte-pale); text-decoration: line-through dotted; }
+.prose { max-width: 42rem; }
+.prose h2 { margin-top: 2rem; }
+.prose ul { padding-left: 1.2rem; }
+.prose li { margin: 0.2rem 0; }
+.prose table { border-collapse: collapse; font-size: 0.9rem; }
+.prose th, .prose td { border-bottom: 1px solid var(--trait); padding: 0.3rem 0.8rem 0.3rem 0; text-align: left; }
+
+/* ---------- Page technique ---------- */
+.ariane { font-size: 0.82rem; color: var(--texte-pale); margin-bottom: 0.8rem; }
+.ariane .fil-axe { text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.7rem; font-weight: 600; margin-right: 0.5rem; }
+.resume { font-size: 1.15rem; font-weight: 300; color: var(--texte-doux); margin: 0 0 0.6rem; max-width: 42rem; }
+.filiation { margin: 0 0 1rem; font-size: 0.95rem; }
+.sous-arbre { list-style: none; padding: 0; margin: 0; }
+.sous-arbre .sous-arbre { padding-left: 1.1rem; margin: 0.2rem 0 0.4rem 0.4rem; border-left: 1px solid var(--trait); }
+.sous-arbre li { padding: 0.25rem 0; }
+.sous-arbre a { text-decoration: none; }
+.sous-arbre a:hover { text-decoration: underline; }
+.sa-technique > a { font-weight: 600; }
+.sa-recette > a { color: var(--texte); }
+.sa-recette .drapeau { margin-right: 0.3rem; }
+.sa-mutation { display: block; font-size: 0.82rem; font-style: italic; color: var(--texte-pale); }
+.sa-note { display: block; font-size: 0.75rem; color: var(--texte-pale); }
+.vide { color: var(--texte-pale); }
+
+/* ---------- Accueil ---------- */
+.chapo { font-size: 1.2rem; font-weight: 300; color: var(--texte-doux); max-width: 40rem; }
+.concept { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0 2rem; margin: 1rem 0 1.5rem; }
+.concept h2 { margin-top: 1rem; }
+.concept p { margin: 0; font-size: 0.95rem; }
+.concept .drapeau { margin-left: 0.2rem; }
+.cartes { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 0.8rem; }
+.carte a {
+  display: flex; flex-direction: column; gap: 0.3rem; height: 100%;
+  padding: 1rem 1.1rem; border: 1px solid var(--trait); border-radius: 8px; text-decoration: none; color: var(--texte);
+  transition: border-color 0.15s;
+}
+.carte a:hover { border-color: var(--accent); }
+.carte-titre { font-size: 1.15rem; font-weight: 300; color: var(--accent); }
+.carte-resume { font-size: 0.85rem; color: var(--texte-doux); flex: 1; }
+.carte-compte { font-size: 0.75rem; color: var(--texte-pale); }
+
+/* ---------- Page recette ---------- */
+.entete-recette h1 .drapeau { font-size: 0.7em; vertical-align: 0.1em; }
+.genealogie { font-size: 0.85rem; margin: 0 0 1.2rem; }
+.fil { margin: 0.2rem 0; display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.fil-axe { color: var(--texte-pale); min-width: 9.5rem; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; padding-top: 0.15em; }
+.fil-chaine { flex: 1; min-width: 14rem; }
+.fleche { color: var(--texte-pale); }
+.outils { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-bottom: 0.5rem; }
+.portions { display: inline-flex; align-items: center; gap: 0.4rem; margin-right: 0.6rem; }
+.portions button {
+  width: 2.1rem; height: 2.1rem; border-radius: 50%; border: 1px solid var(--trait); background: var(--fond);
+  cursor: pointer; font-size: 1.1rem; line-height: 1;
+}
+.portions button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.portions button:disabled { opacity: 0.4; cursor: default; }
+.portions .valeur { min-width: 1.5rem; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+.portions .unite-portions { color: var(--texte-doux); font-size: 0.9rem; }
+.bouton {
+  border: 1px solid var(--trait); background: var(--fond); border-radius: 999px; padding: 0.4rem 1rem; cursor: pointer; font-size: 0.875rem;
+}
+.bouton:hover { border-color: var(--accent); color: var(--accent); }
+
+.grille { display: flex; gap: 2.5rem; align-items: flex-start; }
+.ingredients { flex: 0 0 36%; }
+.etapes { flex: 1; }
+.grille h2 { margin-top: 1.2rem; }
+.ingredients ul { list-style: none; padding: 0; margin: 0; }
+.ingredients li { padding: 0.3rem 0; border-bottom: 1px solid var(--trait-leger); }
+.ingredients .q { font-weight: 600; font-variant-numeric: tabular-nums; }
+.etapes ol { list-style: none; padding: 0; margin: 0; counter-reset: etape; }
+.etapes li { counter-increment: etape; position: relative; padding-left: 1.9rem; margin-bottom: 0.9rem; }
+.etapes li::before { content: counter(etape); position: absolute; left: 0; top: 0; font-weight: 600; color: var(--texte-pale); }
+.coche { display: none; }
+.notes { margin-top: 1rem; }
+.source { color: var(--texte-pale); font-size: 0.85rem; margin-top: 2rem; }
+.sortir-cuisine { display: none; }
+@media (max-width: 640px) {
+  .grille { flex-direction: column; gap: 0; }
+  .ingredients { flex: none; width: 100%; }
+}
+
+/* ---------- Mode cuisine ---------- */
+body.cuisine { font-size: 1.3rem; }
+body.cuisine .page { display: block; }
+body.cuisine .lateral, body.cuisine .genealogie, body.cuisine .entrer-cuisine, body.cuisine .imprimer,
+body.cuisine .notes, body.cuisine .source, body.cuisine .evitement { display: none; }
+body.cuisine .contenu { max-width: 70rem; margin: 0 auto; padding-bottom: 6rem; }
+body.cuisine h1 { font-size: 2.4rem; }
+body.cuisine .coche {
+  display: inline-block; width: 1.4rem; height: 1.4rem; margin: 0.15rem 0.7rem 0 0; flex: none; accent-color: var(--accent);
+}
+body.cuisine .grille label { display: flex; align-items: flex-start; cursor: pointer; }
+body.cuisine .etapes li { padding-left: 2.2rem; margin-bottom: 1.3rem; }
+body.cuisine li:has(.coche:checked) .texte { text-decoration: line-through; color: var(--texte-pale); }
+body.cuisine .sortir-cuisine {
+  display: block; position: fixed; right: 1rem; bottom: 1rem; z-index: 20;
+  background: var(--accent); color: var(--fond); border-color: var(--accent); font-size: 1rem; padding: 0.7rem 1.3rem;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.2);
+}
+body.cuisine .sortir-cuisine:hover { color: var(--fond); filter: brightness(1.08); }
+
+/* ---------- Impression A4 (style de la fiche blanquette-de-veau.html) ---------- */
+@media print {
+  @page { size: A4; margin: 22mm 20mm; }
+  :root {
+    --fond: #fff; --texte: #222; --texte-doux: #555; --texte-pale: #888; --trait: #ddd; --trait-leger: #eee; --accent: #222;
+  }
+  body, body.cuisine { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #222; font-size: 11pt; line-height: 1.5; background: #fff; }
+  .page { display: block; }
+  .lateral, .outils, .sortir-cuisine, .evitement, .ecran-seul, .coche { display: none !important; }
+  .contenu { padding: 0; max-width: none; }
+  a { color: inherit; text-decoration: none; }
+  h1, body.cuisine h1 { font-weight: 300; font-size: 28pt; margin: 0 0 4pt; letter-spacing: -0.5pt; }
+  h1 .drapeau { font-size: 18pt; }
+  .meta { color: #888; font-size: 9.5pt; margin: 0 0 6pt; padding-bottom: 0; border-bottom: 0; }
+  .meta span + span::before { margin: 0 8pt; }
+  .genealogie, body.cuisine .genealogie { display: block; font-size: 8pt; color: #999; margin: 0 0 18pt; padding-bottom: 12pt; border-bottom: 0.5pt solid #ddd; }
+  .fil { display: block; margin: 0; }
+  .fil-axe { display: inline; min-width: 0; font-size: 7pt; color: #aaa; margin-right: 4pt; }
+  .fil-mutation, .fleche { color: #999; }
+  h2 { font-size: 9pt; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5pt; color: #999; margin: 0 0 10pt; }
+  .grille h2 { margin-top: 0; }
+  h3 { font-size: 9pt; color: #666; margin: 8pt 0 2pt; }
+  .grille { display: flex; flex-direction: row; gap: 28pt; }
+  .ingredients { flex: 0 0 36%; }
+  .ingredients li { padding: 3pt 0; border-bottom: 0.5pt solid #eee; }
+  .ingredients .q { font-weight: 400; }
+  .etapes li, body.cuisine .etapes li { padding-left: 22pt; margin-bottom: 10pt; break-inside: avoid; }
+  .etapes li::before { color: #bbb; }
+  li .texte { text-decoration: none !important; color: inherit !important; }
+  .notes { font-size: 9.5pt; color: #555; margin-top: 14pt; break-inside: avoid; }
+  .notes h2 { margin-top: 0; }
+  body.cuisine .notes, body.cuisine .source { display: block; }
+  .source { font-size: 8pt; color: #bbb; margin-top: 18pt; }
+  .arbre, .recherche { display: none; }
+}

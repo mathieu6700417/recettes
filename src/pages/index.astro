@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import { AXES, NOMS_AXES, drapeau, genealogie, nomPays, urlTechnique } from '../lib/arbre';
+
+const g = await genealogie();
+const racines = Object.fromEntries(AXES.map((axe) => [axe, g.arbres[axe].filter((n) => n.type === 'technique')]));
+const pays = [...new Set([...g.recettes.values()].map((r) => r.data.origine))].sort();
+const s = (n: number, mot: string) => `${n} ${mot}${n > 1 ? 's' : ''}`;
+---
+<Base titre="Généalogie des recettes">
+  <article class="accueil">
+    <h1>Généalogie des recettes</h1>
+    <p class="chapo">Chaque recette descend d'une technique. Ici, on les range comme un arbre généalogique,
+      pour voir ce qui change d'une génération à l'autre.</p>
+    <div class="concept">
+      <section>
+        <h2>Deux axes</h2>
+        <p>Une recette a un <strong>mode de cuisson</strong> (pocher, mijoter, braiser, frire…) et une ou plusieurs{' '}
+          <strong>préparations de base</strong> (fond, roux, pâte à choux, crème…). L'arbre se lit selon l'un ou l'autre axe.</p>
+      </section>
+      <section>
+        <h2>Des mutations</h2>
+        <p>Chaque lien porte ce qui change par rapport au parent : <span class="fil-mutation">+ crème</span>,{' '}
+          <span class="fil-mutation">fond blanc → fond brun</span>,{' '}<span class="fil-mutation">+ jaunes d'œuf</span>.{' '}
+          Une recette se lit comme « sa mère, plus une modification ».</p>
+      </section>
+      <section>
+        <h2>Des cousines étrangères</h2>
+        <p>Les recettes d'ailleurs se branchent sur la même technique, avec leur drapeau :
+          un bourguignon, une carbonade et un osso buco sont cousins.
+          {pays.length > 0 && <> Origines présentes : {pays.map((p) => <span class="drapeau" role="img" aria-label={nomPays(p)} title={nomPays(p)}>{drapeau(p)}</span>)}</>}</p>
+      </section>
+    </div>
+
+    <p class="meta"><span>{s(g.techniques.size, 'technique')}</span><span>{s(g.recettes.size, 'recette')}</span></p>
+
+    {AXES.map((axe) => (
+      <section class="racines-axe" aria-labelledby={`axe-${axe}`}>
+        <h2 id={`axe-${axe}`}>{NOMS_AXES[axe]}</h2>
+        <ul class="cartes">
+          {racines[axe].map((n) => (
+            <li class="carte">
+              <a href={urlTechnique(n.slug)}>
+                <span class="carte-titre">{n.titre}</span>
+                <span class="carte-resume">{g.techniques.get(n.slug)?.data.resume}</span>
+                <span class="carte-compte">{s(n.nbTechniques, 'technique')} · {s(n.nbRecettes, 'recette')}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </article>
+</Base>

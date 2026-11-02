@@ -1,0 +1,21 @@
+{
+  "name": "recettes",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "build:fixtures": "CONTENU_DIR=tests/fixtures/content astro build",
+    "dev:fixtures": "CONTENU_DIR=tests/fixtures/content astro dev",
+    "preview": "astro preview",
+    "verifier": "node scripts/verifier.mjs",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^7.4.4"
+  },
+  "devDependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}
