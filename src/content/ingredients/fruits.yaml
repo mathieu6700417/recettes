@@ -12,3 +12,5 @@ ingredients:
   - { slug: cerise, nom: "cerise", pluriel: "cerises", saison: [5, 6, 7] }
   - { slug: cerise-amarena, parent: cerise, nom: "cerise amarena au sirop", pluriel: "cerises amarena au sirop", synonymes: ["cerises amarena"], saison: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }
   - { slug: banane, nom: "banane", pluriel: "bananes" }
+  - { slug: coing, nom: "coing", pluriel: "coings", saison: [10, 11, 12], techniques: [confire, pocher] }
+  - { slug: chataigne, nom: "châtaigne", pluriel: "châtaignes", synonymes: ["marron", "châtaigne cuite", "marrons sous vide"], saison: [10, 11, 12], techniques: [mijoter, rotir] }

@@ -111,6 +111,14 @@ export const PLATS = Object.fromEntries(Object.entries({
   'risotto-au-potimarron': 'IT', 'soupe-a-l-oignon': 'FR', 'tarte-a-l-oignon': 'FR',
   pissaladiere: 'FR', 'bhaji-a-l-oignon': 'IN', 'puree-de-patate-douce': 'FR',
   'frites-de-patate-douce': 'US', 'curry-de-patate-douce': 'IN', 'chili-sin-carne': 'US',
+  // Recettes d'automne et d'hiver (de saison en novembre)
+  'potee-auvergnate': 'FR', 'choucroute-garnie': 'FR', 'perdrix-aux-choux': 'FR',
+  'chou-rouge-aux-pommes': 'DE', ribollita: 'IT', 'soupe-poireaux-pommes-de-terre': 'FR',
+  'veloute-de-chataignes': 'FR', bortsch: 'UA', 'poireaux-vinaigrette': 'FR',
+  'flamiche-aux-poireaux': 'FR', 'endives-au-jambon': 'BE', 'salade-d-endives-aux-noix': 'FR',
+  'risotto-aux-champignons': 'IT', 'cepes-a-la-bordelaise': 'FR',
+  'saint-jacques-a-la-fondue-de-poireaux': 'FR', 'tarte-tatin': 'FR', 'poires-belle-helene': 'FR',
+  'crumble-aux-pommes': 'GB', 'mont-blanc': 'FR', 'pate-de-coing': 'FR',
 }).map(([slug, origine]) => [slug, { origine }]));
 
 const p = (parent, origine, titre) => ({ parent, origine, titre });

@@ -14,3 +14,4 @@ ingredients:
   - { slug: chocolat-au-lait, parent: chocolat, nom: "chocolat au lait" }
   - { slug: chocolat-blanc, parent: chocolat, nom: "chocolat blanc" }
   - { slug: cacao-en-poudre, parent: chocolat, nom: "cacao en poudre", synonymes: ["cacao amer"] }
+  - { slug: creme-de-marrons, nom: "crème de marrons", synonymes: ["crème de marrons vanillée"] }

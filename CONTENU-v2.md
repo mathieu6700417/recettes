@@ -357,6 +357,31 @@ Ajoutés avec les recettes de légumes (12 plats) :
 | | curry-de-patate-douce | IN | substitution du curry d'agneau ; garam masala |
 | | chili-sin-carne | US | substitution du chili con carne ; tex-mex |
 
+Recettes d'automne et d'hiver, de saison en novembre (20 plats) :
+
+| Thème | slug | origine | lien éprouvé |
+|---|---|---|---|
+| Chou | potee-auvergnate | FR | mijoter ; substitution du pot-au-feu |
+| | choucroute-garnie | FR | braiser ; chou fermenté |
+| | perdrix-aux-choux | FR | braiser ; gibier à plume |
+| | chou-rouge-aux-pommes | DE | braiser |
+| | ribollita | IT | mijoter ; profil soffritto |
+| Soupes et poireau | soupe-poireaux-pommes-de-terre | FR | mijoter ; composant fond de légumes |
+| | veloute-de-chataignes | FR | mijoter |
+| | bortsch | UA | mijoter |
+| | poireaux-vinaigrette | FR | pocher ; composant vinaigrette |
+| | flamiche-aux-poireaux | FR | substitution de la quiche lorraine |
+| Endive, champignons, mer | endives-au-jambon | BE | braiser puis gratiner ; composant béchamel |
+| | salade-d-endives-aux-noix | FR | cru ; composant vinaigrette |
+| | risotto-aux-champignons | IT | substitution du risotto alla milanese |
+| | cepes-a-la-bordelaise | FR | sauter |
+| | saint-jacques-a-la-fondue-de-poireaux | FR | poeler ; poireaux confits |
+| Desserts | tarte-tatin | FR | substitution de la tarte aux pommes ; composant caramel |
+| | poires-belle-helene | FR | pocher ; profil vanille |
+| | crumble-aux-pommes | GB | cuire au four |
+| | mont-blanc | FR | composant meringue ; crème de marrons |
+| | pate-de-coing | FR | confire |
+
 Corrections et reclassements de la migration : `pasteis-de-nata` → pâte feuilletée ;
 `crema-catalana` → `epaissir-a-l-amidon` (sur le feu, liée à la fécule) ; `tarte-au-citron-meringuee` → crème au
 citron ; `tajine-d-agneau-aux-pruneaux` → aucun composant, profil ras-el-hanout ;

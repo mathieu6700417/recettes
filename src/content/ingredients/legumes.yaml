@@ -40,3 +40,11 @@ ingredients:
   - { slug: piment-frais, nom: "piment frais", pluriel: "piments frais", synonymes: ["piment rouge", "piment vert"] }
   - { slug: jalapeno, parent: piment-frais, nom: "piment jalapeño", pluriel: "piments jalapeños", synonymes: ["jalapeño", "piment serrano"] }
   - { slug: avocat, nom: "avocat", pluriel: "avocats", techniques: [cru] }
+  - { slug: chou, nom: "chou", pluriel: "choux", saison: [10, 11, 12, 1, 2, 3], techniques: [braiser, mijoter] }
+  - { slug: chou-vert, parent: chou, nom: "chou vert", pluriel: "choux verts", synonymes: ["chou frisé", "chou de Milan"] }
+  - { slug: chou-blanc, parent: chou, nom: "chou blanc", pluriel: "choux blancs", synonymes: ["chou pommé"] }
+  - { slug: chou-rouge, parent: chou, nom: "chou rouge", pluriel: "choux rouges", techniques: [braiser, cru] }
+  - { slug: chou-noir, parent: chou, nom: "chou noir", pluriel: "choux noirs", synonymes: ["cavolo nero", "chou palmier"] }
+  - { slug: choucroute, nom: "choucroute", synonymes: ["chou fermenté", "choucroute crue"], techniques: [braiser] }
+  - { slug: endive, nom: "endive", pluriel: "endives", synonymes: ["chicon"], saison: [10, 11, 12, 1, 2, 3, 4], techniques: [braiser, cru, gratiner] }
+  - { slug: betterave, nom: "betterave", pluriel: "betteraves", synonymes: ["betterave rouge", "betterave crue"], saison: [9, 10, 11, 12, 1, 2, 3], techniques: [mijoter, rotir, cru] }

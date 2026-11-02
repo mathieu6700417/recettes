@@ -20,3 +20,4 @@ ingredients:
   - { slug: fromage-blanc, parent: fromage-frais, nom: "fromage blanc" }
   - { slug: yaourt, nom: "yaourt", pluriel: "yaourts", masse: singulier, synonymes: ["yaourt nature", "yaourt grec"], elision: false }
   - { slug: glace-a-la-vanille, nom: "glace à la vanille", synonymes: ["crème glacée vanille"] }
+  - { slug: roquefort, nom: "roquefort", synonymes: ["fromage bleu"] }

@@ -17,3 +17,6 @@ ingredients:
   - { slug: chair-a-saucisse, nom: "chair à saucisse", synonymes: ["farce de porc", "chair de saucisse"] }
   - { slug: saucisse, nom: "saucisse", pluriel: "saucisses", synonymes: ["saucisse de Toulouse"], techniques: [griller, poeler] }
   - { slug: chorizo, nom: "chorizo", synonymes: ["saucisson espagnol"] }
+  - { slug: petit-sale, nom: "petit salé", synonymes: ["palette demi-sel", "porc demi-sel"], techniques: [mijoter, pocher] }
+  - { slug: saucisse-fumee, parent: saucisse, nom: "saucisse fumée", pluriel: "saucisses fumées", synonymes: ["saucisse de Morteau", "saucisse de Montbéliard"], techniques: [mijoter, pocher] }
+  - { slug: saucisse-de-strasbourg, parent: saucisse, nom: "saucisse de Strasbourg", pluriel: "saucisses de Strasbourg", synonymes: ["knack"], techniques: [pocher] }
