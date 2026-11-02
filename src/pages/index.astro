@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { drapeau, nomPays, pluriel } from '../lib/format';
-import { TEINTES, arbres, reseau, titreDe, url, urlDe } from '../lib/site';
+import { TEINTES, arbres, moisDeSaison, reseau, titreDe, url, urlDe } from '../lib/site';
 
 const r = reseau();
 const a = arbres();
@@ -12,6 +12,12 @@ const profils = r.parType('profil').filter((n) => !r.liensDe(n.slug, 'parent').l
 const pays = [...new Set([...preps, ...r.parType('profil')].map((n) => n.data.origine).filter(Boolean))].sort();
 const nbIngredients = r.parType('ingredient').length;
 const aRelire = r.parType('version').filter((v) => v.data.statut === 'a-relire').length;
+// Plats avec les mois où ils sont de saison ; le filtre sur le mois courant se fait dans le
+// navigateur (le site peut être construit à une autre date que celle de la visite).
+const deSaison = plats
+  .map((n) => ({ n, mois: moisDeSaison(n.slug) }))
+  .filter((x) => x.mois.length > 0)
+  .sort((x, y) => x.n.data.titre.localeCompare(y.n.data.titre, 'fr'));
 ---
 <Base titre="Généalogie des recettes">
   <article class="accueil">
@@ -59,6 +65,17 @@ const aRelire = r.parType('version').filter((v) => v.data.statut === 'a-relire')
       {aRelire > 0 && <a class="bouton" href={url('a-relire/')}>{aRelire} version{aRelire > 1 ? 's' : ''} à relire</a>}
     </p>
 
+    {deSaison.length > 0 && (
+      <section aria-labelledby="titre-saison" class="de-saison" id="de-saison" hidden>
+        <h2 id="titre-saison">De saison ce mois-ci</h2>
+        <ul class="liste-saison">
+          {deSaison.map(({ n, mois }) => (
+            <li data-mois={mois.join(',')}><a href={urlDe(n.slug)}>{n.data.origine && <span class="drapeau" aria-hidden="true">{drapeau(n.data.origine)} </span>}{n.data.titre}</a></li>
+          ))}
+        </ul>
+      </section>
+    )}
+
     <section aria-labelledby="titre-cuisson">
       <h2 id="titre-cuisson">Techniques de cuisson</h2>
       <ul class="cartes">
@@ -88,3 +105,16 @@ const aRelire = r.parType('version').filter((v) => v.data.statut === 'a-relire')
     )}
   </article>
 </Base>
+
+<script>
+  // « De saison ce mois-ci » : ne garde que les plats de saison au mois courant ; sans JS,
+  // la section reste masquée.
+  const section = document.getElementById('de-saison');
+  if (section) {
+    const mois = new Date().getMonth() + 1;
+    section.querySelectorAll<HTMLElement>('li[data-mois]').forEach((li) => {
+      if (!li.dataset.mois!.split(',').map(Number).includes(mois)) li.remove();
+    });
+    section.hidden = !section.querySelector('li');
+  }
+</script>

@@ -32,6 +32,8 @@ export interface PreparationCuisine {
   ingredients: string[];
   /** titres des préparations de base utilisées comme ingrédient (affichées « à préparer ») */
   aPreparer?: string[];
+  /** version de référence végétarienne, bases comprises (dérivé au build) */
+  vegetarien?: boolean;
 }
 
 export interface Correspondance {
@@ -159,4 +161,9 @@ export function repartir(resultats: Resultat[]): { plats: Resultat[]; bases: Res
     plats: resultats.filter((r) => r.preparation.nature !== 'base'),
     bases: resultats.filter((r) => r.preparation.nature === 'base'),
   };
+}
+
+/** Ne garde que les préparations végétariennes si le filtre est actif. */
+export function filtrerRegime(preparations: PreparationCuisine[], vegetarienSeulement: boolean): PreparationCuisine[] {
+  return vegetarienSeulement ? preparations.filter((p) => p.vegetarien === true) : preparations;
 }

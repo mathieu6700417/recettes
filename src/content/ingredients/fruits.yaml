@@ -1,14 +1,14 @@
 titre: Fruits
 ingredients:
-  - { slug: citron, nom: "citron", pluriel: "citrons", synonymes: ["citron jaune", "zeste de citron", "citron non traité", "zeste de citron non traité"] }
+  - { slug: citron, nom: "citron", pluriel: "citrons", synonymes: ["citron jaune", "zeste de citron", "citron non traité", "zeste de citron non traité"], saison: [12, 1, 2, 3] }
   - { slug: citron-vert, nom: "citron vert", pluriel: "citrons verts", synonymes: ["lime"], substituts: [citron] }
   - { slug: citron-confit, nom: "citron confit", pluriel: "citrons confits", synonymes: ["citron confit au sel"] }
-  - { slug: orange, nom: "orange", pluriel: "oranges", synonymes: ["zeste d'orange", "orange non traitée"] }
-  - { slug: pomme, nom: "pomme", pluriel: "pommes", techniques: [cuire-au-four, poeler] }
+  - { slug: orange, nom: "orange", pluriel: "oranges", synonymes: ["zeste d'orange", "orange non traitée"], saison: [12, 1, 2, 3, 4] }
+  - { slug: pomme, nom: "pomme", pluriel: "pommes", saison: [9, 10, 11, 12, 1, 2, 3], techniques: [cuire-au-four, poeler] }
   - { slug: pomme-golden, parent: pomme, nom: "pomme golden", pluriel: "pommes golden" }
   - { slug: pomme-granny-smith, parent: pomme, nom: "pomme granny-smith", pluriel: "pommes granny-smith" }
-  - { slug: poire, nom: "poire", pluriel: "poires" }
-  - { slug: framboise, nom: "framboise", pluriel: "framboises" }
-  - { slug: cerise, nom: "cerise", pluriel: "cerises" }
-  - { slug: cerise-amarena, parent: cerise, nom: "cerise amarena au sirop", pluriel: "cerises amarena au sirop", synonymes: ["cerises amarena"] }
+  - { slug: poire, nom: "poire", pluriel: "poires", saison: [8, 9, 10, 11, 12, 1, 2] }
+  - { slug: framboise, nom: "framboise", pluriel: "framboises", saison: [6, 7, 8, 9] }
+  - { slug: cerise, nom: "cerise", pluriel: "cerises", saison: [5, 6, 7] }
+  - { slug: cerise-amarena, parent: cerise, nom: "cerise amarena au sirop", pluriel: "cerises amarena au sirop", synonymes: ["cerises amarena"], saison: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }
   - { slug: banane, nom: "banane", pluriel: "bananes" }

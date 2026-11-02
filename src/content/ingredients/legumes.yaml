@@ -1,38 +1,42 @@
 titre: Légumes
 ingredients:
-  - { slug: carotte, nom: "carotte", pluriel: "carottes", synonymes: ["carottes en rondelles"], techniques: [braiser, mijoter, pocher] }
-  - { slug: navet, nom: "navet", pluriel: "navets", techniques: [mijoter, pocher, braiser] }
-  - { slug: poireau, nom: "poireau", pluriel: "poireaux", synonymes: ["blanc de poireau"], techniques: [mijoter, pocher] }
+  - { slug: carotte, nom: "carotte", pluriel: "carottes", synonymes: ["carottes en rondelles"], saison: [7, 8, 9, 10, 11, 12, 1, 2, 3], techniques: [braiser, mijoter, pocher] }
+  - { slug: navet, nom: "navet", pluriel: "navets", saison: [10, 11, 12, 1, 2, 3], techniques: [mijoter, pocher, braiser] }
+  - { slug: poireau, nom: "poireau", pluriel: "poireaux", synonymes: ["blanc de poireau"], saison: [9, 10, 11, 12, 1, 2, 3], techniques: [mijoter, pocher] }
   - { slug: celeri-branche, nom: "céleri", synonymes: ["céleri branche", "branche de céleri"] , techniques: [mijoter, braiser] }
-  - { slug: celeri-rave, nom: "céleri-rave", pluriel: "céleris-raves", techniques: [cru, mijoter, rotir] }
-  - { slug: tomate, nom: "tomate", pluriel: "tomates", synonymes: ["tomate fraîche"], substituts: [tomate-pelee], techniques: [cru, mijoter] }
+  - { slug: celeri-rave, nom: "céleri-rave", pluriel: "céleris-raves", saison: [9, 10, 11, 12, 1, 2], techniques: [cru, mijoter, rotir] }
+  - { slug: tomate, nom: "tomate", pluriel: "tomates", synonymes: ["tomate fraîche"], substituts: [tomate-pelee], saison: [6, 7, 8, 9], techniques: [cru, mijoter] }
   - { slug: tomate-pelee, nom: "tomate pelée", pluriel: "tomates pelées", synonymes: ["tomates pelées en boîte", "tomates concassées"], substituts: [tomate] }
-  - { slug: tomate-cerise, nom: "tomate cerise", pluriel: "tomates cerises", techniques: [cru] }
+  - { slug: tomate-cerise, nom: "tomate cerise", pluriel: "tomates cerises", saison: [6, 7, 8, 9], techniques: [cru] }
   - { slug: tomatille, nom: "tomatille", pluriel: "tomatilles", synonymes: ["tomate verte mexicaine"] }
-  - { slug: aubergine, nom: "aubergine", pluriel: "aubergines", techniques: [sauter, rotir, frire, mijoter] }
-  - { slug: courgette, nom: "courgette", pluriel: "courgettes", techniques: [sauter, rotir, mijoter] }
-  - { slug: poivron, nom: "poivron", pluriel: "poivrons", techniques: [sauter, rotir, mijoter] }
+  - { slug: aubergine, nom: "aubergine", pluriel: "aubergines", saison: [6, 7, 8, 9], techniques: [sauter, rotir, frire, mijoter] }
+  - { slug: courgette, nom: "courgette", pluriel: "courgettes", saison: [6, 7, 8, 9], techniques: [sauter, rotir, mijoter] }
+  - { slug: poivron, nom: "poivron", pluriel: "poivrons", saison: [7, 8, 9, 10], techniques: [sauter, rotir, mijoter] }
   - { slug: poivron-rouge, parent: poivron, nom: "poivron rouge", pluriel: "poivrons rouges" }
   - { slug: poivron-vert, parent: poivron, nom: "poivron vert", pluriel: "poivrons verts" }
   - { slug: poivron-jaune, parent: poivron, nom: "poivron jaune", pluriel: "poivrons jaunes" }
   - { slug: champignon, nom: "champignon", pluriel: "champignons" }
   - { slug: champignon-de-paris, parent: champignon, nom: "champignon de Paris", pluriel: "champignons de Paris", synonymes: ["champignon blanc", "champignon de couche"], techniques: [sauter, poeler, cru] }
   - { slug: champignon-de-paris-en-boite, parent: champignon, nom: "champignon de Paris en boîte", pluriel: "champignons de Paris en boîte", synonymes: ["champignons en conserve", "petite boîte de champignons"] }
-  - { slug: cepe, parent: champignon, nom: "cèpe", pluriel: "cèpes", techniques: [sauter, poeler] }
-  - { slug: girolle, parent: champignon, nom: "girolle", pluriel: "girolles", techniques: [sauter, poeler] }
+  - { slug: cepe, parent: champignon, nom: "cèpe", pluriel: "cèpes", saison: [8, 9, 10, 11], techniques: [sauter, poeler] }
+  - { slug: girolle, parent: champignon, nom: "girolle", pluriel: "girolles", saison: [8, 9, 10, 11], techniques: [sauter, poeler] }
   - { slug: shiitake, parent: champignon, nom: "shiitaké", pluriel: "shiitakés" }
-  - { slug: petit-pois, nom: "petit pois", pluriel: "petits pois", synonymes: ["petits pois frais", "petits pois surgelés"] }
-  - { slug: haricot-vert, nom: "haricot vert", pluriel: "haricots verts", elision: false, techniques: [cuire-a-la-vapeur, pocher, sauter] }
-  - { slug: feve, nom: "fève", pluriel: "fèves", synonymes: ["févettes"] }
-  - { slug: concombre, nom: "concombre", pluriel: "concombres", techniques: [cru] }
-  - { slug: radis, nom: "radis", pluriel: "radis", techniques: [cru] }
-  - { slug: fenouil, nom: "fenouil", pluriel: "fenouils", techniques: [braiser, cru, rotir] }
-  - { slug: epinard, nom: "épinard", pluriel: "épinards", techniques: [sauter, cru] }
-  - { slug: laitue, nom: "laitue", pluriel: "laitues", synonymes: ["salade verte", "mesclun"], techniques: [cru] }
+  - { slug: petit-pois, nom: "petit pois", pluriel: "petits pois", synonymes: ["petits pois frais", "petits pois surgelés"], saison: [5, 6, 7] }
+  - { slug: haricot-vert, nom: "haricot vert", pluriel: "haricots verts", elision: false, saison: [6, 7, 8, 9], techniques: [cuire-a-la-vapeur, pocher, sauter] }
+  - { slug: feve, nom: "fève", pluriel: "fèves", synonymes: ["févettes"], saison: [5, 6, 7] }
+  - { slug: concombre, nom: "concombre", pluriel: "concombres", saison: [6, 7, 8, 9], techniques: [cru] }
+  - { slug: radis, nom: "radis", pluriel: "radis", saison: [4, 5, 6, 7], techniques: [cru] }
+  - { slug: fenouil, nom: "fenouil", pluriel: "fenouils", saison: [6, 7, 8, 9, 10], techniques: [braiser, cru, rotir] }
+  - { slug: epinard, nom: "épinard", pluriel: "épinards", saison: [3, 4, 5, 9, 10, 11], techniques: [sauter, cru] }
+  - { slug: laitue, nom: "laitue", pluriel: "laitues", synonymes: ["salade verte", "mesclun"], saison: [4, 5, 6, 7, 8, 9, 10], techniques: [cru] }
   - { slug: roquette, nom: "roquette", techniques: [cru] }
-  - { slug: artichaut, nom: "artichaut", pluriel: "artichauts", techniques: [pocher, cru] }
+  - { slug: artichaut, nom: "artichaut", pluriel: "artichauts", saison: [5, 6, 7, 8, 9], techniques: [pocher, cru] }
   - { slug: mais, nom: "maïs", synonymes: ["maïs en grains", "maïs en boîte"] }
-  - { slug: patate-douce, nom: "patate douce", pluriel: "patates douces", techniques: [rotir, mijoter, cuire-a-la-vapeur] }
+  - { slug: patate-douce, nom: "patate douce", pluriel: "patates douces", saison: [9, 10, 11, 12], techniques: [rotir, mijoter, cuire-a-la-vapeur] }
+  - { slug: courge, nom: "courge", pluriel: "courges", saison: [9, 10, 11, 12, 1, 2] }
+  - { slug: potimarron, parent: courge, nom: "potimarron", pluriel: "potimarrons", synonymes: ["courge potimarron", "potiron japonais"], saison: [9, 10, 11, 12, 1], techniques: [rotir, mijoter, gratiner] }
+  - { slug: courge-butternut, parent: courge, nom: "courge butternut", pluriel: "courges butternut", synonymes: ["butternut", "doubeurre"], techniques: [rotir, mijoter, gratiner] }
+  - { slug: potiron, parent: courge, nom: "potiron", pluriel: "potirons", techniques: [mijoter, rotir] }
   - { slug: piment-frais, nom: "piment frais", pluriel: "piments frais", synonymes: ["piment rouge", "piment vert"] }
   - { slug: jalapeno, parent: piment-frais, nom: "piment jalapeño", pluriel: "piments jalapeños", synonymes: ["jalapeño", "piment serrano"] }
   - { slug: avocat, nom: "avocat", pluriel: "avocats", techniques: [cru] }

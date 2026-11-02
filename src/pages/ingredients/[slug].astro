@@ -4,7 +4,7 @@ import GrapheLocal from '../../components/GrapheLocal.astro';
 import Ref from '../../components/Ref.astro';
 import SousIngredients from '../../components/SousIngredients.astro';
 import {
-  ascendance, descendantsDe, enfantsDe, nomCourant, nomDe, parentDe, reseau, substitutsDe, suffixeVersion,
+  ascendance, descendantsDe, enfantsDe, nomCourant, nomDe, parentDe, reseau, saisonDe, substitutsDe, suffixeVersion,
   titreDe, usagesDe,
 } from '../../lib/site';
 
@@ -65,6 +65,8 @@ for (const s of [slug, ...[...chaine].reverse()]) {
 const substituts = estFamille ? [] : substitutsDe(slug);
 const synonymes: string[] = Array.isArray(d.synonymes) ? d.synonymes : [];
 const nbEnfants = enfantsDe(slug).length;
+// Mois de pleine saison, les siens ou hérités d'un ancêtre.
+const saison = estFamille ? null : saisonDe(slug);
 ---
 <Base titre={titre} courant={slug} description={estFamille ? `Famille d'ingrédients : ${titre}.` : `${titre} : famille, substituts, techniques et préparations qui l'utilisent.`}>
   <article class="fiche fiche-ingredient">
@@ -80,6 +82,9 @@ const nbEnfants = enfantsDe(slug).length;
           {synonymes.length > 0 && <>Aussi : {synonymes.join(', ')}. </>}
           {d.placard === true && <span class="badge">placard</span>}
         </p>
+      )}
+      {saison && (
+        <p class="saison"><span class="saison-titre">De saison</span> {saison.texte.replace(/^./, (c) => c.toLocaleUpperCase('fr-FR'))}{saison.de !== slug && <span class="note"> (comme {nomDe(saison.de)})</span>}</p>
       )}
       <p class="meta">
         {!estFamille && <span>{nbEnfants} sous-ingrédient{nbEnfants > 1 ? 's' : ''}</span>}

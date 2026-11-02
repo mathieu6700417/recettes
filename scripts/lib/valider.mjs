@@ -342,7 +342,7 @@ export function validerReseau(r) {
       let ou = `ingredients[${i + 1}]`;
       if (!estObjet(x)) return E(f, `${ou} : objet attendu`);
       if (estChaine(x.slug)) ou += ` (${q(x.slug)})`;
-      cles(f, x, ['slug', 'nom', 'pluriel', 'masse', 'parent', 'synonymes', 'techniques', 'substituts', 'placard', 'elision'], ou);
+      cles(f, x, ['slug', 'nom', 'pluriel', 'masse', 'parent', 'synonymes', 'techniques', 'substituts', 'placard', 'elision', 'saison'], ou);
       if (!estChaine(x.slug) || !SLUG.test(x.slug)) E(f, `${ou}.slug : slug valide requis${absent(x.slug) ? '' : ` (reçu ${val(x.slug)})`}`);
       chaine(f, x, 'nom', `${ou}.nom`);
       chaineOpt(f, x, 'pluriel', `${ou}.pluriel`);
@@ -367,6 +367,19 @@ export function validerReseau(r) {
       }
       for (const k of ['placard', 'elision']) {
         if (x[k] !== undefined && typeof x[k] !== 'boolean') E(f, `${ou}.${k} : booléen attendu (reçu ${val(x[k])})`);
+      }
+      // saison : mois de 1 à 12, sans doublon, liste non vide
+      if (x.saison !== undefined) {
+        if (!Array.isArray(x.saison)) E(f, `${ou}.saison : liste de mois (entiers de 1 à 12) attendue (reçu ${val(x.saison)})`);
+        else if (x.saison.length === 0) E(f, `${ou}.saison : liste non vide requise (ou champ absent)`);
+        else {
+          const vusMois = new Set();
+          x.saison.forEach((m, j) => {
+            if (!estEntier(m) || m < 1 || m > 12) E(f, `${ou}.saison[${j + 1}] : mois invalide ${val(m)} (entier de 1 à 12 attendu)`);
+            else if (vusMois.has(m)) E(f, `${ou}.saison[${j + 1}] : mois ${m} déjà cité`);
+            vusMois.add(m);
+          });
+        }
       }
     });
   }

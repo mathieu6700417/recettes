@@ -30,6 +30,7 @@ import { url } from '../../lib/site';
 
     <section aria-labelledby="titre-resultats">
       <h2 id="titre-resultats">Préparations</h2>
+      <label class="filtre-regime"><input type="checkbox" id="vegetarien-seulement" /> Végétarien seulement</label>
       <p class="statut-resultats" id="statut-resultats" aria-live="polite"></p>
       <ol class="resultats-cuisine" id="resultats-cuisine"></ol>
     </section>
@@ -42,7 +43,7 @@ import { url } from '../../lib/site';
 </Base>
 
 <script>
-  import { classer, indexer, repartir, type IngredientCuisine, type PreparationCuisine, type Referentiel } from '../../lib/cuisiner';
+  import { classer, filtrerRegime, indexer, repartir, type IngredientCuisine, type PreparationCuisine, type Referentiel } from '../../lib/cuisiner';
   import { normaliser } from '../../lib/format';
 
   const CLE = 'recettes:mes-ingredients';
@@ -57,6 +58,7 @@ import { url } from '../../lib/site';
   const sortie = racine.querySelector<HTMLOListElement>('#resultats-cuisine')!;
   const sortieBases = racine.querySelector<HTMLOListElement>('#resultats-bases')!;
   const sectionBases = racine.querySelector<HTMLElement>('#section-bases')!;
+  const vegetarienSeulement = racine.querySelector<HTMLInputElement>('#vegetarien-seulement')!;
 
   let ingredients: IngredientCuisine[] = [];
   let preparations: PreparationCuisine[] = [];
@@ -66,6 +68,13 @@ import { url } from '../../lib/site';
   try { mes = JSON.parse(localStorage.getItem(CLE) || '[]'); } catch { mes = []; }
   if (!Array.isArray(mes)) mes = [];
   const memoriser = () => { try { localStorage.setItem(CLE, JSON.stringify(mes)); } catch { /* indisponible */ } };
+  // Filtre « Végétarien seulement », mémorisé comme la liste
+  const CLE_VEG = 'recettes:vegetarien-seulement';
+  try { vegetarienSeulement.checked = localStorage.getItem(CLE_VEG) === '1'; } catch { /* indisponible */ }
+  vegetarienSeulement.addEventListener('change', () => {
+    try { localStorage.setItem(CLE_VEG, vegetarienSeulement.checked ? '1' : '0'); } catch { /* indisponible */ }
+    afficher();
+  });
 
   const echapper = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
   const nom = (s: string) => parSlug.get(s)?.nom ?? s;
@@ -147,10 +156,10 @@ import { url } from '../../lib/site';
     aucun.hidden = mes.length > 0;
     vider.hidden = mes.length === 0;
     if (!ref) return;
-    const res = classer(ref, preparations, mes);
+    const res = classer(ref, filtrerRegime(preparations, vegetarienSeulement.checked), mes);
     const { plats, bases } = repartir(res);
     statut.textContent = mes.length
-      ? (plats.length ? `${plats.length} plat${plats.length > 1 ? 's utilisent' : ' utilise'} au moins un de vos ingrédients.` : (bases.length ? 'Aucun plat ne correspond encore.' : 'Aucune préparation ne correspond encore.'))
+      ? (plats.length ? `${plats.length} plat${plats.length > 1 ? 's' : ''}${vegetarienSeulement.checked ? ` végétarien${plats.length > 1 ? 's' : ''}` : ''} ${plats.length > 1 ? 'utilisent' : 'utilise'} au moins un de vos ingrédients.` : (bases.length ? 'Aucun plat ne correspond encore.' : 'Aucune préparation ne correspond encore.'))
       : 'Ajoutez un ingrédient pour voir les préparations possibles.';
     const rendu = (r: typeof res[number]) => {
       const p = r.preparation;
@@ -158,7 +167,7 @@ import { url } from '../../lib/site';
       const subs = r.substitutions.map((c) => `${echapper(nom(c.par!))} au lieu de ${echapper(nom(c.requis))}`);
       const reste = r.manquants.map((s) => echapper(nom(s)));
       return `<li class="resultat-cuisine">
-        <a href="${p.url}">${p.drapeau ? `<span class="drapeau" aria-hidden="true">${p.drapeau}</span> ` : ''}${echapper(p.titre)}</a>
+        <a href="${p.url}">${p.drapeau ? `<span class="drapeau" aria-hidden="true">${p.drapeau}</span> ` : ''}${echapper(p.titre)}</a>${p.vegetarien ? '<span class="badge badge-vegetarien">Végétarien</span>' : ''}
         <span class="jauge" role="img" aria-label="${pct} % couverts"><span style="width:${pct}%"></span></span>
         <span class="compte">${r.couverts.length + r.substitutions.length}/${r.total}</span>
         ${subs.length ? `<p class="avec-substitution">Avec substitution : ${subs.join(' ; ')}</p>` : ''}

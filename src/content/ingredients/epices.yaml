@@ -11,6 +11,7 @@ ingredients:
   - { slug: cumin, nom: "cumin" }
   - { slug: cumin-en-graines, parent: cumin, nom: "cumin en graines", synonymes: ["graines de cumin"] }
   - { slug: cumin-moulu, parent: cumin, nom: "cumin moulu", synonymes: ["cumin en poudre"] }
+  - { slug: graine-de-nigelle, nom: "graine de nigelle", pluriel: "graines de nigelle", synonymes: ["nigelle", "cumin noir"] }
   - { slug: coriandre-graine, nom: "coriandre en graines", synonymes: ["graines de coriandre", "coriandre moulue"] }
   - { slug: gingembre-moulu, nom: "gingembre moulu", synonymes: ["gingembre en poudre"], substituts: [gingembre-frais] }
   - { slug: curcuma, nom: "curcuma", synonymes: ["curcuma moulu"] }

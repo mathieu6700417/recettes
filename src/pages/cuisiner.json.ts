@@ -1,10 +1,10 @@
 import type { APIRoute } from 'astro';
 import { drapeau, majuscule } from '../lib/format';
 import type { IngredientCuisine, PreparationCuisine } from '../lib/cuisiner';
-import { reseau, titreDe, urlDe } from '../lib/site';
+import { reseau, titreDe, urlDe, vegetarien } from '../lib/site';
 
 // Données de « cuisiner avec ce que j'ai » : le référentiel et, pour chaque préparation,
-// les ingrédients de sa version de référence.
+// les ingrédients de sa version de référence et son régime (végétarien ou non).
 export const GET: APIRoute = () => {
   const r = reseau();
   const ingredients: IngredientCuisine[] = r.parType('ingredient').map((n) => {
@@ -33,6 +33,7 @@ export const GET: APIRoute = () => {
       nature: n.data.nature,
       ingredients: lignes.filter((l) => r.noeud(l.vers)?.type === 'ingredient').map((l) => l.vers),
       aPreparer: lignes.filter((l) => r.noeud(l.vers)?.type === 'preparation').map((l) => majuscule(titreDe(l.vers))),
+      vegetarien: vegetarien(n.slug) === true,
     });
   }
   return new Response(JSON.stringify({ ingredients, preparations }), { headers: { 'Content-Type': 'application/json; charset=utf-8' } });

@@ -4,3 +4,4 @@
 import './verifier.test.mjs';
 import './quantites.test.mjs';
 import './cuisiner.test.mjs';
+import './derives.test.mjs';

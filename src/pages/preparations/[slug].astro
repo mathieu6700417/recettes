@@ -5,7 +5,7 @@ import GrapheLocal from '../../components/GrapheLocal.astro';
 import Ref from '../../components/Ref.astro';
 import Versions from '../../components/Versions.astro';
 import { drapeau, nomPays } from '../../lib/format';
-import { ROLES, ascendance, cousinsDe, nomCourant, reseau, suffixeVersion, titreDe, urlDe, usagesDe } from '../../lib/site';
+import { ROLES, ascendance, cousinsDe, nomCourant, reseau, suffixeVersion, titreDe, urlDe, usagesDe, vegetarien } from '../../lib/site';
 
 export function getStaticPaths() {
   return reseau().parType('preparation').map((n) => ({ params: { slug: n.slug } }));
@@ -31,6 +31,7 @@ const cousins = cousinsDe(slug);
 const aDescendants = dans.length + filles.length + commeIngredient.size + cousins.length > 0;
 const echange = (e: { de: string; vers: string }) => `${nomCourant(e.de)} → ${nomCourant(e.vers)}`;
 const nature = d.nature === 'base' ? 'Préparation de base' : 'Plat';
+const estVegetarien = vegetarien(slug) === true;
 ---
 <Base titre={d.titre} courant={slug} description={d.resume}>
   <article class="fiche fiche-preparation">
@@ -38,6 +39,7 @@ const nature = d.nature === 'base' ? 'Préparation de base' : 'Plat';
       <p class="type-noeud">{nature}{d.origine && <> · <span class="drapeau" aria-hidden="true">{drapeau(d.origine)}</span> {nomPays(d.origine)}</>}</p>
       <h1>{d.titre}</h1>
       <p class="resume">{d.resume}</p>
+      {estVegetarien && <p class="regime"><span class="badge badge-vegetarien" title="Aucun ingrédient carné dans la recette de référence, bases comprises">Végétarien</span></p>}
     </header>
 
     {aParents && (

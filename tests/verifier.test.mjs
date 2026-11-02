@@ -41,6 +41,7 @@ const CAS = {
   'plat-sans-cuisson': ['preparations/ile-flottante.md', /cuisson : au moins une technique requise pour un plat/, 1],
   'technique-hors-liste': ['techniques/flamber.md', /slug hors de la liste fermée des techniques : « flamber »/, 1],
   'masse-inconnue': ['ingredients/volaille.yaml', /ingredients\[1\] \(« coq »\)\.masse : seule valeur permise « singulier » \(reçu « pluriel »\)/, 1],
+  'saison-invalide': ['ingredients/aromates.yaml', /ingredients\[1\] \(« oignon »\)\.saison\[3\] : mois invalide 13 \(entier de 1 à 12 attendu\)/, 4],
 };
 
 for (const [cas, [fichier, message, nb]] of Object.entries(CAS)) {
@@ -79,4 +80,12 @@ test('API du réseau : nœuds, liens typés dans les deux sens', () => {
   assert.deepEqual(r.versionsDe('boeuf-bourguignon').map((v) => v.slug), ['boeuf-bourguignon--classique', 'boeuf-bourguignon--maison']);
   assert.deepEqual(r.liensVers('mirepoix', 'parent').map((l) => l.de), ['sofrito']);
   assert.equal(r.liensDe('boeuf-bourguignon', 'composant')[1].role, 'liaison');
+});
+
+test('saison : chaque forme invalide est signalée', () => {
+  const r = verifier(path.join(fixtures, 'invalide', 'saison-invalide'));
+  assert.match(r.sortie, /« oignon »\)\.saison\[3\] : mois invalide 13/);
+  assert.match(r.sortie, /« petit-oignon »\)\.saison\[3\] : mois 9 déjà cité/);
+  assert.match(r.sortie, /« carotte »\)\.saison : liste non vide requise/);
+  assert.match(r.sortie, /« ail »\)\.saison : liste de mois \(entiers de 1 à 12\) attendue \(reçu « septembre »\)/);
 });

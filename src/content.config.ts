@@ -133,6 +133,9 @@ const ingredientBrut = z.object({
   placard: z.boolean().optional(),
   elision: z.boolean().optional(),
   masse: z.literal('singulier').optional(),
+  // mois de pleine saison (1 à 12), sans doublon ; un enfant sans saison hérite de son parent
+  saison: z.array(z.number().int().min(1).max(12)).min(1)
+    .refine((m) => new Set(m).size === m.length, { message: 'saison : mois en double' }).optional(),
 }).strict();
 
 const fichierFamille = z.object({

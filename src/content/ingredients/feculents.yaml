@@ -27,4 +27,5 @@ ingredients:
   - { slug: haricot-rouge, nom: "haricot rouge", pluriel: "haricots rouges", elision: false, synonymes: ["haricots rouges en boîte"] }
   - { slug: haricot-blanc, nom: "haricot blanc", pluriel: "haricots blancs", elision: false, synonymes: ["haricots lingots", "haricots cocos"] }
   - { slug: pois-chiche, nom: "pois chiche", pluriel: "pois chiches" }
+  - { slug: farine-de-pois-chiche, nom: "farine de pois chiche", synonymes: ["besan", "farine de gram"] }
   - { slug: lentille, nom: "lentille", pluriel: "lentilles", synonymes: ["lentilles vertes du Puy"] }

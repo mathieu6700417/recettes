@@ -1,0 +1,18 @@
+titre: Aromates
+ingredients:
+  - slug: oignon
+    nom: oignon
+    pluriel: oignons
+    saison: [8, 9, 13]
+  - slug: petit-oignon
+    parent: oignon
+    nom: petit oignon
+    pluriel: petits oignons
+    saison: [9, 10, 9]
+  - slug: carotte
+    nom: carotte
+    pluriel: carottes
+    saison: []
+  - slug: ail
+    nom: ail
+    saison: septembre

@@ -31,6 +31,7 @@ export const TECHNIQUES = {
   'cuire-au-four': t('chaleur-seche', 'Cuire au four'),
   'cuire-au-bain-marie': t('cuire-au-four', 'Cuire au bain-marie'),
   rotir: t('cuire-au-four', 'Rôtir'),
+  gratiner: t('cuire-au-four', 'Gratiner'),
   griller: t('chaleur-seche', 'Griller'),
   frire: t('chaleur-seche', 'Frire'),
   'sur-le-feu': t(null, 'Sur le feu'),
@@ -40,6 +41,7 @@ export const TECHNIQUES = {
   'cuire-a-la-nappe': t('cuire-en-remuant', 'Cuire à la nappe'),
   'epaissir-a-l-amidon': t('cuire-en-remuant', "Épaissir à l'amidon"),
   dessecher: t('sur-le-feu', 'Dessécher'),
+  confire: t('sur-le-feu', 'Confire'),
   'sans-chaleur': t(null, 'Sans chaleur'),
   cru: t('sans-chaleur', 'Cru'),
   'monter-une-emulsion': t('cru', 'Monter une émulsion'),
@@ -79,6 +81,11 @@ export const BASES = {
   bearnaise: b('Sauce béarnaise'),
   mousseline: b('Sauce mousseline'),
   vinaigrette: b('Vinaigrette'),
+  // Ajoutées avec les recettes de légumes (potimarron, oignon, patate douce)
+  'fond-de-legumes': b('Fond de légumes'),
+  bechamel: b('Sauce béchamel'),
+  'compotee-d-oignons': b("Compotée d'oignons"),
+  'pate-a-pain': b('Pâte à pain'),
 };
 
 /** Plats : slug → { origine } (titre libre) */
@@ -99,6 +106,11 @@ export const PLATS = Object.fromEntries(Object.entries({
   ratatouille: 'FR', piperade: 'FR', 'chili-con-carne': 'US', 'risotto-alla-milanese': 'IT',
   'riz-pilaf': 'FR', 'steak-au-poivre': 'FR', 'mille-feuille': 'FR', 'vol-au-vent': 'FR',
   'oeufs-mimosa': 'FR', 'celeri-remoulade': 'FR', 'oeufs-benedicte': 'US',
+  // Recettes de légumes : potimarron, oignon, patate douce
+  'veloute-de-potimarron': 'FR', 'potimarron-roti': 'FR', 'gratin-de-potimarron': 'FR',
+  'risotto-au-potimarron': 'IT', 'soupe-a-l-oignon': 'FR', 'tarte-a-l-oignon': 'FR',
+  pissaladiere: 'FR', 'bhaji-a-l-oignon': 'IN', 'puree-de-patate-douce': 'FR',
+  'frites-de-patate-douce': 'US', 'curry-de-patate-douce': 'IN', 'chili-sin-carne': 'US',
 }).map(([slug, origine]) => [slug, { origine }]));
 
 const p = (parent, origine, titre) => ({ parent, origine, titre });
@@ -128,4 +140,29 @@ export const FAMILLES = [
   'boeuf', 'veau', 'agneau', 'porc', 'volaille', 'gibier', 'poissons', 'oeufs', 'laitiers',
   'matieres-grasses', 'legumes', 'aromates', 'herbes', 'epices', 'fruits', 'fruits-secs',
   'feculents', 'sucres', 'alcools', 'liquides', 'condiments',
+];
+
+// ---------- Régime (dérivé, sans champ) : voir CONTENU-v2.md, « Régime » ----------
+
+/** Familles dont tout ingrédient est carné (viandes, volailles, gibier, poissons et fruits de mer). */
+export const FAMILLES_CARNEES = ['boeuf', 'veau', 'agneau', 'porc', 'volaille', 'gibier', 'poissons'];
+
+/**
+ * Ingrédients carnés rangés dans une autre famille. Liste explicite, sans héritage : un enfant
+ * d'un de ces ingrédients n'est pas carné pour autant (bouillon-de-legumes est fils de bouillon).
+ * `bouillon` et `cube-de-bouillon` génériques sont tenus pour carnés par prudence : sans précision,
+ * un bouillon est le plus souvent de viande ou de volaille.
+ */
+export const INGREDIENTS_CARNES = [
+  'bouillon', 'bouillon-de-boeuf', 'bouillon-de-volaille', 'fumet-de-poisson',
+  'cube-de-bouillon', 'cube-de-bouillon-de-boeuf', 'cube-de-bouillon-de-volaille',
+  'fond-de-veau-deshydrate',
+  'saindoux', 'graisse-de-canard',
+  'sauce-worcestershire', // contient des anchois
+];
+
+/** Mois de l'année, pour l'affichage des saisons (index 0 = janvier). */
+export const MOIS = [
+  'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+  'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
 ];

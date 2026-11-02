@@ -25,3 +25,4 @@ ingredients:
   - { slug: sauce-soja, nom: "sauce soja" }
   - { slug: creme-de-tartre, nom: "crème de tartre" }
   - { slug: levure-chimique, nom: "levure chimique", synonymes: ["poudre à lever"] }
+  - { slug: levure-de-boulanger, nom: "levure de boulanger", synonymes: ["levure fraîche", "levure boulangère", "levure sèche active"] }

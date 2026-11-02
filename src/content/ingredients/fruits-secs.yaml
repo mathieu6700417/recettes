@@ -11,6 +11,7 @@ ingredients:
   - { slug: cacahuete, parent: fruit-a-coque, nom: "cacahuète", pluriel: "cacahuètes" }
   - { slug: graine-de-sesame, nom: "graine de sésame", pluriel: "graines de sésame", synonymes: ["sésame"] }
   - { slug: noix-de-coco-rapee, nom: "noix de coco râpée", synonymes: ["coco râpée"] }
+  - { slug: graine-de-courge, nom: "graine de courge", pluriel: "graines de courge", synonymes: ["pépites de courge"] }
   - { slug: fruit-seche, nom: "fruit séché", pluriel: "fruits séchés" }
   - { slug: pruneau, parent: fruit-seche, nom: "pruneau", pluriel: "pruneaux", synonymes: ["pruneaux dénoyautés", "pruneaux d'Agen"] }
   - { slug: raisin-sec, parent: fruit-seche, nom: "raisin sec", pluriel: "raisins secs" }

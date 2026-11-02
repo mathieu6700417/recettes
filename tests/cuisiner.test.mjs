@@ -64,3 +64,14 @@ test('repartir : plats d’abord, bases à part, ordre conservé', () => {
   assert.deepEqual(r.plats.map((x) => x.preparation.slug), ['coq', 'daube']);
   assert.deepEqual(r.bases.map((x) => x.preparation.slug), ['singer', 'marinade']);
 });
+
+import { filtrerRegime } from '../src/lib/cuisiner.ts';
+test('filtre végétarien : seulement les préparations marquées végétariennes', () => {
+  const preps = [
+    { slug: 'a', titre: 'A', url: '/', ingredients: [], vegetarien: true },
+    { slug: 'b', titre: 'B', url: '/', ingredients: [], vegetarien: false },
+    { slug: 'c', titre: 'C', url: '/', ingredients: [] },
+  ];
+  assert.deepEqual(filtrerRegime(preps, true).map((p) => p.slug), ['a']);
+  assert.equal(filtrerRegime(preps, false).length, 3);
+});

@@ -4,7 +4,7 @@
 import { getEntry, render } from 'astro:content';
 import { duree, majuscule } from '../lib/format';
 import { partiesLigne } from '../lib/quantites';
-import { DIFFICULTES, STATUTS, reseau, suffixeVersion, urlDe, type Noeud } from '../lib/site';
+import { DIFFICULTES, STATUTS, reseau, suffixeVersion, urlDe, vegetarien, type Noeud } from '../lib/site';
 
 interface Props { preparation: string }
 const { preparation } = Astro.props;
@@ -41,8 +41,12 @@ async function preparer(v: Noeud) {
   }
   const entree = await getEntry('versions', v.slug);
   const corps = entree?.body?.trim() ? (await render(entree)).Content : null;
-  return { v, d, suffixe: suffixeVersion(v.slug), groupes, corps };
+  // Régime affiché seulement s'il diffère de celui de la référence (ex. version maison aux lardons).
+  const veg = vegetarien(v.slug);
+  const regime = d.reference !== true && veg !== vegetarienRef ? (veg ? 'Végétarien' : 'Non végétarien') : null;
+  return { v, d, suffixe: suffixeVersion(v.slug), groupes, corps, regime };
 }
+const vegetarienRef = versions[0] ? vegetarien(versions[0].slug) : undefined;
 const panneaux = await Promise.all(versions.map(preparer));
 const personnes = (n: number) => `${n} personne${n > 1 ? 's' : ''}`;
 ---
@@ -58,7 +62,7 @@ const personnes = (n: number) => `${n} personne${n > 1 ? 's' : ''}`;
     </div>
   )}
   {panneaux.length === 0 && <p class="vide">Pas encore de version chiffrée.</p>}
-  {panneaux.map(({ v, d, suffixe, groupes, corps: Corps }, i) => (
+  {panneaux.map(({ v, d, suffixe, groupes, corps: Corps, regime }, i) => (
     <section class="panneau-version recette" id={`version-${suffixe}`} data-portions={d.portions}
       role={onglets ? 'tabpanel' : undefined} aria-labelledby={onglets ? `onglet-${suffixe}` : undefined}
       hidden={onglets && i > 0}>
@@ -74,7 +78,7 @@ const personnes = (n: number) => `${n} personne${n > 1 ? 's' : ''}`;
         {d.difficulte && <span>{DIFFICULTES[d.difficulte] ?? d.difficulte}</span>}
       </p>
       {d.reference !== true && d.ecarts && (
-        <p class="ecarts"><span class="ecarts-titre">Écarts à la référence</span> {d.ecarts}</p>
+        <p class="ecarts"><span class="ecarts-titre">Écarts à la référence</span> {d.ecarts}{regime && <> <span class:list={['badge', { 'badge-vegetarien': regime === 'Végétarien' }]}>{regime}</span></>}</p>
       )}
 
       <div class="outils" role="toolbar" aria-label="Outils de la recette">

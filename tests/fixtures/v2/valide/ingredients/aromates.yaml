@@ -3,6 +3,7 @@ ingredients:
   - slug: oignon
     nom: oignon
     pluriel: oignons
+    saison: [8, 9, 10, 11, 12, 1, 2, 3]
   - slug: petit-oignon
     parent: oignon
     nom: petit oignon
@@ -10,5 +11,6 @@ ingredients:
   - slug: carotte
     nom: carotte
     pluriel: carottes
+    saison: [10, 11, 12, 1, 2, 3, 4]
   - slug: ail
     nom: ail

@@ -190,6 +190,22 @@ Champs : `slug`, `nom` (singulier) obligatoires ; `pluriel`, `parent`, `synonyme
 `masse` (`singulier` : pour un ingrédient comptable qui reste au singulier après une unité de
 poids ou de volume — « 1 kg de dinde », « 150 g de yaourt », « 600 g de poisson blanc ») optionnels.
 
+`saison` (optionnel) : liste des mois de pleine saison en France métropolitaine, entiers de 1 à 12,
+sans doublon (`saison: [9, 10, 11, 12, 1]`). Réservé aux produits frais (légumes, fruits, herbes,
+aromates frais). Un enfant sans `saison` hérite de celle de son parent. Le site en tire « de saison
+ce mois-ci » : une version est de saison si au moins un de ses ingrédients non placard (y compris ceux des
+bases qu'elle utilise : versions de référence, récursivement) porte une
+saison contenant le mois courant, et qu'aucun de ses ingrédients saisonniers n'est hors saison.
+
+## Régime (dérivé, sans champ)
+
+Une version est **végétarienne** si aucun de ses ingrédients, ni ceux des versions de référence des
+bases qu'elle utilise (récursivement), n'appartient aux familles `boeuf`, `veau`, `agneau`, `porc`,
+`volaille`, `gibier`, `poissons`, ni n'est un ingrédient carné d'une autre famille (bouillons et
+fonds de viande ou de volaille, cubes correspondants, fond de veau déshydraté, fumet de poisson,
+sang, saindoux, graisse de canard, anchois…). Une préparation est végétarienne si sa version de
+référence l'est. Le site l'affiche et permet de filtrer ; aucun champ n'est à saisir.
+
 Affichage d'une quantité :
 - sans unité : `qte < 2` → `nom`, sinon `pluriel` s'il existe (« 1 oignon », « 2 oignons ») ;
 - avec unité : `<qte> <unité accordée> de|d' <pluriel s'il existe et si masse ≠ singulier, sinon nom>`
@@ -228,6 +244,7 @@ référentiel jamais utilisé.
 | cuire-au-four | chaleur-seche | Cuire au four |
 | cuire-au-bain-marie | cuire-au-four | Cuire au bain-marie |
 | rotir | cuire-au-four | Rôtir |
+| gratiner | cuire-au-four | Gratiner |
 | griller | chaleur-seche | Griller |
 | frire | chaleur-seche | Frire |
 | **sur-le-feu** | — | Sur le feu |
@@ -237,6 +254,7 @@ référentiel jamais utilisé.
 | cuire-a-la-nappe | cuire-en-remuant | Cuire à la nappe |
 | epaissir-a-l-amidon | cuire-en-remuant | Épaissir à l'amidon |
 | dessecher | sur-le-feu | Dessécher |
+| confire | sur-le-feu | Confire |
 | **sans-chaleur** | — | Sans chaleur |
 | cru | sans-chaleur | Cru |
 | monter-une-emulsion | cru | Monter une émulsion |
@@ -275,6 +293,14 @@ référentiel jamais utilisé.
 | bearnaise | Sauce béarnaise | FR |
 | mousseline | Sauce mousseline | FR |
 | vinaigrette | Vinaigrette | FR |
+| fond-de-legumes | Fond de légumes | FR |
+| bechamel | Sauce béchamel | FR |
+| compotee-d-oignons | Compotée d'oignons | FR |
+| pate-a-pain | Pâte à pain | FR |
+
+Les quatre dernières bases (et les techniques `gratiner` et `confire`) ont été ajoutées avec les
+recettes de légumes. `fond-de-legumes` est la base (recette) ; `bouillon-de-legumes` reste
+l'ingrédient du commerce.
 
 Les nœuds abstraits de la v1 (`fond`, `liaison`, `creme-aux-oeufs`, `pate-a-foncer`) disparaissent :
 une base est une préparation avec une recette.
@@ -313,6 +339,23 @@ Ajoutés en v2 (19 plats ; les 8 émulsions sont des bases, listées plus haut) 
 | Émulsions (plats) | oeufs-mimosa | FR | composant mayonnaise |
 | | celeri-remoulade | FR | composant rémoulade |
 | | oeufs-benedicte | US | composant hollandaise |
+
+Ajoutés avec les recettes de légumes (12 plats) :
+
+| Légume | slug | origine | lien éprouvé |
+|---|---|---|---|
+| Potimarron | veloute-de-potimarron | FR | mijoter ; composant fond de légumes |
+| | potimarron-roti | FR | rotir |
+| | gratin-de-potimarron | FR | gratiner ; composant béchamel |
+| | risotto-au-potimarron | IT | substitution du risotto alla milanese |
+| Oignon | soupe-a-l-oignon | FR | confire puis mijoter ; composants compotée, fond brun |
+| | tarte-a-l-oignon | FR | substitution de la quiche lorraine |
+| | pissaladiere | FR | composants pâte à pain et compotée ; profil provençale |
+| | bhaji-a-l-oignon | IN | frire |
+| Patate douce | puree-de-patate-douce | FR | mijoter |
+| | frites-de-patate-douce | US | cuire au four (four vif) |
+| | curry-de-patate-douce | IN | substitution du curry d'agneau ; garam masala |
+| | chili-sin-carne | US | substitution du chili con carne ; tex-mex |
 
 Corrections et reclassements de la migration : `pasteis-de-nata` → pâte feuilletée ;
 `crema-catalana` → `epaissir-a-l-amidon` (sur le feu, liée à la fécule) ; `tarte-au-citron-meringuee` → crème au

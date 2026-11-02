@@ -1,6 +1,6 @@
 titre: Aromates
 ingredients:
-  - { slug: oignon, nom: "oignon", pluriel: "oignons", synonymes: ["oignon émincé", "oignon piqué"], techniques: [sauter, braiser, mijoter] }
+  - { slug: oignon, nom: "oignon", pluriel: "oignons", synonymes: ["oignon émincé", "oignon piqué"], saison: [8, 9, 10, 11, 12, 1, 2, 3], techniques: [sauter, braiser, mijoter] }
   - { slug: oignon-jaune, parent: oignon, nom: "oignon jaune", pluriel: "oignons jaunes" }
   - { slug: oignon-rouge, parent: oignon, nom: "oignon rouge", pluriel: "oignons rouges", techniques: [cru, mariner-a-l-acide] }
   - { slug: oignon-nouveau, parent: oignon, nom: "oignon nouveau", pluriel: "oignons nouveaux", synonymes: ["cébette", "ciboule"], techniques: [cru] }

@@ -333,6 +333,16 @@ h5 { font-size: 0.85rem; font-weight: 600; margin: 1rem 0 0.3rem; color: var(--t
 .bases-cuisine h2 { font-size: 0.95rem; font-weight: 600; color: var(--texte-doux); }
 .bases-cuisine .resultat-cuisine > a { font-size: 0.95rem; }
 .bases-cuisine .resultat-cuisine { opacity: 0.9; }
+/* Régime et saison */
+.badge-vegetarien { color: var(--lien-composant); border-color: currentColor; }
+.regime { margin: 0 0 0.6rem; }
+.saison { font-size: 0.95rem; color: var(--texte-doux); margin: 0 0 0.6rem; }
+.saison-titre { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; color: var(--texte-pale); margin-right: 0.4rem; }
+.resultat-cuisine .badge { margin-left: 0.4rem; }
+.filtre-regime { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; color: var(--texte-doux); margin: 0 0 0.6rem; cursor: pointer; }
+.liste-saison { list-style: none; padding: 0; margin: 0; line-height: 1.7; }
+.liste-saison li { display: inline; }
+.liste-saison li + li::before { content: " · "; color: var(--texte-pale); }
 .statut-resultats { color: var(--texte-doux); font-size: 0.9rem; }
 .liste-versions { padding-left: 1.2rem; }
 .actions-accueil { display: flex; gap: 0.6rem; flex-wrap: wrap; }

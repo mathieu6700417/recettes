@@ -1,6 +1,10 @@
 // Le réseau vu par le site (build uniquement) : chargement du graphe via scripts/lib/reseau.mjs,
 // adresses, titres, arbres des lentilles, voisinages, cousins.
 import { chargerReseau } from '../../scripts/lib/reseau.mjs';
+import {
+  decrireMois, moisDeSaison as moisDeSaisonReseau, preparationVegetarienne, saisonDe as saisonDeReseau,
+  versionVegetarienne,
+} from '../../scripts/lib/derives.mjs';
 import { majuscule, minuscule } from './format';
 
 export type TypeNoeud = 'technique' | 'preparation' | 'version' | 'profil' | 'famille' | 'ingredient';
@@ -516,4 +520,24 @@ export function substitutsDe(slug: string): string[] {
   for (const l of r.liensVers(slug, 'substitut')) res.add(l.de);
   res.delete(slug);
   return [...res].filter((s) => r.noeud(s));
+}
+
+// ---------- Régime et saison (dérivés, voir scripts/lib/derives.mjs) ----------
+
+/** Préparation (ou version) végétarienne ; undefined pour une préparation sans version. */
+export function vegetarien(slug: string): boolean | undefined {
+  return derive(`vegetarien:${slug}`, (r) => (r.noeud(slug)?.type === 'version'
+    ? versionVegetarienne(r, slug)
+    : preparationVegetarienne(r, slug)));
+}
+
+/** Saison d'un ingrédient (mois triés) et l'ingrédient qui la porte (lui-même ou un ancêtre). */
+export function saisonDe(slug: string): { mois: number[]; de: string; texte: string } | null {
+  const s = saisonDeReseau(reseau(), slug);
+  return s ? { ...s, texte: decrireMois(s.mois) } : null;
+}
+
+/** Mois où une préparation est de saison (vide si aucun de ses ingrédients n'a de saison). */
+export function moisDeSaison(prep: string): number[] {
+  return derive(`saison:${prep}`, (r) => moisDeSaisonReseau(r, prep));
 }

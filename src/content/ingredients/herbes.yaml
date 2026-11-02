@@ -5,13 +5,13 @@ ingredients:
   - { slug: thym, nom: "thym", synonymes: ["branche de thym"] }
   - { slug: laurier, nom: "feuille de laurier", pluriel: "feuilles de laurier", synonymes: ["laurier"] }
   - { slug: romarin, nom: "romarin", synonymes: ["branche de romarin"] }
-  - { slug: basilic, nom: "basilic", synonymes: ["feuilles de basilic"] }
-  - { slug: ciboulette, nom: "ciboulette" }
-  - { slug: cerfeuil, nom: "cerfeuil" }
-  - { slug: estragon, nom: "estragon" }
-  - { slug: aneth, nom: "aneth" }
+  - { slug: basilic, nom: "basilic", synonymes: ["feuilles de basilic"], saison: [6, 7, 8, 9] }
+  - { slug: ciboulette, nom: "ciboulette", saison: [4, 5, 6, 7, 8, 9, 10] }
+  - { slug: cerfeuil, nom: "cerfeuil", saison: [4, 5, 6, 7, 8, 9] }
+  - { slug: estragon, nom: "estragon", saison: [4, 5, 6, 7, 8, 9] }
+  - { slug: aneth, nom: "aneth", saison: [6, 7, 8, 9] }
   - { slug: coriandre-fraiche, nom: "coriandre fraîche", synonymes: ["coriandre"] }
-  - { slug: menthe, nom: "menthe" }
+  - { slug: menthe, nom: "menthe", saison: [5, 6, 7, 8, 9] }
   - { slug: origan, nom: "origan", synonymes: ["origan mexicain", "marjolaine"] }
   - { slug: sauge, nom: "sauge" }
   - { slug: herbes-de-provence, nom: "herbes de Provence", elision: true, synonymes: ["herbes provençales"] }
