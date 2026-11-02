@@ -1,0 +1,8 @@
+titre: Épices
+ingredients:
+  - slug: sel
+    nom: sel
+    placard: true
+  - slug: poivre
+    nom: poivre
+    placard: true

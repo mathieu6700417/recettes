@@ -1,0 +1,157 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import GrapheLocal from '../../components/GrapheLocal.astro';
+import Ref from '../../components/Ref.astro';
+import Versions from '../../components/Versions.astro';
+import { drapeau, nomPays } from '../../lib/format';
+import { ROLES, ascendance, cousinsDe, nomCourant, reseau, suffixeVersion, titreDe, urlDe, usagesDe } from '../../lib/site';
+
+export function getStaticPaths() {
+  return reseau().parType('preparation').map((n) => ({ params: { slug: n.slug } }));
+}
+
+const { slug } = Astro.params as { slug: string };
+const r = reseau();
+const n = r.noeud(slug)!;
+const d = n.data;
+const entree = await getEntry('preparations', slug);
+const Corps = entree?.body?.trim() ? (await render(entree)).Content : null;
+
+const cuissons = r.liensDe(slug, 'cuisson');
+const composants = r.liensDe(slug, 'composant');
+const profils = r.liensDe(slug, 'profil');
+const meres = r.liensDe(slug, 'substitution');
+const aParents = cuissons.length + composants.length + profils.length + meres.length > 0;
+
+const dans = r.liensVers(slug, 'composant').filter((l) => r.noeud(l.de)).sort((a, b) => titreDe(a.de).localeCompare(titreDe(b.de), 'fr'));
+const filles = r.liensVers(slug, 'substitution').filter((l) => r.noeud(l.de)).sort((a, b) => titreDe(a.de).localeCompare(titreDe(b.de), 'fr'));
+const commeIngredient = usagesDe([slug]);
+const cousins = cousinsDe(slug);
+const aDescendants = dans.length + filles.length + commeIngredient.size + cousins.length > 0;
+const echange = (e: { de: string; vers: string }) => `${nomCourant(e.de)} → ${nomCourant(e.vers)}`;
+const nature = d.nature === 'base' ? 'Préparation de base' : 'Plat';
+---
+<Base titre={d.titre} courant={slug} description={d.resume}>
+  <article class="fiche fiche-preparation">
+    <header class="fiche-entete">
+      <p class="type-noeud">{nature}{d.origine && <> · <span class="drapeau" aria-hidden="true">{drapeau(d.origine)}</span> {nomPays(d.origine)}</>}</p>
+      <h1>{d.titre}</h1>
+      <p class="resume">{d.resume}</p>
+    </header>
+
+    {aParents && (
+      <section class="haut" aria-labelledby="titre-parents">
+        <h2 id="titre-parents" class="visually-hidden">Ascendance</h2>
+        {cuissons.length > 0 && (
+          <div class="groupe-liens t-cuisson">
+            <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Cuisson</h3>
+            <ul class="liens">
+              {cuissons.map((l, i) => (
+                <li>
+                  <span class="chaine">{ascendance(l.vers).map((s) => <><Ref slug={s} /><span class="fleche" aria-hidden="true"> → </span></>)}<Ref slug={l.vers} /></span>
+                  {i > 0 && <span class="note"> (secondaire)</span>}
+                  {l.mutation && <span class="fil-mutation">{l.mutation}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {composants.length > 0 && (
+          <div class="groupe-liens t-composant">
+            <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Composants</h3>
+            <ul class="liens">
+              {composants.map((l) => (
+                <li><span class="role">{ROLES[l.role ?? ''] ?? l.role}</span> <Ref slug={l.vers} />{l.mutation && <span class="fil-mutation">{l.mutation}</span>}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {profils.length > 0 && (
+          <div class="groupe-liens t-profil">
+            <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Profils aromatiques</h3>
+            <ul class="liens">
+              {profils.map((l) => (<li><Ref slug={l.vers} />{l.mutation && <span class="fil-mutation">{l.mutation}</span>}</li>))}
+            </ul>
+          </div>
+        )}
+        {meres.length > 0 && (
+          <div class="groupe-liens t-substitution">
+            <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>{meres.length > 1 ? 'Mères' : 'Mère'} de substitution</h3>
+            <ul class="liens">
+              {meres.map((l) => (
+                <li>
+                  <Ref slug={l.vers} />{l.mutation && <span class="fil-mutation">{l.mutation}</span>}
+                  {l.echanges && l.echanges.length > 0 && <span class="echanges">{l.echanges.map(echange).join(' ; ')}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
+    )}
+
+    <GrapheLocal slug={slug} />
+
+    <div class="milieu">
+      {Corps && <div class="prose principe"><Corps /></div>}
+      {d.histoire?.texte && (
+        <aside class="histoire"><h2>Histoire</h2><p>{d.histoire.texte} <span class="source-histoire">— {d.histoire.source}</span></p></aside>
+      )}
+      <h2 class="titre-versions">{r.versionsDe(slug).length > 1 ? 'Versions' : 'Recette'}</h2>
+      <Versions preparation={slug} />
+    </div>
+
+    {aDescendants && (
+      <section class="bas" aria-labelledby="titre-descendants">
+        <h2 id="titre-descendants">Descendance et cousinage</h2>
+        {dans.length > 0 && (
+          <div class="groupe-liens t-composant">
+            <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Composant de</h3>
+            <ul class="liens">
+              {dans.map((l) => (<li><Ref slug={l.de} /> <span class="role">{ROLES[l.role ?? ''] ?? l.role}</span>{l.mutation && <span class="fil-mutation">{l.mutation}</span>}</li>))}
+            </ul>
+          </div>
+        )}
+        {filles.length > 0 && (
+          <div class="groupe-liens t-substitution">
+            <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Variantes par substitution</h3>
+            <ul class="liens">
+              {filles.map((l) => (
+                <li>
+                  <Ref slug={l.de} pays={r.noeud(l.de)?.data.origine !== d.origine} />{l.mutation && <span class="fil-mutation">{l.mutation}</span>}
+                  {l.echanges && l.echanges.length > 0 && <span class="echanges">{l.echanges.map(echange).join(' ; ')}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {commeIngredient.size > 0 && (
+          <div class="groupe-liens t-utilise">
+            <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Ingrédient de</h3>
+            <ul class="liens">
+              {[...commeIngredient].map(([p, usages]) => (
+                <li><Ref slug={p} />{usages.some((u) => r.noeud(u.version)?.data.reference !== true) && (
+                  <span class="note"> ({usages.map((u) => r.noeud(u.version)?.data.reference === true ? 'référence' : r.noeud(u.version)?.data.titre ?? suffixeVersion(u.version)).join(', ')})</span>
+                )}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {cousins.map((g) => (
+          <div class={`groupe-liens t-${g.type}`}>
+            <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>
+              {g.type === 'profil' ? <>Cousins par le profil <a href={urlDe(g.via)}>{titreDe(g.via)}</a></> : <>Sœurs de substitution, d'après <a href={urlDe(g.via)}>{titreDe(g.via)}</a></>}
+            </h3>
+            <ul class="liens cousins">
+              {g.cousins.map((c) => {
+                const ailleurs = r.noeud(c.slug)?.data.origine !== d.origine;
+                return (<li class:list={{ ailleurs }}><Ref slug={c.slug} pays={ailleurs} />{c.mutation && <span class="fil-mutation">{c.mutation}</span>}</li>);
+              })}
+            </ul>
+          </div>
+        ))}
+      </section>
+    )}
+  </article>
+</Base>

@@ -1,6 +1,5 @@
 ---
 titre: Cuisson au blanc
-axe: cuisson
 parent: mijoter
 mutation: "+ viande blanchie, sans coloration, fond blanc"
 resume: "Mijoter sans jamais colorer la viande, pour un plat et une sauce clairs."

@@ -1,0 +1,14 @@
+titre: Aromates
+ingredients:
+  - slug: oignon
+    nom: oignon
+    pluriel: oignons
+  - slug: petit-oignon
+    parent: oignon
+    nom: petit oignon
+    pluriel: petits oignons
+  - slug: carotte
+    nom: carotte
+    pluriel: carottes
+  - slug: ail
+    nom: ail

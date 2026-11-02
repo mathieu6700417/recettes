@@ -1,0 +1,12 @@
+titre: Aromates
+ingredients:
+  - { slug: oignon, nom: "oignon", pluriel: "oignons", synonymes: ["oignon émincé", "oignon piqué"], techniques: [sauter, braiser, mijoter] }
+  - { slug: oignon-jaune, parent: oignon, nom: "oignon jaune", pluriel: "oignons jaunes" }
+  - { slug: oignon-rouge, parent: oignon, nom: "oignon rouge", pluriel: "oignons rouges", techniques: [cru, mariner-a-l-acide] }
+  - { slug: oignon-nouveau, parent: oignon, nom: "oignon nouveau", pluriel: "oignons nouveaux", synonymes: ["cébette", "ciboule"], techniques: [cru] }
+  - { slug: petit-oignon-grelot, parent: oignon, nom: "petit oignon grelot", pluriel: "petits oignons grelots", synonymes: ["oignon grelot", "petit oignon blanc", "petits oignons"], techniques: [sauter, braiser] }
+  - { slug: echalote, nom: "échalote", pluriel: "échalotes", substituts: [oignon], techniques: [sauter, cru] }
+  - { slug: ail, nom: "ail", synonymes: ["gousse d'ail", "ail haché"], techniques: [sauter, cru] }
+  - { slug: ail-en-poudre, nom: "ail en poudre", substituts: [ail] }
+  - { slug: gingembre-frais, nom: "gingembre frais", synonymes: ["racine de gingembre"], substituts: [gingembre-moulu] }
+  - { slug: citronnelle, nom: "citronnelle", pluriel: "citronnelles" }

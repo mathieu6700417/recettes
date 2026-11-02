@@ -1,0 +1,6 @@
+titre: Œufs
+ingredients:
+  - { slug: oeuf, nom: "œuf", pluriel: "œufs", synonymes: ["œuf entier", "œuf dur", "œuf poché"], techniques: [pocher, cuire-au-bain-marie, poeler, cuire-en-remuant] }
+  - { slug: jaune-d-oeuf, nom: "jaune d'œuf", pluriel: "jaunes d'œufs", synonymes: ["jaune"] }
+  - { slug: blanc-d-oeuf, nom: "blanc d'œuf", pluriel: "blancs d'œufs", synonymes: ["blanc"] }
+  - { slug: oeuf-de-caille, nom: "œuf de caille", pluriel: "œufs de caille" }

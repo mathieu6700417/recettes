@@ -1,29 +1,32 @@
 ---
-import { url } from '../lib/arbre';
+import { url } from '../lib/site';
 ---
-<div class="recherche" data-index={url('recherche.json')} data-base={url('')}>
-  <label for="champ-recherche" class="visually-hidden">Rechercher une recette, un ingrédient ou une technique</label>
-  <input id="champ-recherche" type="search" placeholder="Ingrédient, recette, technique…" autocomplete="off"
+<div class="recherche" data-index={url('recherche.json')}>
+  <label for="champ-recherche" class="visually-hidden">Rechercher une préparation, un ingrédient, une technique ou un profil</label>
+  <input id="champ-recherche" type="search" placeholder="Plat, ingrédient, technique…" autocomplete="off"
     role="combobox" aria-expanded="false" aria-controls="resultats-recherche" aria-autocomplete="list" />
   <ul id="resultats-recherche" class="resultats" role="listbox" aria-label="Résultats" hidden></ul>
   <p class="visually-hidden" aria-live="polite" id="statut-recherche"></p>
 </div>
 
 <script>
-  interface EntreeRecette { type: 'recette'; titre: string; slug: string; origine: string; drapeau: string; ingredients: string[]; techniques: string[] }
-  interface EntreeTechnique { type: 'technique'; titre: string; slug: string; axe: string; resume: string }
-  type Entree = EntreeRecette | EntreeTechnique;
+  import { normaliser } from '../lib/format';
 
+  interface Prep { titre: string; url: string; drapeau: string }
+  type Entree =
+    | ({ t: 'preparation'; nature: string; resume: string; ingredients: string[] } & Prep)
+    | { t: 'technique'; titre: string; url: string; resume: string }
+    | { t: 'profil'; titre: string; url: string; drapeau: string; resume: string }
+    | { t: 'ingredient' | 'famille'; titre: string; url: string; synonymes: string[]; chaine: string; preparations: Prep[] };
+
+  const MAX = 8;
   const racine = document.querySelector<HTMLElement>('.recherche')!;
   const champ = racine.querySelector<HTMLInputElement>('input')!;
   const liste = racine.querySelector<HTMLUListElement>('.resultats')!;
   const statut = racine.querySelector<HTMLElement>('#statut-recherche')!;
-  const base = racine.dataset.base!;
   let index: Entree[] | null = null;
   let chargement: Promise<void> | null = null;
   let actif = -1;
-
-  const normaliser = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/œ/g, 'oe').replace(/æ/g, 'ae');
 
   function charger() {
     chargement ??= fetch(racine.dataset.index!)
@@ -37,7 +40,6 @@ import { url } from '../lib/arbre';
 
   /** Met en évidence la requête (insensible aux accents) dans le texte d'origine. */
   function surligner(texte: string, q: string) {
-    // La normalisation NFD + suppression des diacritiques peut changer la longueur : on mappe les indices.
     const carte: number[] = [];
     let norm = '';
     for (let i = 0; i < texte.length; i++) {
@@ -67,38 +69,62 @@ import { url } from '../lib/arbre';
     options[actif].scrollIntoView({ block: 'nearest' });
   }
 
+  let n = 0;
+  const option = (href: string, contenu: string, classe = '') =>
+    `<li role="option" id="res-${n++}" aria-selected="false" class="${classe}"><a href="${href}" tabindex="-1">${contenu}</a></li>`;
+  const detail = (s: string) => (s ? `<span class="detail">${s}</span>` : '');
+  const drap = (d: string) => (d ? `<span class="drapeau" aria-hidden="true">${d}</span> ` : '');
+
   async function chercher() {
     const q = normaliser(champ.value.trim());
     if (q.length < 2) { fermer(); liste.innerHTML = ''; statut.textContent = ''; return; }
     await charger();
     if (normaliser(champ.value.trim()) !== q) return;
-    const recettes: string[] = [];
-    const techniques: string[] = [];
-    let n = 0;
+    n = 0;
+    const groupes: Record<string, string[]> = { preparation: [], ingredient: [], technique: [], profil: [] };
+    const compte: Record<string, number> = { preparation: 0, ingredient: 0, technique: 0, profil: 0 };
+    const preps: { e: Entree & { t: 'preparation' }; ings: string[]; titre: boolean }[] = [];
     for (const e of index ?? []) {
-      if (e.type === 'recette') {
-        const dansTitre = normaliser(e.titre).includes(q);
-        const ingredients = e.ingredients.filter((i) => normaliser(i).includes(q));
-        if (!dansTitre && !ingredients.length) continue;
-        const detail = ingredients.length
-          ? `<span class="detail">${ingredients.slice(0, 2).map((i) => surligner(i, q)).join(' · ')}</span>`
-          : '';
-        recettes.push(`<li role="option" id="res-${n++}" aria-selected="false"><a href="${base}recettes/${e.slug}/" tabindex="-1">
-          <span class="drapeau" aria-hidden="true">${e.drapeau}</span> <span>${surligner(e.titre, q)}</span>${detail}</a></li>`);
+      if (e.t === 'preparation') {
+        const titre = normaliser(e.titre).includes(q);
+        const ings = e.ingredients.filter((i) => normaliser(i).includes(q));
+        if (titre || ings.length) preps.push({ e, ings, titre });
+      } else if (e.t === 'ingredient' || e.t === 'famille') {
+        const syn = e.synonymes.filter((s) => normaliser(s).includes(q));
+        if (!normaliser(e.titre).includes(q) && !syn.length) continue;
+        if (++compte.ingredient > MAX) continue;
+        const nom = syn.length && !normaliser(e.titre).includes(q)
+          ? `${echapper(e.titre)} <span class="synonyme">(${surligner(syn[0], q)})</span>`
+          : surligner(e.titre, q);
+        groupes.ingredient.push(option(e.url, `<span>${nom}</span>${detail(echapper(e.chaine))}`));
+        for (const p of e.preparations.slice(0, 4)) {
+          groupes.ingredient.push(option(p.url, `<span class="via">↳</span> ${drap(p.drapeau)}${echapper(p.titre)}`, 'sous-resultat'));
+        }
+        if (e.preparations.length > 4) {
+          groupes.ingredient.push(option(e.url, `<span class="via">↳</span> et ${e.preparations.length - 4} autre${e.preparations.length - 4 > 1 ? 's' : ''}…`, 'sous-resultat'));
+        }
       } else if (normaliser(e.titre).includes(q)) {
-        techniques.push(`<li role="option" id="res-${n++}" aria-selected="false"><a href="${base}techniques/${e.slug}/" tabindex="-1">
-          <span>${surligner(e.titre, q)}</span><span class="detail">${echapper(e.resume)}</span></a></li>`);
+        if (++compte[e.t] > MAX) continue;
+        groupes[e.t].push(option(e.url, `${e.t === 'profil' ? drap(e.drapeau) : ''}<span>${surligner(e.titre, q)}</span>${detail(echapper(e.resume))}`));
       }
     }
+    // Les préparations dont le titre correspond passent avant celles trouvées par un ingrédient.
+    preps.sort((a, b) => Number(b.titre) - Number(a.titre));
+    for (const { e, ings } of preps) {
+      if (++compte.preparation > MAX) continue;
+      groupes.preparation.push(option(e.url, `${drap(e.drapeau)}<span>${surligner(e.titre, q)}</span>${detail(ings.slice(0, 2).map((i) => surligner(i, q)).join(' · '))}`));
+    }
+    const NOMS: Record<string, string> = { preparation: 'Préparations', ingredient: 'Ingrédients', technique: 'Techniques', profil: 'Profils' };
     let html = '';
-    if (recettes.length) html += `<li class="groupe" role="presentation">Recettes</li>${recettes.join('')}`;
-    if (techniques.length) html += `<li class="groupe" role="presentation">Techniques</li>${techniques.join('')}`;
+    for (const [t, items] of Object.entries(groupes)) {
+      if (items.length) html += `<li class="groupe" role="presentation">${NOMS[t]}</li>${items.join('')}`;
+    }
     if (!html) html = '<li class="vide" role="presentation">Aucun résultat</li>';
     liste.innerHTML = html;
     liste.hidden = false;
     champ.setAttribute('aria-expanded', 'true');
     actif = -1;
-    statut.textContent = `${recettes.length} recette${recettes.length > 1 ? 's' : ''}, ${techniques.length} technique${techniques.length > 1 ? 's' : ''}`;
+    statut.textContent = Object.entries(compte).filter(([, c]) => c).map(([t, c]) => `${c} ${NOMS[t].toLowerCase()}`).join(', ') || 'Aucun résultat';
   }
 
   champ.addEventListener('focus', () => { charger(); if (liste.innerHTML && champ.value.trim().length >= 2) { liste.hidden = false; champ.setAttribute('aria-expanded', 'true'); } });
@@ -110,9 +136,9 @@ import { url } from '../lib/arbre';
       const options = liste.querySelectorAll<HTMLElement>('[role="option"] a');
       const cible = options[actif >= 0 ? actif : 0];
       if (cible && !liste.hidden) { ev.preventDefault(); window.location.href = cible.getAttribute('href')!; }
-    } else if (ev.key === 'Escape') { if (!liste.hidden) { ev.preventDefault(); fermer(); } else champ.value = ''; }
+    } else if (ev.key === 'Escape') { if (!liste.hidden) { ev.preventDefault(); ev.stopPropagation(); fermer(); } else champ.value = ''; }
   });
-  liste.addEventListener('mousedown', (ev) => ev.preventDefault()); // garder le focus pendant le clic
+  liste.addEventListener('mousedown', (ev) => ev.preventDefault());
   champ.addEventListener('blur', () => setTimeout(fermer, 100));
   document.addEventListener('keydown', (ev) => {
     if (ev.key === '/' && !(ev.target instanceof HTMLInputElement || ev.target instanceof HTMLTextAreaElement)) {

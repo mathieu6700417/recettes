@@ -1,43 +1,48 @@
 ---
-import type { Axe, Noeud } from '../lib/arbre';
-import { drapeau, nomPays, urlNoeud } from '../lib/arbre';
+import type { Branche, Lentille } from '../lib/site';
+import { drapeau, nomPays } from '../lib/format';
 
 interface Props {
-  noeud: Noeud;
-  axe: Axe;
+  branche: Branche;
+  lentille: Lentille;
   ouverts: Set<string>;
   courant?: string;
   racine?: boolean;
 }
-const { noeud, axe, ouverts, courant, racine = false } = Astro.props;
-const cle = `${noeud.type}:${noeud.slug}`;
-const id = `n-${axe}-${noeud.type}-${noeud.slug}`;
-const ouvert = ouverts.has(cle);
-const estCourant = courant === cle;
-const aEnfants = noeud.enfants.length > 0;
+const { branche: b, lentille, ouverts, courant, racine = false } = Astro.props;
+const id = `n-${lentille}-${b.cle.replace(/[^a-z0-9-]/g, '-')}`;
+const ouvert = ouverts.has(b.cle);
+const estCourant = courant === b.cle;
+const aEnfants = b.enfants.length > 0;
+const compte = b.type !== 'preparation' && b.compte > 0;
 ---
-<li class:list={['noeud', `noeud-${noeud.type}`, { courant: estCourant }]} data-cle={cle}>
+<li class:list={['noeud', `noeud-${b.type}`, b.nature && `nature-${b.nature}`, { courant: estCourant }]}>
   <div class="ligne">
     {aEnfants ? (
       <button type="button" class="deplier" aria-expanded={ouvert ? 'true' : 'false'} aria-controls={id}
-        data-id={`${axe}:${cle}`}>
-        <span class="visually-hidden">{ouvert ? 'Replier' : 'Déplier'} {noeud.titre}</span>
+        data-id={`${lentille}:${b.cle}`}>
+        <span class="visually-hidden">{ouvert ? 'Replier' : 'Déplier'} {b.titre}</span>
       </button>
     ) : <span class="deplier-vide" aria-hidden="true"></span>}
-    <a href={urlNoeud(noeud)} aria-current={estCourant ? 'page' : undefined}>
-      {noeud.type === 'recette' && noeud.origine && (
-        <span class="drapeau" role="img" aria-label={nomPays(noeud.origine)}>{drapeau(noeud.origine)}</span>
-      )}
-      <span class="titre">{noeud.titre}</span>
-      {noeud.type === 'technique' && noeud.nbRecettes > 0 && (
-        <span class="compteur" title={`${noeud.nbRecettes} recette${noeud.nbRecettes > 1 ? 's' : ''}`}>{noeud.nbRecettes}</span>
-      )}
-    </a>
+    {b.url ? (
+      <a href={b.url} aria-current={estCourant ? 'page' : undefined}>
+        {b.type === 'preparation' && b.origine && (
+          <span class="drapeau" role="img" aria-label={nomPays(b.origine)}>{drapeau(b.origine)}</span>
+        )}
+        <span class="titre">{b.titre}</span>
+        {compte && <span class="compteur" title={`${b.compte} préparation${b.compte > 1 ? 's' : ''}`}>{b.compte}</span>}
+      </a>
+    ) : (
+      <span class="groupe-arbre">
+        <span class="titre">{b.titre}</span>
+        {compte && <span class="compteur">{b.compte}</span>}
+      </span>
+    )}
   </div>
-  {!racine && noeud.mutation && <div class="mutation">{noeud.mutation}</div>}
+  {!racine && b.mutation && <div class="mutation">{b.mutation}</div>}
   {aEnfants && (
     <ul id={id} class="enfants" hidden={!ouvert}>
-      {noeud.enfants.map((e) => <Astro.self noeud={e} axe={axe} ouverts={ouverts} courant={courant} />)}
+      {b.enfants.map((e) => <Astro.self branche={e} lentille={lentille} ouverts={ouverts} courant={courant} />)}
     </ul>
   )}
 </li>

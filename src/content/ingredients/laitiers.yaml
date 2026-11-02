@@ -1,0 +1,22 @@
+titre: Produits laitiers
+ingredients:
+  - { slug: lait, nom: "lait" }
+  - { slug: lait-entier, parent: lait, nom: "lait entier" }
+  - { slug: lait-demi-ecreme, parent: lait, nom: "lait demi-écrémé" }
+  - { slug: creme, nom: "crème" }
+  - { slug: creme-liquide, parent: creme, nom: "crème liquide", synonymes: ["crème fleurette", "crème fraîche liquide", "crème entière", "crème à fouetter", "crème liquide entière"] }
+  - { slug: creme-fraiche-epaisse, parent: creme, nom: "crème fraîche épaisse", synonymes: ["crème fraîche", "crème épaisse"] }
+  - { slug: creme-aigre, parent: creme, nom: "crème aigre", synonymes: ["crème acidulée", "smetana", "sour cream"] }
+  - { slug: gruyere, parent: fromage-a-pate-dure, nom: "gruyère", synonymes: ["gruyère râpé"] }
+  - { slug: fromage-a-pate-dure, nom: "fromage à pâte dure", synonymes: ["fromage râpé"] }
+  - { slug: emmental, parent: fromage-a-pate-dure, nom: "emmental", synonymes: ["emmental râpé"] }
+  - { slug: comte, parent: fromage-a-pate-dure, nom: "comté" }
+  - { slug: parmesan, parent: fromage-a-pate-dure, nom: "parmesan", synonymes: ["parmigiano reggiano", "grana padano"] }
+  - { slug: pecorino, parent: fromage-a-pate-dure, nom: "pecorino" }
+  - { slug: fromage-frais, nom: "fromage frais" }
+  - { slug: mozzarella, parent: fromage-frais, nom: "mozzarella" }
+  - { slug: ricotta, parent: fromage-frais, nom: "ricotta" }
+  - { slug: mascarpone, parent: fromage-frais, nom: "mascarpone" }
+  - { slug: fromage-blanc, parent: fromage-frais, nom: "fromage blanc" }
+  - { slug: yaourt, nom: "yaourt", pluriel: "yaourts", masse: singulier, synonymes: ["yaourt nature", "yaourt grec"], elision: false }
+  - { slug: glace-a-la-vanille, nom: "glace à la vanille", synonymes: ["crème glacée vanille"] }

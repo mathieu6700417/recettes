@@ -1,6 +1,5 @@
 ---
 titre: Cuire au bain-marie
-axe: cuisson
 parent: cuire-au-four
 mutation: "+ eau autour du moule, chaleur douce et uniforme"
 resume: "Cuisson au four dans un récipient posé dans un bain d'eau chaude, pour une chaleur douce qui ne dépasse jamais 100 °C."
@@ -28,3 +27,4 @@ Le moule est placé dans un plat plus grand rempli d'eau chaude. L'eau plafonne 
 ## Ce qui varie entre les descendantes
 - La durée dépend de l'épaisseur : 30 à 40 minutes pour des ramequins, 45 à 60 minutes pour un grand moule.
 - Le démoulage ou le service dans le récipient de cuisson.
+- Le bain-marie sert aussi hors du four, sur le feu, pour fondre le chocolat ou monter une sauce sans choc thermique.

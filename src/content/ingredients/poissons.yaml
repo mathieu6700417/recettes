@@ -1,0 +1,23 @@
+titre: Poissons et fruits de mer
+ingredients:
+  - { slug: poisson-blanc, nom: "poisson blanc", pluriel: "poissons blancs", masse: singulier, synonymes: ["filet de poisson blanc"], techniques: [cru, mariner-a-l-acide, pocher, poeler, cuire-au-four] }
+  - { slug: bar, parent: poisson-blanc, nom: "bar", pluriel: "bars", masse: singulier, synonymes: ["loup de mer"], techniques: [cru, mariner-a-l-acide, poeler, cuire-au-four] }
+  - { slug: daurade, parent: poisson-blanc, nom: "daurade", pluriel: "daurades", masse: singulier, synonymes: ["dorade"], techniques: [cru, mariner-a-l-acide, poeler, cuire-au-four] }
+  - { slug: cabillaud, parent: poisson-blanc, nom: "cabillaud", synonymes: ["morue fraîche"], techniques: [pocher, poeler, cuire-au-four] }
+  - { slug: lieu, parent: poisson-blanc, nom: "lieu", synonymes: ["colin", "lieu noir"], techniques: [pocher, poeler] }
+  - { slug: merlan, parent: poisson-blanc, nom: "merlan", pluriel: "merlans", masse: singulier, techniques: [pocher, poeler, frire] }
+  - { slug: sole, parent: poisson-blanc, nom: "sole", pluriel: "soles", masse: singulier, techniques: [poeler, pocher] }
+  - { slug: lotte, parent: poisson-blanc, nom: "lotte", synonymes: ["baudroie"], techniques: [rotir, poeler, mijoter] }
+  - { slug: poisson-gras, nom: "poisson gras", pluriel: "poissons gras", masse: singulier }
+  - { slug: saumon, parent: poisson-gras, nom: "saumon", synonymes: ["pavé de saumon", "filet de saumon"], techniques: [saler-sucrer, cru, mariner-a-l-acide, poeler, pocher, cuire-au-four] }
+  - { slug: saumon-fume, parent: saumon, nom: "saumon fumé", techniques: [cru] }
+  - { slug: thon, parent: poisson-gras, nom: "thon", synonymes: ["thon frais"], techniques: [cru, mariner-a-l-acide, poeler, griller] }
+  - { slug: thon-en-boite, parent: thon, nom: "thon en boîte", synonymes: ["thon au naturel", "thon à l'huile"], techniques: [cru] }
+  - { slug: sardine, parent: poisson-gras, nom: "sardine", pluriel: "sardines", techniques: [griller, poeler] }
+  - { slug: maquereau, parent: poisson-gras, nom: "maquereau", pluriel: "maquereaux", techniques: [griller, poeler, mariner-a-l-acide] }
+  - { slug: truite, parent: poisson-gras, nom: "truite", pluriel: "truites", masse: singulier, techniques: [poeler, pocher, cuire-au-four] }
+  - { slug: anchois, nom: "anchois", pluriel: "anchois", synonymes: ["filet d'anchois", "anchois à l'huile"] }
+  - { slug: fruits-de-mer, nom: "fruit de mer", pluriel: "fruits de mer" }
+  - { slug: crevette, parent: fruits-de-mer, nom: "crevette", pluriel: "crevettes", techniques: [sauter, pocher, mariner-a-l-acide] }
+  - { slug: moule, parent: fruits-de-mer, nom: "moule", pluriel: "moules", techniques: [cuire-a-la-vapeur, mijoter] }
+  - { slug: saint-jacques, parent: fruits-de-mer, nom: "coquille Saint-Jacques", pluriel: "coquilles Saint-Jacques", synonymes: ["noix de Saint-Jacques"], techniques: [poeler, cru] }

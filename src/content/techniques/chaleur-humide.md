@@ -1,6 +1,5 @@
 ---
 titre: Chaleur humide
-axe: cuisson
 resume: "Cuire dans l'eau, un bouillon, du vin ou la vapeur : la température ne dépasse jamais 100 °C."
 ordre: 1
 ---
@@ -31,3 +30,4 @@ ce qui rend la viande fondante et la sauce onctueuse.
 - La quantité de liquide : couvrant (pocher, mijoter) ou partielle (braiser).
 - La température : 80 à 90 °C pour pocher, un frémissement pour mijoter.
 - La coloration préalable : aucune pour le blanc, forte pour le braisé.
+- La vapeur seule, sans contact avec le liquide (cuire à la vapeur).

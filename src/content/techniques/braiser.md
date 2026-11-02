@@ -1,6 +1,5 @@
 ---
 titre: Braiser
-axe: cuisson
 parent: chaleur-humide
 mutation: "+ saisir d'abord, mouiller à mi-hauteur, couvrir"
 resume: "Cuisson longue et couverte dans peu de liquide, après avoir saisi la viande."

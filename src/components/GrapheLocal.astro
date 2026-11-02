@@ -1,0 +1,58 @@
+---
+// Petit graphe local (SVG généré au build) : le nœud au centre et ses voisins à un saut.
+// Décoratif et explicatif : la navigation repose sur les listes de la fiche.
+import { disposer } from '../lib/graphe-local';
+import { TEINTES, titreDe, voisinage, type Teinte } from '../lib/site';
+
+interface Props { slug: string }
+const { slug } = Astro.props;
+const v = voisinage(slug);
+const g = disposer(titreDe(slug), v);
+const vide = g.points.length === 0;
+const idTitre = `graphe-titre-${slug}`;
+---
+{!vide && (
+  <details class="graphe-local" open>
+    <summary>Voisinage</summary>
+    <div class="cadre-graphe">
+    <svg viewBox={`0 ${g.y0} ${g.largeur} ${g.hauteur}`} role="img" aria-labelledby={idTitre} class="graphe">
+      <title id={idTitre}>Voisinage de {titreDe(slug)} : {g.points.length} nœud{g.points.length > 1 ? 's' : ''} voisin{g.points.length > 1 ? 's' : ''}</title>
+      <g class="aretes">
+        {g.points.map((p) => (
+          <line class={`t-${p.teinte}`} x1={g.centre.x} y1={g.centre.y} x2={p.x} y2={p.y} />
+        ))}
+      </g>
+      <g class="voisins">
+        {g.points.map((p) => p.url && !p.surplus ? (
+          <a href={p.url}>
+            <title>{p.titre}</title>
+            <circle class={`t-${p.teinte}`} cx={p.x} cy={p.y} r="6" />
+            <text x={p.lx} y={p.ly} text-anchor={p.ancre}>{p.libelle}</text>
+          </a>
+        ) : (
+          <g class="surplus">
+            <title>{p.titre}</title>
+            <circle class={`t-${p.teinte}`} cx={p.x} cy={p.y} r="5" />
+            <text x={p.lx} y={p.ly} text-anchor={p.ancre}>{p.libelle}</text>
+          </g>
+        ))}
+      </g>
+      <g class="centre">
+        <circle cx={g.centre.x} cy={g.centre.y} r="10" />
+        {g.centre.lignes.map((l, i) => (
+          <text x={g.centre.x} y={g.centre.y + 28 + i * 16} text-anchor="middle">{l}</text>
+        ))}
+      </g>
+    </svg>
+    </div>
+    <ul class="legende" aria-label="Légende des liens">
+      {g.teintes.map((t) => <li class={`t-${t}`}><span class="puce" aria-hidden="true"></span>{TEINTES[t as Teinte] ?? t}</li>)}
+    </ul>
+  </details>
+)}
+<script is:inline>
+  // Sur mobile, le graphe se replie sous la fiche.
+  if (window.matchMedia('(max-width: 799px)').matches) {
+    document.querySelectorAll('details.graphe-local').forEach(function (d) { d.open = false; });
+  }
+</script>

@@ -1,0 +1,7 @@
+titre: Produits laitiers
+ingredients:
+  - slug: lait
+    nom: lait
+  - slug: beurre
+    nom: beurre
+    placard: true

@@ -1,0 +1,91 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import GrapheLocal from '../../components/GrapheLocal.astro';
+import Ref from '../../components/Ref.astro';
+import { drapeau, nomPays } from '../../lib/format';
+import { ascendance, descendantsDe, enfantsDe, parentDe, reseau, titreDe } from '../../lib/site';
+
+export function getStaticPaths() {
+  return reseau().parType('profil').map((n) => ({ params: { slug: n.slug } }));
+}
+
+const { slug } = Astro.params as { slug: string };
+const r = reseau();
+const d = r.noeud(slug)!.data;
+const entree = await getEntry('profils', slug);
+const Corps = entree?.body?.trim() ? (await render(entree)).Content : null;
+const chaine = ascendance(slug);
+const parent = parentDe(slug);
+const sous = enfantsDe(slug);
+const composition = r.liensDe(slug, 'composition');
+
+const parTitre = (a: { de: string }, b: { de: string }) => titreDe(a.de).localeCompare(titreDe(b.de), 'fr');
+const directs = r.liensVers(slug, 'profil').filter((l) => r.noeud(l.de)).sort(parTitre);
+const via = descendantsDe(slug)
+  .map((p) => ({ p, liens: r.liensVers(p, 'profil').filter((l) => r.noeud(l.de)).sort(parTitre) }))
+  .filter((x) => x.liens.length);
+const ailleurs = (s: string) => r.noeud(s)?.data.origine !== d.origine;
+---
+<Base titre={d.titre} courant={slug} description={d.resume}>
+  <article class="fiche fiche-profil">
+    <header class="fiche-entete">
+      <nav class="ariane" aria-label="Ascendance">
+        <span class="type-noeud">Profil aromatique</span>
+        {chaine.map((s) => <><Ref slug={s} /><span class="fleche" aria-hidden="true"> → </span></>)}
+        <span aria-current="page">{d.titre}</span>
+      </nav>
+      <h1>{d.titre}{d.origine && <> <span class="drapeau" role="img" aria-label={nomPays(d.origine)} title={nomPays(d.origine)}>{drapeau(d.origine)}</span></>}</h1>
+      <p class="resume">{d.resume}</p>
+    </header>
+
+    <section class="haut" aria-label="Composition et parent">
+      {parent && (
+        <div class="groupe-liens t-parent">
+          <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Descend de</h3>
+          <ul class="liens"><li><Ref slug={parent.vers} />{parent.mutation && <span class="fil-mutation">{parent.mutation}</span>}</li></ul>
+        </div>
+      )}
+      <div class="groupe-liens t-utilise">
+        <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Composition</h3>
+        <ul class="liens composition">
+          {composition.map((l) => (<li><Ref slug={l.vers} />{l.ligne?.precision && <span class="precision">, {l.ligne.precision}</span>}</li>))}
+        </ul>
+      </div>
+    </section>
+
+    <GrapheLocal slug={slug} />
+
+    <div class="milieu">
+      {Corps && <div class="prose principe"><Corps /></div>}
+    </div>
+
+    <section class="bas" aria-labelledby="titre-descendants">
+      <h2 id="titre-descendants">Descendance</h2>
+      {sous.length > 0 && (
+        <div class="groupe-liens t-parent">
+          <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Sous-profils</h3>
+          <ul class="liens">
+            {sous.map((s) => (<li><Ref slug={s} pays={ailleurs(s)} />{parentDe(s)?.mutation && <span class="fil-mutation">{parentDe(s)?.mutation}</span>}</li>))}
+          </ul>
+        </div>
+      )}
+      <div class="groupe-liens t-profil">
+        <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Plats qui l'utilisent</h3>
+        {directs.length > 0 ? (
+          <ul class="liens cousins">
+            {directs.map((l) => (<li class:list={{ ailleurs: ailleurs(l.de) }}><Ref slug={l.de} pays={ailleurs(l.de)} />{l.mutation && <span class="fil-mutation">{l.mutation}</span>}</li>))}
+          </ul>
+        ) : <p class="vide">Aucune préparation directement.</p>}
+      </div>
+      {via.map(({ p, liens }) => (
+        <div class="groupe-liens t-profil via">
+          <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Via <Ref slug={p} /></h3>
+          <ul class="liens cousins">
+            {liens.map((l) => (<li class:list={{ ailleurs: ailleurs(l.de) }}><Ref slug={l.de} pays={ailleurs(l.de)} />{l.mutation && <span class="fil-mutation">{l.mutation}</span>}</li>))}
+          </ul>
+        </div>
+      ))}
+    </section>
+  </article>
+</Base>

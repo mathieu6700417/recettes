@@ -1,10 +1,9 @@
 ---
 titre: Frire
-axe: cuisson
 parent: chaleur-seche
 mutation: "+ bain de matière grasse chaude, croûte rapide"
 resume: "Cuisson par immersion dans une huile à 160-190 °C, qui saisit la surface et la rend croustillante."
-ordre: 2
+ordre: 3
 ---
 
 ## Principe
@@ -30,3 +29,4 @@ L'huile très chaude vaporise aussitôt l'eau de la surface et forme une croûte
 ## Ce qui varie entre les descendantes
 - La pâte frite : levée par la vapeur (choux), par la levure ou par des œufs battus.
 - La température choisie, qui règle le rapport croûte et cœur.
+- Le type de friture : en un seul bain, ou en deux temps (blanchir à 150-160 °C puis colorer à 180-190 °C, comme pour les frites).

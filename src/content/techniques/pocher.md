@@ -1,6 +1,5 @@
 ---
 titre: Pocher
-axe: cuisson
 parent: chaleur-humide
 mutation: "+ liquide frémissant à 80-90 °C, aliment immergé"
 resume: "Cuire un aliment entièrement immergé dans un liquide à peine frémissant."

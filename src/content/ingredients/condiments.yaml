@@ -1,0 +1,27 @@
+titre: Condiments
+ingredients:
+  - { slug: sel, nom: "sel", placard: true, synonymes: ["sel fin"] }
+  - { slug: gros-sel, parent: sel, nom: "gros sel", placard: true, synonymes: ["sel gris"] }
+  - { slug: fleur-de-sel, parent: sel, nom: "fleur de sel", placard: true }
+  - { slug: moutarde, nom: "moutarde" }
+  - { slug: moutarde-forte, parent: moutarde, nom: "moutarde forte", synonymes: ["moutarde de Dijon", "moutarde fine"] }
+  - { slug: moutarde-a-l-ancienne, parent: moutarde, nom: "moutarde à l'ancienne" }
+  - { slug: vinaigre, nom: "vinaigre" }
+  - { slug: vinaigre-de-vin, parent: vinaigre, nom: "vinaigre de vin", synonymes: ["vinaigre de vin rouge", "vinaigre de vin blanc"] }
+  - { slug: vinaigre-de-cidre, parent: vinaigre, nom: "vinaigre de cidre" }
+  - { slug: vinaigre-balsamique, parent: vinaigre, nom: "vinaigre balsamique" }
+  - { slug: vinaigre-de-xeres, parent: vinaigre, nom: "vinaigre de xérès" }
+  - { slug: vinaigre-blanc, parent: vinaigre, nom: "vinaigre blanc", synonymes: ["vinaigre d'alcool"] }
+  - { slug: capre, nom: "câpre", pluriel: "câpres" }
+  - { slug: cornichon, nom: "cornichon", pluriel: "cornichons" }
+  - { slug: olive, nom: "olive", pluriel: "olives" }
+  - { slug: olive-noire, parent: olive, nom: "olive noire", pluriel: "olives noires" }
+  - { slug: olive-verte, parent: olive, nom: "olive verte", pluriel: "olives vertes" }
+  - { slug: concentre-de-tomate, nom: "concentré de tomate", synonymes: ["double concentré de tomate"], substituts: [coulis-de-tomate] }
+  - { slug: coulis-de-tomate, nom: "coulis de tomate", synonymes: ["passata"] }
+  - { slug: ketchup, nom: "ketchup" }
+  - { slug: sauce-worcestershire, nom: "sauce Worcestershire" }
+  - { slug: sauce-piquante, nom: "sauce piquante", synonymes: ["tabasco"] }
+  - { slug: sauce-soja, nom: "sauce soja" }
+  - { slug: creme-de-tartre, nom: "crème de tartre" }
+  - { slug: levure-chimique, nom: "levure chimique", synonymes: ["poudre à lever"] }

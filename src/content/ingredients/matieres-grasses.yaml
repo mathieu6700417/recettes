@@ -1,0 +1,14 @@
+titre: Matières grasses
+ingredients:
+  - { slug: beurre, nom: "beurre", placard: true, synonymes: ["beurre froid", "beurre pommade", "beurre fondu"] }
+  - { slug: beurre-doux, parent: beurre, nom: "beurre doux", placard: true }
+  - { slug: beurre-demi-sel, parent: beurre, nom: "beurre demi-sel" }
+  - { slug: beurre-sale, parent: beurre, nom: "beurre salé" }
+  - { slug: beurre-clarifie, parent: beurre, nom: "beurre clarifié", synonymes: ["beurre noisette"], techniques: [sauter, poeler] }
+  - { slug: ghee, nom: "ghee", synonymes: ["beurre indien"], substituts: [beurre-clarifie] }
+  - { slug: huile-neutre, nom: "huile neutre", placard: true, elision: true, synonymes: ["huile", "huile de tournesol", "huile d'arachide", "huile de colza", "huile de friture"], techniques: [frire, sauter, poeler] }
+  - { slug: huile-d-olive, nom: "huile d'olive", placard: true, elision: true, synonymes: ["huile d'olive douce", "huile d'olive vierge extra"] }
+  - { slug: huile-de-noix, nom: "huile de noix", elision: true }
+  - { slug: huile-de-sesame, nom: "huile de sésame", elision: true }
+  - { slug: saindoux, nom: "saindoux", synonymes: ["graisse de porc"], substituts: [huile-neutre] }
+  - { slug: graisse-de-canard, nom: "graisse de canard", techniques: [sauter, poeler] }

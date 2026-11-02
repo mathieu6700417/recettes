@@ -1,6 +1,5 @@
 ---
 titre: Chaleur sèche
-axe: cuisson
 resume: "Cuisson sans liquide de cuisson : l'air chaud, la graisse ou une paroi chaude saisit et colore."
 ordre: 2
 ---
@@ -25,3 +24,4 @@ La chaleur sèche cuit sans mouiller : la chaleur passe par l'air chaud, par une
 ## Ce qui varie entre les descendantes
 - Le milieu : air chaud du four, eau frémissante autour du moule (bain-marie) ou bain de matière grasse (friture).
 - La température, du doux (crèmes) au vif (pâte à choux, friture).
+- Le rayonnement direct d'une source de chaleur (griller) ou la chaleur enveloppante du four, avec pièce entière (rôtir).

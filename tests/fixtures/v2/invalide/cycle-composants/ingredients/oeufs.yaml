@@ -1,0 +1,9 @@
+titre: Œufs
+ingredients:
+  - slug: jaune-d-oeuf
+    nom: jaune d'œuf
+    pluriel: jaunes d'œufs
+    substituts: [blanc-d-oeuf]
+  - slug: blanc-d-oeuf
+    nom: blanc d'œuf
+    pluriel: blancs d'œufs

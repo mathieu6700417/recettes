@@ -1,0 +1,17 @@
+---
+// Liste imbriquée des descendants d'un ingrédient (ou d'une famille).
+import Ref from './Ref.astro';
+import { enfantsDe, reseau } from '../lib/site';
+
+interface Props { slug: string }
+const { slug } = Astro.props;
+const r = reseau();
+const enfants = enfantsDe(slug).filter((s) => r.noeud(s)?.type === 'ingredient');
+---
+{enfants.length > 0 && (
+  <ul class="sous-arbre">
+    {enfants.map((s) => (
+      <li><Ref slug={s} />{r.noeud(s)?.data.placard === true && <span class="note"> (placard)</span>}<Astro.self slug={s} /></li>
+    ))}
+  </ul>
+)}

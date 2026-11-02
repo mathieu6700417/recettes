@@ -1,0 +1,19 @@
+---
+// Lien vers un nœud du réseau, avec drapeau pour les préparations et profils.
+import { drapeau, nomPays } from '../lib/format';
+import { reseau, titreDe, urlDe } from '../lib/site';
+
+interface Props {
+  slug: string;
+  /** afficher aussi le nom du pays (cousins d'une autre origine) */
+  pays?: boolean;
+  /** texte à la place du titre */
+  texte?: string;
+}
+const { slug, pays = false, texte } = Astro.props;
+const n = reseau().noeud(slug);
+const origine = n && (n.type === 'preparation' || n.type === 'profil') ? n.data.origine : undefined;
+---
+{n ? (
+  <a href={urlDe(slug)} class:list={['ref', `ref-${n.type}`]}>{origine && <span class="drapeau" role="img" aria-label={nomPays(origine)} title={nomPays(origine)}>{drapeau(origine)}</span>}{texte ?? titreDe(slug)}</a>
+) : <span class="manquant" title="nœud introuvable">{texte ?? slug}</span>}{pays && origine && <span class="pays"> · {nomPays(origine)}</span>}

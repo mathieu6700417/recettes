@@ -1,0 +1,23 @@
+titre: Alcools
+ingredients:
+  - { slug: vin, nom: "vin" }
+  - { slug: vin-rouge, parent: vin, nom: "vin rouge", synonymes: ["vin rouge corsé", "bourgogne", "côtes-du-rhône"], techniques: [braiser, ragout, mijoter] }
+  - { slug: vin-blanc, parent: vin, nom: "vin blanc", synonymes: ["vin blanc sec"], techniques: [braiser, mijoter, pocher] }
+  - { slug: vin-rose, parent: vin, nom: "vin rosé" }
+  - { slug: vin-jaune, parent: vin, nom: "vin jaune" }
+  - { slug: vin-fortifie, nom: "vin fortifié", pluriel: "vins fortifiés", masse: singulier }
+  - { slug: porto, parent: vin-fortifie, nom: "porto" }
+  - { slug: madere, parent: vin-fortifie, nom: "madère" }
+  - { slug: marsala, parent: vin-fortifie, nom: "marsala" }
+  - { slug: xeres, parent: vin-fortifie, nom: "xérès" }
+  - { slug: eau-de-vie, nom: "eau-de-vie" }
+  - { slug: cognac, parent: eau-de-vie, nom: "cognac", synonymes: ["brandy"] }
+  - { slug: armagnac, parent: eau-de-vie, nom: "armagnac" }
+  - { slug: calvados, parent: eau-de-vie, nom: "calvados" }
+  - { slug: rhum, nom: "rhum", substituts: [cognac] }
+  - { slug: vodka, nom: "vodka" }
+  - { slug: aquavit, nom: "aquavit", substituts: [vodka] }
+  - { slug: biere, nom: "bière" }
+  - { slug: biere-brune, parent: biere, nom: "bière brune", synonymes: ["bière brune d'abbaye", "bière d'abbaye"] }
+  - { slug: biere-blonde, parent: biere, nom: "bière blonde" }
+  - { slug: cidre, nom: "cidre", synonymes: ["cidre brut"] }

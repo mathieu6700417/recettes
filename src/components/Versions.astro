@@ -1,0 +1,237 @@
+---
+// Les versions d'une préparation, en onglets (la référence d'abord). Chaque panneau porte
+// l'ancre #version-<suffixe>, ses portions ajustables, le mode cuisine et l'impression.
+import { getEntry, render } from 'astro:content';
+import { duree, majuscule } from '../lib/format';
+import { partiesLigne } from '../lib/quantites';
+import { DIFFICULTES, STATUTS, reseau, suffixeVersion, urlDe, type Noeud } from '../lib/site';
+
+interface Props { preparation: string }
+const { preparation } = Astro.props;
+const r = reseau();
+const versions = r.versionsDe(preparation);
+const onglets = versions.length > 1;
+
+interface Ligne {
+  qte: number | null; unite: string; nom: string; pluriel?: string; elision?: boolean; masse?: string;
+  href?: string; precision?: string; quantite: string; liaison: string; affiche: string;
+}
+async function preparer(v: Noeud) {
+  const d = v.data;
+  const groupes: { nom: string | null; lignes: Ligne[] }[] = [];
+  for (const l of (Array.isArray(d.ingredients) ? d.ingredients : [])) {
+    const slug: string = l.ingredient ?? l.preparation;
+    const n = r.noeud(slug);
+    const nom = n ? (n.type === 'ingredient' ? n.data.nom : (n.titre ?? slug).replace(/^./, (c: string) => c.toLocaleLowerCase('fr-FR'))) : slug;
+    const base = {
+      qte: l.qte ?? null, unite: l.unite ?? '', nom,
+      pluriel: n?.type === 'ingredient' ? n.data.pluriel : undefined,
+      elision: n?.type === 'ingredient' ? n.data.elision : undefined,
+      masse: n?.type === 'ingredient' ? n.data.masse : undefined,
+    };
+    const p = partiesLigne(base);
+    const ligne: Ligne = {
+      ...base, href: n ? urlDe(slug) : undefined, precision: l.precision,
+      quantite: p.quantite, liaison: p.liaison, affiche: base.qte === null ? majuscule(p.nom) : p.nom,
+    };
+    const g = l.groupe ?? null;
+    let gr = groupes.find((x) => x.nom === g);
+    if (!gr) { gr = { nom: g, lignes: [] }; groupes.push(gr); }
+    gr.lignes.push(ligne);
+  }
+  const entree = await getEntry('versions', v.slug);
+  const corps = entree?.body?.trim() ? (await render(entree)).Content : null;
+  return { v, d, suffixe: suffixeVersion(v.slug), groupes, corps };
+}
+const panneaux = await Promise.all(versions.map(preparer));
+const personnes = (n: number) => `${n} personne${n > 1 ? 's' : ''}`;
+---
+<div class:list={['versions', { 'avec-onglets': onglets }]}>
+  {onglets && (
+    <div class="onglets" role="tablist" aria-label="Versions">
+      {panneaux.map(({ d, suffixe }, i) => (
+        <button type="button" role="tab" id={`onglet-${suffixe}`} aria-controls={`version-${suffixe}`}
+          aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-suffixe={suffixe}>
+          {d.titre}{d.reference === true && <span class="ref-badge">référence</span>}
+        </button>
+      ))}
+    </div>
+  )}
+  {panneaux.length === 0 && <p class="vide">Pas encore de version chiffrée.</p>}
+  {panneaux.map(({ v, d, suffixe, groupes, corps: Corps }, i) => (
+    <section class="panneau-version recette" id={`version-${suffixe}`} data-portions={d.portions}
+      role={onglets ? 'tabpanel' : undefined} aria-labelledby={onglets ? `onglet-${suffixe}` : undefined}
+      hidden={onglets && i > 0}>
+      <h3 class="titre-version">
+        {d.titre}
+        <span class={`statut statut-${d.statut}`} title="Statut de relecture">{STATUTS[d.statut] ?? d.statut}</span>
+      </h3>
+      <p class="meta">
+        <span class="nb-portions">{personnes(d.portions)}</span>
+        {d.temps?.preparation > 0 && <span>Préparation {duree(d.temps.preparation)}</span>}
+        {d.temps?.cuisson > 0 && <span>Cuisson {duree(d.temps.cuisson)}</span>}
+        {d.temps?.repos > 0 && <span>Repos {duree(d.temps.repos)}</span>}
+        {d.difficulte && <span>{DIFFICULTES[d.difficulte] ?? d.difficulte}</span>}
+      </p>
+      {d.reference !== true && d.ecarts && (
+        <p class="ecarts"><span class="ecarts-titre">Écarts à la référence</span> {d.ecarts}</p>
+      )}
+
+      <div class="outils" role="toolbar" aria-label="Outils de la recette">
+        <div class="portions" role="group" aria-label="Nombre de personnes">
+          <button type="button" class="moins" aria-label="Une personne de moins">−</button>
+          <output class="valeur" aria-live="polite">{d.portions}</output>
+          <span class="unite-portions">{d.portions > 1 ? 'personnes' : 'personne'}</span>
+          <button type="button" class="plus" aria-label="Une personne de plus">+</button>
+        </div>
+        <button type="button" class="bouton entrer-cuisine">Mode cuisine</button>
+        <button type="button" class="bouton imprimer">Imprimer</button>
+      </div>
+
+      <div class="grille">
+        <section class="ingredients" aria-labelledby={`ing-${suffixe}`}>
+          <h4 id={`ing-${suffixe}`} class="titre-section">Ingrédients</h4>
+          {groupes.map((gr) => (
+            <>
+              {gr.nom && <h5>{gr.nom}</h5>}
+              <ul>
+                {gr.lignes.map((l) => (
+                  <li>
+                    <label>
+                      <input type="checkbox" class="coche" />
+                      <span class="texte ligne-ing" data-qte={l.qte ?? undefined} data-unite={l.unite} data-nom={l.nom}
+                        data-pluriel={l.pluriel} data-elision={l.elision === undefined ? undefined : String(l.elision)} data-masse={l.masse}>
+                        {l.quantite && <><span class="q">{l.quantite}</span>{' '}</>}<span class="de">{l.liaison}</span>{l.href
+                          ? <a class="lien-discret nom" href={l.href}>{l.affiche}</a>
+                          : <span class="nom">{l.affiche}</span>}{l.precision && <span class="precision">, {l.precision}</span>}
+                      </span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ))}
+        </section>
+
+        <section class="etapes" aria-labelledby={`etapes-${suffixe}`}>
+          <h4 id={`etapes-${suffixe}`} class="titre-section">Préparation</h4>
+          <ol>
+            {(d.etapes ?? []).map((e: string) => (
+              <li><label><input type="checkbox" class="coche" /><span class="texte">{e}</span></label></li>
+            ))}
+          </ol>
+        </section>
+      </div>
+
+      {Corps && (
+        <section class="notes prose" aria-labelledby={`notes-${suffixe}`}>
+          <h4 id={`notes-${suffixe}`} class="titre-section">Notes</h4>
+          <Corps />
+        </section>
+      )}
+      {d.source && <p class="source">Source : {d.source}</p>}
+    </section>
+  ))}
+</div>
+<button type="button" class="bouton sortir-cuisine">Quitter le mode cuisine</button>
+
+<script>
+  import { partiesLigne } from '../lib/quantites';
+
+  const onglets = [...document.querySelectorAll<HTMLButtonElement>('.onglets [role="tab"]')];
+
+  // ---------- Onglets (sélection par ancre #version-<suffixe>) ----------
+  function selectionner(suffixe: string, focus = false, ancre = true) {
+    const cible = onglets.find((o) => o.dataset.suffixe === suffixe);
+    if (!cible) return false;
+    for (const o of onglets) {
+      const actif = o === cible;
+      o.setAttribute('aria-selected', String(actif));
+      o.tabIndex = actif ? 0 : -1;
+      const p = document.getElementById(o.getAttribute('aria-controls')!);
+      if (p) p.hidden = !actif;
+    }
+    if (focus) cible.focus();
+    if (ancre) history.replaceState(null, '', `#version-${suffixe}`);
+    return true;
+  }
+  const depuisAncre = () => {
+    const m = location.hash.match(/^#version-(.+)$/);
+    if (m) selectionner(decodeURIComponent(m[1]), false, false);
+  };
+  if (onglets.length) {
+    depuisAncre();
+    window.addEventListener('hashchange', depuisAncre);
+    onglets.forEach((o, i) => {
+      o.addEventListener('click', () => selectionner(o.dataset.suffixe!));
+      o.addEventListener('keydown', (e) => {
+        const j = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? onglets.length - 1 : null;
+        if (j === null) return;
+        e.preventDefault();
+        selectionner(onglets[(j + onglets.length) % onglets.length].dataset.suffixe!, true);
+      });
+    });
+  }
+
+  // ---------- Portions (quantités recalculées et accordées) ----------
+  document.querySelectorAll<HTMLElement>('.panneau-version').forEach((panneau) => {
+    const base = Number(panneau.dataset.portions) || 1;
+    let portions = base;
+    const valeur = panneau.querySelector<HTMLOutputElement>('.portions .valeur')!;
+    const unite = panneau.querySelector<HTMLElement>('.unite-portions')!;
+    const meta = panneau.querySelector<HTMLElement>('.nb-portions')!;
+    const moins = panneau.querySelector<HTMLButtonElement>('.moins')!;
+    const maj = () => {
+      const f = portions / base;
+      valeur.textContent = String(portions);
+      unite.textContent = portions > 1 ? 'personnes' : 'personne';
+      meta.textContent = `${portions} personne${portions > 1 ? 's' : ''}`;
+      moins.disabled = portions <= 1;
+      panneau.querySelectorAll<HTMLElement>('.ligne-ing[data-qte]').forEach((l) => {
+        const p = partiesLigne({
+          qte: Number(l.dataset.qte), unite: l.dataset.unite ?? '', nom: l.dataset.nom ?? '',
+          pluriel: l.dataset.pluriel, masse: l.dataset.masse, elision: l.dataset.elision === undefined ? undefined : l.dataset.elision === 'true',
+        }, f);
+        l.querySelector('.q')!.textContent = p.quantite;
+        l.querySelector('.de')!.textContent = p.liaison;
+        l.querySelector('.nom')!.textContent = p.nom;
+      });
+    };
+    moins.addEventListener('click', () => { if (portions > 1) { portions--; maj(); } });
+    panneau.querySelector('.plus')!.addEventListener('click', () => { portions++; maj(); });
+    maj();
+    panneau.querySelector('.imprimer')!.addEventListener('click', () => window.print());
+  });
+
+  // ---------- Mode cuisine (écran maintenu allumé) ----------
+  let verrou: WakeLockSentinel | null = null;
+  const acquerir = async () => {
+    if (!('wakeLock' in navigator) || !document.body.classList.contains('cuisine')) return;
+    try { verrou = await navigator.wakeLock.request('screen'); } catch { verrou = null; }
+  };
+  const relacher = async () => {
+    try { await verrou?.release(); } catch { /* déjà relâché */ }
+    verrou = null;
+  };
+  const sortir = document.querySelector<HTMLButtonElement>('.sortir-cuisine');
+  let origine: HTMLButtonElement | null = null;
+  document.querySelectorAll<HTMLButtonElement>('.entrer-cuisine').forEach((entrer) => {
+    entrer.addEventListener('click', () => {
+      origine = entrer;
+      document.body.classList.add('cuisine');
+      acquerir();
+      sortir?.focus();
+    });
+  });
+  sortir?.addEventListener('click', () => {
+    document.body.classList.remove('cuisine');
+    relacher();
+    origine?.focus();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.body.classList.contains('cuisine') && !(e.target instanceof HTMLInputElement && e.target.type === 'search')) sortir?.click();
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') acquerir();
+  });
+</script>

@@ -1,0 +1,17 @@
+titre: Herbes
+ingredients:
+  - { slug: persil, nom: "persil", synonymes: ["persil haché", "botte de persil"] }
+  - { slug: persil-plat, parent: persil, nom: "persil plat", synonymes: ["persil plat haché"] }
+  - { slug: thym, nom: "thym", synonymes: ["branche de thym"] }
+  - { slug: laurier, nom: "feuille de laurier", pluriel: "feuilles de laurier", synonymes: ["laurier"] }
+  - { slug: romarin, nom: "romarin", synonymes: ["branche de romarin"] }
+  - { slug: basilic, nom: "basilic", synonymes: ["feuilles de basilic"] }
+  - { slug: ciboulette, nom: "ciboulette" }
+  - { slug: cerfeuil, nom: "cerfeuil" }
+  - { slug: estragon, nom: "estragon" }
+  - { slug: aneth, nom: "aneth" }
+  - { slug: coriandre-fraiche, nom: "coriandre fraîche", synonymes: ["coriandre"] }
+  - { slug: menthe, nom: "menthe" }
+  - { slug: origan, nom: "origan", synonymes: ["origan mexicain", "marjolaine"] }
+  - { slug: sauge, nom: "sauge" }
+  - { slug: herbes-de-provence, nom: "herbes de Provence", elision: true, synonymes: ["herbes provençales"] }

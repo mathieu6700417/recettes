@@ -1,0 +1,6 @@
+titre: Liquides
+ingredients:
+  - slug: eau
+    nom: eau
+    placard: true
+    elision: true

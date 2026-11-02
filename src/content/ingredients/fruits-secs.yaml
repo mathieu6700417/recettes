@@ -1,0 +1,19 @@
+titre: Fruits secs
+ingredients:
+  - { slug: fruit-a-coque, nom: "fruit à coque", pluriel: "fruits à coque", synonymes: ["oléagineux"] }
+  - { slug: amande, parent: fruit-a-coque, nom: "amande", pluriel: "amandes", synonymes: ["amandes entières", "amandes grillées"] }
+  - { slug: amande-effilee, parent: amande, nom: "amande effilée", pluriel: "amandes effilées", synonymes: ["amandes effilées grillées"] }
+  - { slug: poudre-d-amande, parent: amande, nom: "poudre d'amande", synonymes: ["amandes en poudre"] }
+  - { slug: noisette, parent: fruit-a-coque, nom: "noisette", pluriel: "noisettes" }
+  - { slug: noix, parent: fruit-a-coque, nom: "noix", pluriel: "noix", synonymes: ["cerneaux de noix"] }
+  - { slug: pistache, parent: fruit-a-coque, nom: "pistache", pluriel: "pistaches" }
+  - { slug: pignon-de-pin, parent: fruit-a-coque, nom: "pignon de pin", pluriel: "pignons de pin" }
+  - { slug: cacahuete, parent: fruit-a-coque, nom: "cacahuète", pluriel: "cacahuètes" }
+  - { slug: graine-de-sesame, nom: "graine de sésame", pluriel: "graines de sésame", synonymes: ["sésame"] }
+  - { slug: noix-de-coco-rapee, nom: "noix de coco râpée", synonymes: ["coco râpée"] }
+  - { slug: fruit-seche, nom: "fruit séché", pluriel: "fruits séchés" }
+  - { slug: pruneau, parent: fruit-seche, nom: "pruneau", pluriel: "pruneaux", synonymes: ["pruneaux dénoyautés", "pruneaux d'Agen"] }
+  - { slug: raisin-sec, parent: fruit-seche, nom: "raisin sec", pluriel: "raisins secs" }
+  - { slug: abricot-sec, parent: fruit-seche, nom: "abricot sec", pluriel: "abricots secs" }
+  - { slug: datte, parent: fruit-seche, nom: "datte", pluriel: "dattes" }
+  - { slug: figue-seche, parent: fruit-seche, nom: "figue sèche", pluriel: "figues sèches" }

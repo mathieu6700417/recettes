@@ -1,0 +1,185 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/site';
+---
+<Base titre="Cuisiner avec ce que j'ai" description="Indiquez les ingrédients dont vous disposez : les préparations sont classées selon ce qu'elles demandent.">
+  <article class="cuisiner" data-donnees={url('cuisiner.json')}>
+    <h1>Cuisiner avec ce que j'ai</h1>
+    <p class="resume">Ajoutez les ingrédients que vous avez sous la main. Les préparations sont classées selon
+      la part de leur recette de référence que vous pouvez couvrir. Sel, poivre, huile, beurre, farine, sucre
+      et eau sont supposés au placard.</p>
+
+    <form class="saisie" autocomplete="off">
+      <label for="champ-ingredient">Ingrédient</label>
+      <div class="saisie-ligne">
+        <div class="combo">
+          <input id="champ-ingredient" type="text" role="combobox" aria-expanded="false" aria-controls="propositions"
+            aria-autocomplete="list" placeholder="carotte, poulet, crème…" />
+          <ul id="propositions" class="resultats" role="listbox" aria-label="Ingrédients proposés" hidden></ul>
+        </div>
+        <button type="submit" class="bouton">Ajouter</button>
+      </div>
+    </form>
+
+    <div class="mes-ingredients" aria-live="polite">
+      <h2>Mes ingrédients</h2>
+      <ul class="pastilles" id="pastilles"></ul>
+      <p class="vide" id="aucun">Aucun ingrédient pour l'instant.</p>
+      <button type="button" class="bouton vider" hidden>Tout retirer</button>
+    </div>
+
+    <section aria-labelledby="titre-resultats">
+      <h2 id="titre-resultats">Préparations</h2>
+      <p class="statut-resultats" id="statut-resultats" aria-live="polite"></p>
+      <ol class="resultats-cuisine" id="resultats-cuisine"></ol>
+    </section>
+    <section aria-labelledby="titre-bases" class="bases-cuisine" id="section-bases" hidden>
+      <h2 id="titre-bases">Bases que vous pouvez préparer</h2>
+      <ol class="resultats-cuisine" id="resultats-bases"></ol>
+    </section>
+    <noscript><p>Cette page a besoin de JavaScript.</p></noscript>
+  </article>
+</Base>
+
+<script>
+  import { classer, indexer, repartir, type IngredientCuisine, type PreparationCuisine, type Referentiel } from '../../lib/cuisiner';
+  import { normaliser } from '../../lib/format';
+
+  const CLE = 'recettes:mes-ingredients';
+  const racine = document.querySelector<HTMLElement>('.cuisiner')!;
+  const form = racine.querySelector<HTMLFormElement>('.saisie')!;
+  const champ = racine.querySelector<HTMLInputElement>('#champ-ingredient')!;
+  const props = racine.querySelector<HTMLUListElement>('#propositions')!;
+  const pastilles = racine.querySelector<HTMLUListElement>('#pastilles')!;
+  const aucun = racine.querySelector<HTMLElement>('#aucun')!;
+  const vider = racine.querySelector<HTMLButtonElement>('.vider')!;
+  const statut = racine.querySelector<HTMLElement>('#statut-resultats')!;
+  const sortie = racine.querySelector<HTMLOListElement>('#resultats-cuisine')!;
+  const sortieBases = racine.querySelector<HTMLOListElement>('#resultats-bases')!;
+  const sectionBases = racine.querySelector<HTMLElement>('#section-bases')!;
+
+  let ingredients: IngredientCuisine[] = [];
+  let preparations: PreparationCuisine[] = [];
+  let ref: Referentiel | null = null;
+  let parSlug = new Map<string, IngredientCuisine>();
+  let mes: string[] = [];
+  try { mes = JSON.parse(localStorage.getItem(CLE) || '[]'); } catch { mes = []; }
+  if (!Array.isArray(mes)) mes = [];
+  const memoriser = () => { try { localStorage.setItem(CLE, JSON.stringify(mes)); } catch { /* indisponible */ } };
+
+  const echapper = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+  const nom = (s: string) => parSlug.get(s)?.nom ?? s;
+
+  // ---------- Autocomplétion ----------
+  let options: IngredientCuisine[] = [];
+  let actif = -1;
+  function proposer() {
+    const q = normaliser(champ.value.trim());
+    if (!q) { fermer(); return; }
+    const debut: IngredientCuisine[] = [];
+    const dedans: IngredientCuisine[] = [];
+    for (const i of ingredients) {
+      if (i.placard || mes.includes(i.slug)) continue;
+      const noms = [i.nom, ...(i.synonymes ?? [])].map(normaliser);
+      if (noms.some((x) => x.startsWith(q))) debut.push(i);
+      else if (noms.some((x) => x.includes(q))) dedans.push(i);
+    }
+    options = [...debut, ...dedans].slice(0, 10);
+    actif = options.length ? 0 : -1;
+    props.innerHTML = options.length
+      ? options.map((i, k) => `<li role="option" id="prop-${k}" aria-selected="${k === actif}" data-slug="${i.slug}">${echapper(i.nom)}<span class="detail">${echapper(i.famille ?? '')}</span></li>`).join('')
+      : '<li class="vide" role="presentation">Aucun ingrédient de ce nom</li>';
+    props.hidden = false;
+    champ.setAttribute('aria-expanded', 'true');
+    if (actif >= 0) champ.setAttribute('aria-activedescendant', 'prop-0');
+  }
+  function fermer() {
+    props.hidden = true;
+    champ.setAttribute('aria-expanded', 'false');
+    champ.removeAttribute('aria-activedescendant');
+    actif = -1;
+  }
+  function activer(i: number) {
+    if (!options.length) return;
+    actif = (i + options.length) % options.length;
+    props.querySelectorAll('[role="option"]').forEach((o, k) => o.setAttribute('aria-selected', String(k === actif)));
+    champ.setAttribute('aria-activedescendant', `prop-${actif}`);
+  }
+  function ajouter(slug: string) {
+    if (!mes.includes(slug)) mes.push(slug);
+    memoriser();
+    champ.value = '';
+    fermer();
+    afficher();
+  }
+  champ.addEventListener('input', proposer);
+  champ.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); if (props.hidden) proposer(); else activer(actif + 1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); activer(actif - 1); }
+    else if (e.key === 'Escape') fermer();
+  });
+  champ.addEventListener('blur', () => setTimeout(fermer, 100));
+  props.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    const li = (e.target as HTMLElement).closest<HTMLElement>('[data-slug]');
+    if (li) ajouter(li.dataset.slug!);
+  });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (props.hidden) proposer();
+    if (actif >= 0 && options[actif]) ajouter(options[actif].slug);
+    else if (options.length === 1) ajouter(options[0].slug);
+  });
+
+  // ---------- Liste et résultats ----------
+  pastilles.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-slug]');
+    if (!b) return;
+    mes = mes.filter((s) => s !== b.dataset.slug);
+    memoriser();
+    afficher();
+    champ.focus();
+  });
+  vider.addEventListener('click', () => { mes = []; memoriser(); afficher(); });
+
+  function afficher() {
+    pastilles.innerHTML = mes.map((s) => `<li><span>${echapper(nom(s))}</span><button type="button" data-slug="${s}" aria-label="Retirer ${echapper(nom(s))}">×</button></li>`).join('');
+    aucun.hidden = mes.length > 0;
+    vider.hidden = mes.length === 0;
+    if (!ref) return;
+    const res = classer(ref, preparations, mes);
+    const { plats, bases } = repartir(res);
+    statut.textContent = mes.length
+      ? (plats.length ? `${plats.length} plat${plats.length > 1 ? 's utilisent' : ' utilise'} au moins un de vos ingrédients.` : (bases.length ? 'Aucun plat ne correspond encore.' : 'Aucune préparation ne correspond encore.'))
+      : 'Ajoutez un ingrédient pour voir les préparations possibles.';
+    const rendu = (r: typeof res[number]) => {
+      const p = r.preparation;
+      const pct = Math.round(r.score * 100);
+      const subs = r.substitutions.map((c) => `${echapper(nom(c.par!))} au lieu de ${echapper(nom(c.requis))}`);
+      const reste = r.manquants.map((s) => echapper(nom(s)));
+      return `<li class="resultat-cuisine">
+        <a href="${p.url}">${p.drapeau ? `<span class="drapeau" aria-hidden="true">${p.drapeau}</span> ` : ''}${echapper(p.titre)}</a>
+        <span class="jauge" role="img" aria-label="${pct} % couverts"><span style="width:${pct}%"></span></span>
+        <span class="compte">${r.couverts.length + r.substitutions.length}/${r.total}</span>
+        ${subs.length ? `<p class="avec-substitution">Avec substitution : ${subs.join(' ; ')}</p>` : ''}
+        <p class="manque">${reste.length ? `Il manque : ${reste.join(', ')}` : 'Rien ne manque.'}${p.aPreparer?.length ? ` · À préparer : ${p.aPreparer.map(echapper).join(', ')}` : ''}</p>
+      </li>`;
+    };
+    sortie.innerHTML = plats.map(rendu).join('');
+    sortieBases.innerHTML = bases.map(rendu).join('');
+    sectionBases.hidden = bases.length === 0;
+  }
+
+  fetch(racine.dataset.donnees!)
+    .then((r) => r.json())
+    .then((d: { ingredients: IngredientCuisine[]; preparations: PreparationCuisine[] }) => {
+      ingredients = d.ingredients.sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
+      preparations = d.preparations;
+      parSlug = new Map(ingredients.map((i) => [i.slug, i]));
+      ref = indexer(ingredients);
+      mes = mes.filter((s) => parSlug.has(s));
+      afficher();
+    })
+    .catch(() => { statut.textContent = 'Impossible de charger les données.'; });
+  afficher();
+</script>

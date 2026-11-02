@@ -1,6 +1,5 @@
 ---
 titre: Mijoter
-axe: cuisson
 parent: chaleur-humide
 mutation: "+ couvrir de liquide, feu très doux, longue durée"
 resume: "Cuisson longue à frémissement très léger, viande et garniture couvertes de liquide."

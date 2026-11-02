@@ -1,0 +1,17 @@
+titre: Liquides et bouillons
+ingredients:
+  - { slug: eau, nom: "eau", placard: true, synonymes: ["eau froide", "eau chaude", "eau tiède"] }
+  - { slug: eau-de-fleur-d-oranger, nom: "eau de fleur d'oranger", synonymes: ["fleur d'oranger"] }
+  - { slug: bouillon, nom: "bouillon" }
+  - { slug: bouillon-de-boeuf, parent: bouillon, nom: "bouillon de bœuf", synonymes: ["bouillon de pot-au-feu"] }
+  - { slug: bouillon-de-volaille, parent: bouillon, nom: "bouillon de volaille", synonymes: ["bouillon de poule", "bouillon de poulet"] }
+  - { slug: bouillon-de-legumes, parent: bouillon, nom: "bouillon de légumes" }
+  - { slug: fumet-de-poisson, parent: bouillon, nom: "fumet de poisson" }
+  - { slug: cube-de-bouillon, nom: "cube de bouillon", pluriel: "cubes de bouillon" }
+  - { slug: cube-de-bouillon-de-volaille, parent: cube-de-bouillon, nom: "cube de bouillon de volaille", pluriel: "cubes de bouillon de volaille", synonymes: ["cube de bouillon de poule"] }
+  - { slug: cube-de-bouillon-de-boeuf, parent: cube-de-bouillon, nom: "cube de bouillon de bœuf", pluriel: "cubes de bouillon de bœuf" }
+  - { slug: cube-de-bouillon-de-legumes, parent: cube-de-bouillon, nom: "cube de bouillon de légumes", pluriel: "cubes de bouillon de légumes" }
+  - { slug: fond-de-veau-deshydrate, nom: "fond de veau déshydraté", synonymes: ["fond de veau en poudre", "fond de veau lié"] }
+  - { slug: jus-de-citron, nom: "jus de citron", substituts: [citron] }
+  - { slug: jus-d-orange, nom: "jus d'orange" }
+  - { slug: lait-de-coco, nom: "lait de coco" }

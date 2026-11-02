@@ -1,0 +1,13 @@
+titre: Agneau
+ingredients:
+  - { slug: agneau-a-braiser, nom: "agneau à braiser", synonymes: ["agneau pour navarin", "agneau à ragoût", "épaule et collier d'agneau"], techniques: [braiser, ragout, mijoter] }
+  - { slug: epaule-d-agneau, parent: agneau-a-braiser, nom: "épaule d'agneau", techniques: [braiser, ragout, mijoter, rotir] }
+  - { slug: collier-d-agneau, parent: agneau-a-braiser, nom: "collier d'agneau", techniques: [braiser, ragout, mijoter] }
+  - { slug: jarret-d-agneau, parent: agneau-a-braiser, nom: "jarret d'agneau", pluriel: "jarrets d'agneau", techniques: [braiser, mijoter] }
+  - { slug: souris-d-agneau, parent: agneau-a-braiser, nom: "souris d'agneau", pluriel: "souris d'agneau", techniques: [braiser, mijoter] }
+  - { slug: agneau-a-rotir, nom: "agneau à rôtir", techniques: [rotir, cuire-au-four] }
+  - { slug: gigot-d-agneau, parent: agneau-a-rotir, nom: "gigot d'agneau", techniques: [rotir, cuire-au-four, braiser] }
+  - { slug: carre-d-agneau, parent: agneau-a-rotir, nom: "carré d'agneau", pluriel: "carrés d'agneau", masse: singulier, techniques: [rotir, griller] }
+  - { slug: selle-d-agneau, parent: agneau-a-rotir, nom: "selle d'agneau", techniques: [rotir] }
+  - { slug: cote-d-agneau, nom: "côte d'agneau", pluriel: "côtes d'agneau", synonymes: ["côtelette d'agneau"], techniques: [griller, poeler] }
+  - { slug: agneau-hache, nom: "agneau haché", synonymes: ["viande d'agneau hachée"], techniques: [sauter, poeler] }

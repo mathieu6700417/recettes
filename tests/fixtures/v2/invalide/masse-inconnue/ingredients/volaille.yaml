@@ -1,0 +1,7 @@
+titre: Volaille
+ingredients:
+  - slug: coq
+    nom: coq
+    pluriel: coqs
+    masse: pluriel
+    techniques: [ragout]

@@ -1,0 +1,16 @@
+titre: Veau
+ingredients:
+  - { slug: veau-a-braiser, nom: "veau à braiser", synonymes: ["veau à ragoût", "veau à sauter"], techniques: [braiser, ragout, mijoter] }
+  - { slug: veau-a-blanquette, parent: veau-a-braiser, nom: "veau à blanquette", synonymes: ["blanquette de veau"], techniques: [cuisson-au-blanc, mijoter] }
+  - { slug: epaule-de-veau, parent: veau-a-braiser, nom: "épaule de veau", techniques: [braiser, ragout, mijoter, rotir] }
+  - { slug: tendron-de-veau, parent: veau-a-braiser, nom: "tendron de veau", techniques: [braiser, mijoter, cuisson-au-blanc] }
+  - { slug: poitrine-de-veau, parent: veau-a-braiser, nom: "poitrine de veau", techniques: [braiser, mijoter, cuisson-au-blanc] }
+  - { slug: jarret-de-veau, parent: veau-a-braiser, nom: "jarret de veau", pluriel: "jarrets de veau", synonymes: ["osso buco", "jarret de veau avec os"], techniques: [braiser, mijoter, pocher] }
+  - { slug: veau-a-griller, nom: "veau à griller", techniques: [griller, poeler, sauter] }
+  - { slug: escalope-de-veau, parent: veau-a-griller, nom: "escalope de veau", pluriel: "escalopes de veau", techniques: [poeler, sauter] }
+  - { slug: cote-de-veau, parent: veau-a-griller, nom: "côte de veau", pluriel: "côtes de veau", techniques: [poeler, griller, rotir] }
+  - { slug: filet-mignon-de-veau, parent: veau-a-griller, nom: "filet mignon de veau", pluriel: "filets mignons de veau", masse: singulier, techniques: [poeler, rotir] }
+  - { slug: foie-de-veau, nom: "foie de veau", techniques: [poeler, sauter] }
+  - { slug: ris-de-veau, nom: "ris de veau", pluriel: "ris de veau", techniques: [pocher, poeler] }
+  - { slug: os-de-veau, nom: "os de veau", pluriel: "os de veau", techniques: [mijoter, rotir] }
+  - { slug: veau-hache, nom: "veau haché", synonymes: ["viande de veau hachée"], techniques: [sauter, poeler] }

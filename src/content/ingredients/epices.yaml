@@ -1,0 +1,44 @@
+titre: Épices
+ingredients:
+  - { slug: poivre, nom: "poivre", placard: true, synonymes: ["poivre noir", "poivre du moulin", "poivre concassé", "poivre en grains"] }
+  - { slug: poivre-blanc, parent: poivre, nom: "poivre blanc", placard: true }
+  - { slug: poivre-vert, parent: poivre, nom: "poivre vert", synonymes: ["poivre vert en grains"] }
+  - { slug: cannelle, nom: "cannelle" }
+  - { slug: cannelle-en-poudre, parent: cannelle, nom: "cannelle en poudre", synonymes: ["cannelle moulue"] }
+  - { slug: baton-de-cannelle, parent: cannelle, nom: "bâton de cannelle", pluriel: "bâtons de cannelle" }
+  - { slug: clou-de-girofle, nom: "clou de girofle", pluriel: "clous de girofle", synonymes: ["girofle"] }
+  - { slug: noix-de-muscade, nom: "noix de muscade", synonymes: ["muscade", "noix de muscade râpée"] }
+  - { slug: cumin, nom: "cumin" }
+  - { slug: cumin-en-graines, parent: cumin, nom: "cumin en graines", synonymes: ["graines de cumin"] }
+  - { slug: cumin-moulu, parent: cumin, nom: "cumin moulu", synonymes: ["cumin en poudre"] }
+  - { slug: coriandre-graine, nom: "coriandre en graines", synonymes: ["graines de coriandre", "coriandre moulue"] }
+  - { slug: gingembre-moulu, nom: "gingembre moulu", synonymes: ["gingembre en poudre"], substituts: [gingembre-frais] }
+  - { slug: curcuma, nom: "curcuma", synonymes: ["curcuma moulu"] }
+  - { slug: safran, nom: "safran", synonymes: ["pistils de safran"] }
+  - { slug: paprika, nom: "paprika" }
+  - { slug: paprika-doux, parent: paprika, nom: "paprika doux" }
+  - { slug: paprika-fort, parent: paprika, nom: "paprika fort", synonymes: ["paprika piquant"] }
+  - { slug: paprika-fume, parent: paprika, nom: "paprika fumé", synonymes: ["pimentón"] }
+  - { slug: piment-sec, nom: "piment sec", synonymes: ["piment séché"] }
+  - { slug: piment-d-espelette, parent: piment-sec, nom: "piment d'Espelette", synonymes: ["espelette"] }
+  - { slug: piment-de-cayenne, parent: piment-sec, nom: "piment de Cayenne", synonymes: ["cayenne"] }
+  - { slug: piment-en-flocons, parent: piment-sec, nom: "piment en flocons" }
+  - { slug: piment-mexicain-sec, parent: piment-sec, nom: "piment mexicain sec", pluriel: "piments mexicains secs", synonymes: ["chile sec"] }
+  - { slug: piment-ancho, parent: piment-mexicain-sec, nom: "piment ancho", pluriel: "piments anchos" }
+  - { slug: piment-mulato, parent: piment-mexicain-sec, nom: "piment mulato", pluriel: "piments mulatos" }
+  - { slug: piment-pasilla, parent: piment-mexicain-sec, nom: "piment pasilla", pluriel: "piments pasillas" }
+  - { slug: piment-guajillo, parent: piment-mexicain-sec, nom: "piment guajillo", pluriel: "piments guajillos" }
+  - { slug: piment-chipotle, parent: piment-mexicain-sec, nom: "piment chipotle", pluriel: "piments chipotles" }
+  - { slug: chili-en-poudre, nom: "chili en poudre", synonymes: ["piment en poudre", "poudre de chili"] }
+  - { slug: baie-de-genievre, nom: "baie de genièvre", pluriel: "baies de genièvre", synonymes: ["genièvre"] }
+  - { slug: cardamome, nom: "cardamome", synonymes: ["graines de cardamome"] }
+  - { slug: anis-etoile, nom: "anis étoilé", synonymes: ["badiane", "étoile de badiane"] }
+  - { slug: anis-vert, nom: "anis vert", synonymes: ["graines d'anis"] }
+  - { slug: graine-de-moutarde, nom: "graine de moutarde", pluriel: "graines de moutarde" }
+  - { slug: quatre-epices, nom: "quatre-épices" }
+  - { slug: curry-en-poudre, nom: "curry en poudre", synonymes: ["curry"] }
+  - { slug: gousse-de-vanille, nom: "gousse de vanille", pluriel: "gousses de vanille", synonymes: ["vanille", "vanille en gousse"], substituts: [extrait-de-vanille] }
+  - { slug: extrait-de-vanille, nom: "extrait de vanille", synonymes: ["vanille liquide", "arôme vanille"], substituts: [gousse-de-vanille] }
+  - { slug: petale-de-rose, nom: "pétale de rose séché", pluriel: "pétales de rose séchés", synonymes: ["rose séchée"] }
+  - { slug: ras-el-hanout-en-poudre, nom: "ras-el-hanout", techniques: [braiser, mijoter] }
+  - { slug: garam-masala-en-poudre, nom: "garam masala", techniques: [ragout, mijoter] }

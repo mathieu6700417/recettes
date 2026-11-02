@@ -1,6 +1,5 @@
 ---
 titre: Ragoût
-axe: cuisson
 parent: braiser
 mutation: "+ viande en morceaux, sauce liée ou réduite"
 resume: "Braisé de viande coupée en morceaux, servi dans sa sauce liée."

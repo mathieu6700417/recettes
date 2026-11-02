@@ -1,0 +1,13 @@
+titre: Gibier
+ingredients:
+  - { slug: gibier-a-poil, nom: "gibier à poil", techniques: [braiser, ragout, rotir] }
+  - { slug: lievre, parent: gibier-a-poil, nom: "lièvre", pluriel: "lièvres", masse: singulier, techniques: [braiser, ragout, rotir] }
+  - { slug: lapin, parent: gibier-a-poil, nom: "lapin", pluriel: "lapins", masse: singulier, synonymes: ["lapin de garenne"], techniques: [braiser, ragout, rotir, sauter] }
+  - { slug: sanglier, parent: gibier-a-poil, nom: "sanglier", synonymes: ["marcassin"], techniques: [braiser, ragout] }
+  - { slug: chevreuil, parent: gibier-a-poil, nom: "chevreuil", techniques: [braiser, ragout, rotir] }
+  - { slug: cerf, parent: gibier-a-poil, nom: "cerf", techniques: [braiser, ragout, rotir] }
+  - { slug: gibier-a-plume, nom: "gibier à plume", techniques: [rotir, braiser] }
+  - { slug: faisan, parent: gibier-a-plume, nom: "faisan", pluriel: "faisans", masse: singulier, techniques: [rotir, braiser] }
+  - { slug: perdrix, parent: gibier-a-plume, nom: "perdrix", pluriel: "perdrix", techniques: [rotir, braiser] }
+  - { slug: pigeon, parent: gibier-a-plume, nom: "pigeon", pluriel: "pigeons", masse: singulier, techniques: [rotir, poeler] }
+  - { slug: sang-de-lievre, nom: "sang de lièvre", synonymes: ["sang de gibier"] }

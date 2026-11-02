@@ -1,0 +1,16 @@
+titre: Volaille
+ingredients:
+  - { slug: poulet, nom: "poulet", pluriel: "poulets", masse: singulier, synonymes: ["poulet fermier", "poulet entier", "poulet découpé"], techniques: [rotir, poeler, braiser, mijoter, pocher] }
+  - { slug: blanc-de-poulet, parent: poulet, nom: "blanc de poulet", pluriel: "blancs de poulet", synonymes: ["filet de poulet", "escalope de poulet"], techniques: [poeler, sauter, pocher, griller] }
+  - { slug: cuisse-de-poulet, parent: poulet, nom: "cuisse de poulet", pluriel: "cuisses de poulet", synonymes: ["haut de cuisse", "pilon"], techniques: [braiser, rotir, mijoter, griller] }
+  - { slug: coq, nom: "coq", pluriel: "coqs", masse: singulier, synonymes: ["coq fermier"], techniques: [braiser, ragout, mijoter] }
+  - { slug: poule, nom: "poule", pluriel: "poules", masse: singulier, synonymes: ["poule à bouillir"], techniques: [pocher, mijoter, cuisson-au-blanc] }
+  - { slug: dinde, nom: "dinde", pluriel: "dindes", masse: singulier, synonymes: ["dindonneau", "escalope de dinde"], techniques: [rotir, braiser, mijoter] }
+  - { slug: canard, nom: "canard", pluriel: "canards", masse: singulier, techniques: [rotir, braiser, poeler] }
+  - { slug: magret-de-canard, parent: canard, nom: "magret de canard", pluriel: "magrets de canard", masse: singulier, techniques: [poeler, griller] }
+  - { slug: pintade, nom: "pintade", pluriel: "pintades", masse: singulier, techniques: [rotir, braiser] }
+  - { slug: caille, nom: "caille", pluriel: "cailles", techniques: [rotir, poeler] }
+  - { slug: foie-de-volaille, nom: "foie de volaille", pluriel: "foies de volaille", synonymes: ["foie de poule"], techniques: [poeler, sauter] }
+  - { slug: carcasse-de-volaille, nom: "carcasse de volaille", pluriel: "carcasses de volaille", synonymes: ["carcasse de poulet"], techniques: [mijoter] }
+  - { slug: sang-de-volaille, nom: "sang de volaille", synonymes: ["sang de coq"] }
+  - { slug: quenelle, nom: "quenelle de volaille", pluriel: "quenelles de volaille", techniques: [pocher] }

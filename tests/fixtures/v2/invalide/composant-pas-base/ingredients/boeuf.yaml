@@ -1,0 +1,13 @@
+titre: Bœuf
+ingredients:
+  - slug: boeuf-a-braiser
+    nom: bœuf à braiser
+    synonymes: ["bœuf à bourguignon", "bœuf à ragoût"]
+    techniques: [braiser, ragout]
+  - slug: joue-de-boeuf
+    parent: boeuf-a-braiser
+    nom: joue de bœuf
+    pluriel: joues de bœuf
+  - slug: os-de-boeuf
+    nom: os de bœuf
+    elision: false

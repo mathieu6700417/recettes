@@ -1,0 +1,7 @@
+titre: Féculents
+ingredients:
+  - slug: farine
+    nom: farine
+    placard: true
+  - slug: roux
+    nom: roux

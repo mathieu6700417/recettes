@@ -1,0 +1,18 @@
+titre: Bœuf
+ingredients:
+  - { slug: boeuf-a-braiser, nom: "bœuf à braiser", synonymes: ["bœuf à bourguignon", "bœuf à ragoût", "bœuf à bouillir", "bœuf à mijoter", "bœuf pour pot-au-feu"], techniques: [braiser, ragout, mijoter, pocher] }
+  - { slug: paleron, parent: boeuf-a-braiser, nom: "paleron de bœuf", synonymes: ["paleron"], techniques: [braiser, ragout, mijoter, pocher] }
+  - { slug: joue-de-boeuf, parent: boeuf-a-braiser, nom: "joue de bœuf", pluriel: "joues de bœuf", techniques: [braiser, ragout] }
+  - { slug: jarret-de-boeuf, parent: boeuf-a-braiser, nom: "jarret de bœuf", pluriel: "jarrets de bœuf", techniques: [braiser, mijoter, pocher] }
+  - { slug: macreuse, parent: boeuf-a-braiser, nom: "macreuse de bœuf", synonymes: ["macreuse"], techniques: [braiser, ragout] }
+  - { slug: gite-de-boeuf, parent: boeuf-a-braiser, nom: "gîte de bœuf", synonymes: ["gîte", "gite"], techniques: [braiser, mijoter, pocher] }
+  - { slug: plat-de-cotes, parent: boeuf-a-braiser, nom: "plat de côtes", synonymes: ["plat de côtes de bœuf"], techniques: [mijoter, pocher] }
+  - { slug: queue-de-boeuf, parent: boeuf-a-braiser, nom: "queue de bœuf", pluriel: "queues de bœuf", techniques: [braiser, mijoter] }
+  - { slug: boeuf-a-griller, nom: "bœuf à griller", synonymes: ["steak", "bifteck"], techniques: [griller, poeler] }
+  - { slug: filet-de-boeuf, parent: boeuf-a-griller, nom: "filet de bœuf", synonymes: ["filet", "tournedos"], techniques: [griller, poeler, rotir, cru] }
+  - { slug: rumsteck, parent: boeuf-a-griller, nom: "rumsteck", synonymes: ["romsteck"], techniques: [griller, poeler, cru] }
+  - { slug: faux-filet, parent: boeuf-a-griller, nom: "faux-filet", pluriel: "faux-filets", masse: singulier, techniques: [griller, poeler] }
+  - { slug: entrecote, parent: boeuf-a-griller, nom: "entrecôte", pluriel: "entrecôtes", masse: singulier, techniques: [griller, poeler] }
+  - { slug: bavette, parent: boeuf-a-griller, nom: "bavette", pluriel: "bavettes", masse: singulier, techniques: [griller, poeler] }
+  - { slug: boeuf-hache, nom: "bœuf haché", synonymes: ["viande hachée", "steak haché", "hachis de bœuf"], techniques: [sauter, poeler, cru] }
+  - { slug: os-a-moelle, nom: "os à moelle", pluriel: "os à moelle", techniques: [pocher, rotir] }

@@ -12,6 +12,17 @@
   --focus: #a8482a;
   --police: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
   --largeur-lateral: 20rem;
+  /* une teinte discrète par type de lien (listes et graphe local) */
+  --lien-cuisson: #b8562f;
+  --lien-composant: #2f7a55;
+  --lien-profil: #8152a3;
+  --lien-substitution: #2c6aa3;
+  --lien-parent: #8a8178;
+  --lien-utilise: #9c7a12;
+  --lien-substitut: #1f8282;
+  --lien-accord: #a8466c;
+  --lien-cousin: #5f5fae;
+  --lien-neutre: #b5aea6;
   color-scheme: light dark;
 }
 @media (prefers-color-scheme: dark) {
@@ -27,6 +38,16 @@
     --accent-fond: #3a2620;
     --marque: #5a4a12;
     --focus: #e48a68;
+    --lien-cuisson: #e48a68;
+    --lien-composant: #7cc39d;
+    --lien-profil: #c39be0;
+    --lien-substitution: #84b6e6;
+    --lien-parent: #a9a198;
+    --lien-utilise: #d9b85a;
+    --lien-substitut: #6cc7c7;
+    --lien-accord: #e08aaa;
+    --lien-cousin: #a5a5e8;
+    --lien-neutre: #8d877f;
   }
 }
 
@@ -106,14 +127,18 @@ button { font: inherit; color: inherit; }
 mark { background: var(--marque); color: inherit; border-radius: 2px; padding: 0 1px; }
 
 /* ---------- Arbre ---------- */
-.bascule-axes { display: flex; border: 1px solid var(--trait); border-radius: 6px; overflow: hidden; margin-bottom: 0.8rem; }
+.liens-outils { margin: -0.3rem 0 0.8rem; font-size: 0.85rem; }
+.choix-lentille { display: flex; border: 1px solid var(--trait); border-radius: 6px; overflow: hidden; margin-bottom: 0.8rem; }
 .bascule {
   flex: 1; border: 0; background: transparent; padding: 0.4rem 0.3rem; font-size: 0.78rem; cursor: pointer; color: var(--texte-doux);
 }
 .bascule + .bascule { border-left: 1px solid var(--trait); }
 .bascule[aria-pressed="true"] { background: var(--fond); color: var(--accent); font-weight: 600; }
-html[data-axe="cuisson"] .axe[data-axe="base"],
-html[data-axe="base"] .axe[data-axe="cuisson"] { display: none; }
+.js .lentille { display: none; }
+html[data-lentille="cuisson"] .lentille[data-lentille="cuisson"],
+html[data-lentille="composants"] .lentille[data-lentille="composants"],
+html[data-lentille="profils"] .lentille[data-lentille="profils"],
+html[data-lentille="ingredients"] .lentille[data-lentille="ingredients"] { display: block; }
 
 .arbre ul { list-style: none; margin: 0; padding: 0; }
 .arbre .enfants { padding-left: 0.85rem; margin-left: 0.6rem; border-left: 1px solid var(--trait); }
@@ -132,8 +157,11 @@ html[data-axe="base"] .axe[data-axe="cuisson"] { display: none; }
   color: var(--texte); text-decoration: none; padding: 0.15rem 0.35rem; border-radius: 4px; font-size: 0.9rem;
 }
 .arbre .ligne a:hover { background: var(--trait-leger); }
-.arbre .racines > .noeud-technique > .ligne a { font-weight: 600; }
-.arbre .noeud-recette > .ligne a { color: var(--texte-doux); }
+.arbre .racines > .noeud:not(.noeud-preparation) > .ligne a,
+.arbre .racines > .noeud > .ligne .groupe-arbre { font-weight: 600; }
+.arbre .groupe-arbre { flex: 1; display: flex; gap: 0.35rem; padding: 0.15rem 0.35rem; font-size: 0.9rem; color: var(--texte-pale); font-style: italic; }
+.arbre .noeud-preparation > .ligne a { color: var(--texte-doux); }
+.arbre .noeud-preparation.nature-base > .ligne a { color: var(--texte); }
 .arbre .titre { overflow: hidden; text-overflow: ellipsis; }
 .arbre .compteur { margin-left: auto; font-size: 0.7rem; color: var(--texte-pale); font-variant-numeric: tabular-nums; }
 .arbre .mutation { font-size: 0.72rem; color: var(--texte-pale); padding-left: 1.95rem; margin-top: -0.3rem; margin-bottom: 0.15rem; line-height: 1.3; font-style: italic; }
@@ -146,7 +174,7 @@ h2 { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spa
 h3 { font-size: 0.85rem; font-weight: 600; margin: 1rem 0 0.3rem; color: var(--texte-doux); }
 .meta { color: var(--texte-pale); font-size: 0.9rem; margin: 0 0 1.2rem; padding-bottom: 0.9rem; border-bottom: 1px solid var(--trait); }
 .meta span { white-space: nowrap; }
-.meta span + span::before { content: "·"; margin: 0 0.6rem; }
+.meta span + span::before { content: "\200b·"; margin: 0 0.6rem; white-space: normal; }
 .fil-mutation { font-style: italic; color: var(--texte-doux); }
 .manquant { color: var(--texte-pale); text-decoration: line-through dotted; }
 .prose { max-width: 42rem; }
@@ -166,11 +194,6 @@ h3 { font-size: 0.85rem; font-weight: 600; margin: 1rem 0 0.3rem; color: var(--t
 .sous-arbre li { padding: 0.25rem 0; }
 .sous-arbre a { text-decoration: none; }
 .sous-arbre a:hover { text-decoration: underline; }
-.sa-technique > a { font-weight: 600; }
-.sa-recette > a { color: var(--texte); }
-.sa-recette .drapeau { margin-right: 0.3rem; }
-.sa-mutation { display: block; font-size: 0.82rem; font-style: italic; color: var(--texte-pale); }
-.sa-note { display: block; font-size: 0.75rem; color: var(--texte-pale); }
 .vide { color: var(--texte-pale); }
 
 /* ---------- Accueil ---------- */
@@ -190,13 +213,135 @@ h3 { font-size: 0.85rem; font-weight: 600; margin: 1rem 0 0.3rem; color: var(--t
 .carte-resume { font-size: 0.85rem; color: var(--texte-doux); flex: 1; }
 .carte-compte { font-size: 0.75rem; color: var(--texte-pale); }
 
-/* ---------- Page recette ---------- */
-.entete-recette h1 .drapeau { font-size: 0.7em; vertical-align: 0.1em; }
-.genealogie { font-size: 0.85rem; margin: 0 0 1.2rem; }
-.fil { margin: 0.2rem 0; display: flex; gap: 0.6rem; flex-wrap: wrap; }
-.fil-axe { color: var(--texte-pale); min-width: 9.5rem; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; padding-top: 0.15em; }
-.fil-chaine { flex: 1; min-width: 14rem; }
+/* ---------- Fiche (préparation, technique, profil, ingrédient) ---------- */
 .fleche { color: var(--texte-pale); }
+.fiche {
+  display: grid; grid-template-columns: minmax(0, 1fr); column-gap: 2.2rem;
+  grid-template-areas: "entete" "haut" "graphe" "milieu" "bas";
+}
+.fiche-entete { grid-area: entete; }
+.fiche > .haut { grid-area: haut; }
+.fiche > .graphe-local { grid-area: graphe; }
+.fiche > .milieu { grid-area: milieu; min-width: 0; }
+.fiche > .bas { grid-area: bas; }
+@media (max-width: 799px) {
+  .fiche { grid-template-areas: "entete" "haut" "milieu" "graphe" "bas"; }
+}
+.type-noeud { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; color: var(--texte-pale); margin: 0 0 0.3rem; }
+.ariane .type-noeud { margin-right: 0.5rem; }
+.fiche h1 .drapeau { font-size: 0.7em; vertical-align: 0.1em; }
+.ref { text-decoration: none; }
+.ref:hover { text-decoration: underline; }
+.ref .drapeau { margin-right: 0.25rem; }
+.pays { color: var(--texte-pale); font-size: 0.85em; }
+.note { color: var(--texte-pale); font-size: 0.85em; }
+.badge { display: inline-block; font-size: 0.72rem; border: 1px solid var(--trait); border-radius: 999px; padding: 0 0.5rem; color: var(--texte-doux); vertical-align: 0.1em; }
+
+/* Groupes de liens : une puce et un filet de la teinte du type de lien */
+.t-cuisson { --t: var(--lien-cuisson); }
+.t-composant { --t: var(--lien-composant); }
+.t-profil { --t: var(--lien-profil); }
+.t-substitution { --t: var(--lien-substitution); }
+.t-parent { --t: var(--lien-parent); }
+.t-utilise { --t: var(--lien-utilise); }
+.t-substitut { --t: var(--lien-substitut); }
+.t-accord { --t: var(--lien-accord); }
+.t-cousin { --t: var(--lien-cousin); }
+.t-neutre { --t: var(--lien-neutre); }
+.puce { display: inline-block; width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--t, var(--lien-neutre)); margin-right: 0.45rem; vertical-align: 0.05em; flex: none; }
+.haut, .bas { font-size: 0.92rem; }
+.haut { margin-bottom: 1rem; }
+.bas { margin-top: 2.5rem; border-top: 1px solid var(--trait); }
+.groupe-liens { margin: 0 0 0.9rem; padding-left: 0.75rem; border-left: 2px solid var(--t, var(--trait)); }
+.groupe-liens .titre-groupe { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--texte-pale); margin: 0 0 0.25rem; }
+.groupe-liens .titre-groupe .puce { display: none; }
+.groupe-liens .titre-groupe a { text-transform: none; letter-spacing: 0; font-size: 0.8rem; }
+.liens { list-style: none; margin: 0; padding: 0; }
+.liens li { padding: 0.15rem 0; }
+.liens .fil-mutation, .liens .echanges { display: block; font-size: 0.82rem; color: var(--texte-pale); line-height: 1.35; }
+.liens .echanges::before { content: "échange : "; font-style: normal; }
+.echanges { font-style: normal; }
+.role { font-size: 0.72rem; color: var(--texte-pale); border: 1px solid var(--trait); border-radius: 999px; padding: 0 0.45rem; margin-right: 0.15rem; }
+.liens-en-ligne { margin: 0; line-height: 1.7; }
+.cousins li.ailleurs .ref { font-weight: 600; }
+.cousins li.ailleurs .drapeau { font-size: 1.1em; }
+.principe { margin-top: 0.5rem; }
+.histoire { max-width: 42rem; font-size: 0.92rem; color: var(--texte-doux); }
+.source-histoire { color: var(--texte-pale); font-style: italic; }
+.precision { color: var(--texte-doux); }
+.lien-discret { color: inherit; text-decoration: underline dotted var(--trait); text-underline-offset: 0.2em; }
+.lien-discret:hover { color: var(--accent); text-decoration-color: currentColor; }
+
+/* Graphe local */
+.graphe-local { margin: 0 0 1.2rem; }
+.graphe-local summary { cursor: pointer; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--texte-pale); margin-bottom: 0.3rem; }
+.graphe-local { min-width: 0; max-width: 100%; }
+.cadre-graphe { overflow-x: auto; max-width: min(100%, 40rem); }
+.graphe { display: block; width: 100%; min-width: 30rem; height: auto; font-family: var(--police); }
+.graphe line { stroke: var(--t); stroke-width: 1.5; opacity: 0.7; }
+.graphe circle { fill: var(--t); }
+.graphe text { fill: var(--texte-doux); font-size: 13px; }
+.graphe a text { fill: var(--texte); }
+.graphe a:hover text, .graphe a:focus text { fill: var(--accent); text-decoration: underline; }
+.graphe a:hover circle { stroke: var(--texte); stroke-width: 1.5; }
+.graphe .surplus text { fill: var(--texte-pale); font-style: italic; }
+.graphe .centre circle { fill: var(--accent); stroke: var(--fond); stroke-width: 3; }
+.graphe .centre text { fill: var(--texte); font-weight: 600; font-size: 15px; }
+.legende { list-style: none; margin: 0.3rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.2rem 0.9rem; font-size: 0.75rem; color: var(--texte-pale); }
+
+/* Versions en onglets */
+.titre-versions { margin-top: 2rem; }
+.onglets { display: flex; flex-wrap: wrap; gap: 0.25rem; border-bottom: 1px solid var(--trait); margin-bottom: 1rem; }
+.onglets [role="tab"] {
+  border: 1px solid transparent; border-bottom: 0; background: transparent; padding: 0.45rem 0.9rem; cursor: pointer;
+  border-radius: 6px 6px 0 0; color: var(--texte-doux); font-size: 0.9rem; margin-bottom: -1px;
+}
+.onglets [role="tab"][aria-selected="true"] { border-color: var(--trait); background: var(--fond); color: var(--accent); font-weight: 600; }
+.onglets [role="tab"]:hover { color: var(--accent); }
+.ref-badge { font-size: 0.65rem; font-weight: 400; color: var(--texte-pale); margin-left: 0.4rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.titre-version { font-size: 1.05rem; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--texte); margin: 0 0 0.4rem; }
+.js .avec-onglets .titre-version { display: none; }
+.statut { font-size: 0.68rem; color: var(--texte-pale); border: 1px solid var(--trait); border-radius: 999px; padding: 0.05rem 0.5rem; margin-left: 0.5rem; vertical-align: 0.15em; white-space: nowrap; }
+.statut-a-relire { border-style: dashed; }
+.panneau-version > .statut-ligne { margin: 0 0 0.5rem; }
+.ecarts { font-size: 0.9rem; margin: -0.6rem 0 1rem; color: var(--texte-doux); }
+.ecarts-titre { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; color: var(--texte-pale); margin-right: 0.4rem; }
+.titre-section { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--texte-pale); margin: 1.2rem 0 0.8rem; }
+h5 { font-size: 0.85rem; font-weight: 600; margin: 1rem 0 0.3rem; color: var(--texte-doux); }
+.panneau-version + .panneau-version { margin-top: 2.5rem; }
+
+/* Cuisiner avec ce que j'ai */
+.saisie label { display: block; font-size: 0.8rem; color: var(--texte-doux); margin-bottom: 0.25rem; }
+.saisie-ligne { display: flex; gap: 0.5rem; max-width: 32rem; }
+.combo { position: relative; flex: 1; }
+.combo input { width: 100%; font: inherit; padding: 0.45rem 0.75rem; border: 1px solid var(--trait); border-radius: 6px; background: var(--fond); color: var(--texte); }
+.combo .resultats li[role="option"] { padding: 0.35rem 0.75rem; cursor: pointer; }
+.combo .resultats li[aria-selected="true"], .combo .resultats li[role="option"]:hover { background: var(--accent-fond); }
+.pastilles { list-style: none; padding: 0; margin: 0 0 0.6rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.pastilles li { display: inline-flex; align-items: center; gap: 0.2rem; border: 1px solid var(--trait); border-radius: 999px; padding: 0.15rem 0.3rem 0.15rem 0.75rem; font-size: 0.9rem; }
+.pastilles button { border: 0; background: transparent; cursor: pointer; width: 1.6rem; height: 1.6rem; border-radius: 50%; color: var(--texte-pale); font-size: 1.1rem; line-height: 1; }
+.pastilles button:hover { background: var(--accent-fond); color: var(--accent); }
+.resultats-cuisine { list-style: none; padding: 0; margin: 0; }
+.resultat-cuisine { padding: 0.6rem 0; border-bottom: 1px solid var(--trait-leger); }
+.resultat-cuisine > a { font-size: 1.05rem; text-decoration: none; }
+.resultat-cuisine p { margin: 0.15rem 0 0; font-size: 0.85rem; color: var(--texte-doux); }
+.resultat-cuisine .avec-substitution { color: var(--lien-substitution); }
+.jauge { display: inline-block; width: 5rem; height: 0.4rem; background: var(--trait-leger); border-radius: 999px; margin: 0 0.4rem 0 0.8rem; vertical-align: 0.15em; overflow: hidden; }
+.jauge span { display: block; height: 100%; background: var(--accent); }
+.compte { font-size: 0.8rem; color: var(--texte-pale); font-variant-numeric: tabular-nums; }
+.bases-cuisine { margin-top: 2rem; padding-top: 0.5rem; border-top: 1px solid var(--trait); }
+.bases-cuisine h2 { font-size: 0.95rem; font-weight: 600; color: var(--texte-doux); }
+.bases-cuisine .resultat-cuisine > a { font-size: 0.95rem; }
+.bases-cuisine .resultat-cuisine { opacity: 0.9; }
+.statut-resultats { color: var(--texte-doux); font-size: 0.9rem; }
+.liste-versions { padding-left: 1.2rem; }
+.actions-accueil { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.actions-accueil .bouton { text-decoration: none; color: var(--texte); }
+.types-liens { list-style: none; padding: 0; margin: 0; font-size: 0.95rem; }
+.types-liens li { margin: 0.15rem 0; }
+.resultats .sous-resultat a { padding-left: 1.6rem; font-size: 0.82rem; color: var(--texte-doux); }
+.resultats .via { color: var(--texte-pale); }
+.resultats .synonyme { color: var(--texte-doux); }
 .outils { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-bottom: 0.5rem; }
 .portions { display: inline-flex; align-items: center; gap: 0.4rem; margin-right: 0.6rem; }
 .portions button {
@@ -234,8 +379,10 @@ h3 { font-size: 0.85rem; font-weight: 600; margin: 1rem 0 0.3rem; color: var(--t
 /* ---------- Mode cuisine ---------- */
 body.cuisine { font-size: 1.3rem; }
 body.cuisine .page { display: block; }
-body.cuisine .lateral, body.cuisine .genealogie, body.cuisine .entrer-cuisine, body.cuisine .imprimer,
-body.cuisine .notes, body.cuisine .source, body.cuisine .evitement { display: none; }
+body.cuisine .lateral, body.cuisine .haut, body.cuisine .bas, body.cuisine .graphe-local, body.cuisine .principe,
+body.cuisine .histoire, body.cuisine .titre-versions, body.cuisine .onglets, body.cuisine .resume, body.cuisine .type-noeud,
+body.cuisine .entrer-cuisine, body.cuisine .imprimer, body.cuisine .notes, body.cuisine .source, body.cuisine .evitement { display: none; }
+body.cuisine .fiche { display: block; }
 body.cuisine .contenu { max-width: 70rem; margin: 0 auto; padding-bottom: 6rem; }
 body.cuisine h1 { font-size: 2.4rem; }
 body.cuisine .coche {
@@ -259,20 +406,31 @@ body.cuisine .sortir-cuisine:hover { color: var(--fond); filter: brightness(1.08
   }
   body, body.cuisine { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #222; font-size: 11pt; line-height: 1.5; background: #fff; }
   .page { display: block; }
-  .lateral, .outils, .sortir-cuisine, .evitement, .ecran-seul, .coche { display: none !important; }
+  .lateral, .outils, .sortir-cuisine, .evitement, .ecran-seul, .coche, .graphe-local, .bas, .onglets,
+  .principe, .histoire, .titre-versions, .type-noeud, .statut, .resume { display: none !important; }
+  .fiche, body.cuisine .fiche { display: block; }
+  .haut, body.cuisine .haut { display: block !important; font-size: 8pt; color: #999; margin: 0 0 14pt; padding-bottom: 10pt; border-bottom: 0.5pt solid #ddd; }
+  .groupe-liens { border: 0; padding: 0; margin: 0 0 2pt; display: flex; gap: 6pt; }
+  .groupe-liens .titre-groupe { font-size: 7pt; color: #aaa; margin: 0; min-width: 0; }
+  .liens { display: inline; }
+  .liens li { display: inline; padding: 0; }
+  .liens li + li::before { content: " · "; }
+  .liens .fil-mutation, .liens .echanges { display: inline; font-size: 8pt; color: #999; margin-left: 3pt; }
+  .role { border: 0; padding: 0; font-size: 7pt; }
+  .titre-version, .js .avec-onglets .titre-version { display: block; font-size: 10pt; color: #666; margin: 0 0 2pt; }
+  .titre-section { font-size: 9pt; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5pt; color: #999; margin: 0 0 10pt; }
+  .ecarts { font-size: 8.5pt; color: #888; margin: 0 0 8pt; }
+  .lien-discret { text-decoration: none; }
   .contenu { padding: 0; max-width: none; }
   a { color: inherit; text-decoration: none; }
   h1, body.cuisine h1 { font-weight: 300; font-size: 28pt; margin: 0 0 4pt; letter-spacing: -0.5pt; }
   h1 .drapeau { font-size: 18pt; }
   .meta { color: #888; font-size: 9.5pt; margin: 0 0 6pt; padding-bottom: 0; border-bottom: 0; }
   .meta span + span::before { margin: 0 8pt; }
-  .genealogie, body.cuisine .genealogie { display: block; font-size: 8pt; color: #999; margin: 0 0 18pt; padding-bottom: 12pt; border-bottom: 0.5pt solid #ddd; }
-  .fil { display: block; margin: 0; }
-  .fil-axe { display: inline; min-width: 0; font-size: 7pt; color: #aaa; margin-right: 4pt; }
   .fil-mutation, .fleche { color: #999; }
   h2 { font-size: 9pt; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5pt; color: #999; margin: 0 0 10pt; }
   .grille h2 { margin-top: 0; }
-  h3 { font-size: 9pt; color: #666; margin: 8pt 0 2pt; }
+  h5 { font-size: 9pt; color: #666; margin: 8pt 0 2pt; }
   .grille { display: flex; flex-direction: row; gap: 28pt; }
   .ingredients { flex: 0 0 36%; }
   .ingredients li { padding: 3pt 0; border-bottom: 0.5pt solid #eee; }

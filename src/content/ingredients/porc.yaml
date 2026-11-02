@@ -1,0 +1,19 @@
+titre: Porc
+ingredients:
+  - { slug: porc-a-braiser, nom: "porc à braiser", synonymes: ["porc à ragoût", "sauté de porc"], techniques: [braiser, ragout, mijoter] }
+  - { slug: epaule-de-porc, parent: porc-a-braiser, nom: "épaule de porc", techniques: [braiser, mijoter, rotir] }
+  - { slug: echine-de-porc, parent: porc-a-braiser, nom: "échine de porc", techniques: [braiser, rotir] }
+  - { slug: jarret-de-porc, parent: porc-a-braiser, nom: "jarret de porc", pluriel: "jarrets de porc", techniques: [braiser, mijoter, pocher] }
+  - { slug: poitrine-de-porc, parent: porc-a-braiser, nom: "poitrine de porc", synonymes: ["poitrine fraîche", "lard maigre"], techniques: [braiser, rotir, mijoter] }
+  - { slug: porc-a-rotir, nom: "porc à rôtir", techniques: [rotir, cuire-au-four] }
+  - { slug: filet-mignon-de-porc, parent: porc-a-rotir, nom: "filet mignon de porc", pluriel: "filets mignons de porc", masse: singulier, techniques: [rotir, poeler] }
+  - { slug: longe-de-porc, parent: porc-a-rotir, nom: "longe de porc", synonymes: ["rôti de porc"], techniques: [rotir] }
+  - { slug: poitrine-fumee, nom: "poitrine fumée", synonymes: ["lard fumé", "lard maigre fumé"], techniques: [mijoter, poeler] }
+  - { slug: lardons, nom: "lardons", synonymes: ["lardons fumés", "lardons nature"], techniques: [sauter, poeler] }
+  - { slug: jambon-cuit, nom: "jambon cuit", synonymes: ["jambon blanc", "jambon de Paris"] }
+  - { slug: jambon-cru, nom: "jambon cru", synonymes: ["jambon sec"] }
+  - { slug: jambon-de-bayonne, parent: jambon-cru, nom: "jambon de Bayonne" }
+  - { slug: bacon, nom: "bacon", synonymes: ["poitrine fumée en tranches"] }
+  - { slug: chair-a-saucisse, nom: "chair à saucisse", synonymes: ["farce de porc", "chair de saucisse"] }
+  - { slug: saucisse, nom: "saucisse", pluriel: "saucisses", synonymes: ["saucisse de Toulouse"], techniques: [griller, poeler] }
+  - { slug: chorizo, nom: "chorizo", synonymes: ["saucisson espagnol"] }

@@ -1,81 +1,95 @@
 ---
-import { render } from 'astro:content';
+import { getEntry, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import SousArbre from '../../components/SousArbre.astro';
-import {
-  NOMS_AXES, ascendanceTechnique, drapeau, genealogie, nomPays, urlRecette, urlTechnique, type Technique,
-} from '../../lib/arbre';
+import GrapheLocal from '../../components/GrapheLocal.astro';
+import Ref from '../../components/Ref.astro';
+import { ascendance, descendantsDe, enfantsDe, parentDe, reseau, titreDe } from '../../lib/site';
 
-export async function getStaticPaths() {
-  const g = await genealogie();
-  return [...g.techniques.values()].map((t) => ({ params: { slug: t.id }, props: { technique: t } }));
+export function getStaticPaths() {
+  return reseau().parType('technique').map((n) => ({ params: { slug: n.slug } }));
 }
 
-interface Props { technique: Technique }
-const { technique } = Astro.props;
-const d = technique.data;
-const g = await genealogie();
-const { Content } = await render(technique);
-const axe = d.axe;
-const noeud = g.index[axe].get(`technique:${technique.id}`)!;
-const chaine = ascendanceTechnique(g, technique.id);
-const parent = d.parent ? g.techniques.get(d.parent) : undefined;
+const { slug } = Astro.params as { slug: string };
+const r = reseau();
+const d = r.noeud(slug)!.data;
+const entree = await getEntry('techniques', slug);
+const Corps = entree?.body?.trim() ? (await render(entree)).Content : null;
+const chaine = ascendance(slug);
+const parent = parentDe(slug);
+const sous = enfantsDe(slug);
 
-// Recettes : base secondaire ici, ou rattachées ici mais affichées sous leur recette mère.
-const recettes = [...g.recettes.values()];
-const secondaires = recettes
-  .map((r) => ({ r, lien: r.data.bases.slice(1).find((b) => b.slug === technique.id) }))
-  .filter((x) => x.lien);
-const rattacheesAilleurs = recettes
-  .map((r) => ({ r, lien: axe === 'cuisson' ? r.data.cuisson_technique : r.data.bases[0] }))
-  .filter(({ r, lien }) => lien.slug === technique.id && g.parents[axe].get(`recette:${r.id}`) !== `technique:${technique.id}`);
-const aussi = [
-  ...rattacheesAilleurs.map(({ r, lien }) => ({ r, mutation: lien.mutation, note: r.data.variante_de ? 'variante, classée sous sa recette mère' : '' })),
-  ...secondaires.map(({ r, lien }) => ({ r, mutation: lien!.mutation, note: 'base secondaire' })),
-].sort((a, b) => a.r.data.titre.localeCompare(b.r.data.titre, 'fr'));
+const parTitre = (a: { de: string }, b: { de: string }) => titreDe(a.de).localeCompare(titreDe(b.de), 'fr');
+const directes = r.liensVers(slug, 'cuisson').filter((l) => r.noeud(l.de)).sort(parTitre);
+const via = descendantsDe(slug)
+  .map((t) => ({ t, liens: r.liensVers(t, 'cuisson').filter((l) => r.noeud(l.de)).sort(parTitre) }))
+  .filter((x) => x.liens.length);
+const accords = r.liensVers(slug, 'accord').map((l) => l.de).filter((s) => r.noeud(s))
+  .sort((a, b) => titreDe(a).localeCompare(titreDe(b), 'fr'));
+const total = new Set([...directes, ...via.flatMap((x) => x.liens)].map((l) => l.de)).size;
 ---
-<Base titre={d.titre} courant={`technique:${technique.id}`} description={d.resume}>
-  <article class="technique">
-    <nav class="ariane" aria-label="Ascendance">
-      <span class="fil-axe">{NOMS_AXES[axe]}</span>
-      {chaine.map((t, i) => (
-        <>{i > 0 && <span class="fleche" aria-hidden="true"> → </span>}
-          {t.id === technique.id ? <span aria-current="page">{t.data.titre}</span> : <a href={urlTechnique(t.id)}>{t.data.titre}</a>}</>
-      ))}
-    </nav>
-    <h1>{d.titre}</h1>
-    <p class="resume">{d.resume}</p>
-    {d.parent && (
-      <p class="filiation">
-        {parent ? <a href={urlTechnique(parent.id)}>{parent.data.titre}</a> : <span class="manquant">{d.parent}</span>}
-        {d.mutation && <> <span class="fil-mutation">{d.mutation}</span></>}
+<Base titre={d.titre} courant={slug} description={d.resume}>
+  <article class="fiche fiche-technique">
+    <header class="fiche-entete">
+      <nav class="ariane" aria-label="Ascendance">
+        <span class="type-noeud">Technique</span>
+        {chaine.map((s) => <><Ref slug={s} /><span class="fleche" aria-hidden="true"> → </span></>)}
+        <span aria-current="page">{d.titre}</span>
+      </nav>
+      <h1>{d.titre}</h1>
+      <p class="resume">{d.resume}</p>
+      <p class="meta">
+        <span>{sous.length} sous-technique{sous.length > 1 ? 's' : ''}</span>
+        <span>{total} préparation{total > 1 ? 's' : ''}</span>
       </p>
-    )}
-    <p class="meta">
-      <span>{noeud.nbTechniques} technique{noeud.nbTechniques > 1 ? 's' : ''} descendante{noeud.nbTechniques > 1 ? 's' : ''}</span>
-      <span>{noeud.nbRecettes} recette{noeud.nbRecettes > 1 ? 's' : ''}</span>
-    </p>
+    </header>
 
-    <div class="prose"><Content /></div>
-
-    <section class="descendantes" aria-labelledby="titre-desc">
-      <h2 id="titre-desc">Descendantes</h2>
-      {noeud.enfants.length ? <SousArbre noeuds={noeud.enfants} /> : <p class="vide">Pas encore de descendante.</p>}
-    </section>
-
-    {aussi.length > 0 && (
-      <section class="aussi" aria-labelledby="titre-aussi">
-        <h2 id="titre-aussi">Utilisée aussi dans</h2>
-        <ul class="sous-arbre">
-          {aussi.map(({ r, mutation, note }) => (
-            <li class="sa-recette">
-              <a href={urlRecette(r.id)}><span class="drapeau" role="img" aria-label={nomPays(r.data.origine)}>{drapeau(r.data.origine)}</span>{r.data.titre}</a>
-              <span class="sa-mutation">{mutation}</span>
-              {note && <span class="sa-note">{note}</span>}
-            </li>
-          ))}
-        </ul>
+    {parent && (
+      <section class="haut" aria-label="Parent">
+        <div class="groupe-liens t-parent">
+          <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Descend de</h3>
+          <ul class="liens"><li><Ref slug={parent.vers} />{parent.mutation && <span class="fil-mutation">{parent.mutation}</span>}</li></ul>
+        </div>
       </section>
     )}
+
+    <GrapheLocal slug={slug} />
+
+    <div class="milieu">
+      {Corps && <div class="prose principe"><Corps /></div>}
+    </div>
+
+    <section class="bas" aria-labelledby="titre-descendants">
+      <h2 id="titre-descendants">Descendance</h2>
+      {sous.length > 0 && (
+        <div class="groupe-liens t-parent">
+          <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Sous-techniques</h3>
+          <ul class="liens">
+            {sous.map((s) => (<li><Ref slug={s} />{parentDe(s)?.mutation && <span class="fil-mutation">{parentDe(s)?.mutation}</span>}</li>))}
+          </ul>
+        </div>
+      )}
+      <div class="groupe-liens t-cuisson">
+        <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Préparations qui l'utilisent</h3>
+        {directes.length > 0 ? (
+          <ul class="liens">
+            {directes.map((l) => (<li><Ref slug={l.de} />{l.rang > 0 && <span class="note"> (cuisson secondaire)</span>}{l.mutation && <span class="fil-mutation">{l.mutation}</span>}</li>))}
+          </ul>
+        ) : <p class="vide">Aucune préparation directement.</p>}
+      </div>
+      {via.map(({ t, liens }) => (
+        <div class="groupe-liens t-cuisson via">
+          <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Via <Ref slug={t} /></h3>
+          <ul class="liens">
+            {liens.map((l) => (<li><Ref slug={l.de} />{l.rang > 0 && <span class="note"> (cuisson secondaire)</span>}{l.mutation && <span class="fil-mutation">{l.mutation}</span>}</li>))}
+          </ul>
+        </div>
+      ))}
+      {accords.length > 0 && (
+        <div class="groupe-liens t-accord">
+          <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Ingrédients qui s'y prêtent</h3>
+          <p class="liens-en-ligne">{accords.map((s, i) => <>{i > 0 && ' · '}<Ref slug={s} /></>)}</p>
+        </div>
+      )}
+    </section>
   </article>
 </Base>

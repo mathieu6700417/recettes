@@ -1,0 +1,16 @@
+titre: Sucres et chocolat
+ingredients:
+  - { slug: sucre, nom: "sucre", placard: true }
+  - { slug: sucre-en-poudre, parent: sucre, nom: "sucre en poudre", placard: true, synonymes: ["sucre semoule", "sucre cristallisé"] }
+  - { slug: sucre-glace, parent: sucre, nom: "sucre glace" }
+  - { slug: sucre-perle, parent: sucre, nom: "sucre perlé", synonymes: ["sucre en grains"] }
+  - { slug: cassonade, parent: sucre, nom: "cassonade", synonymes: ["sucre roux", "vergeoise"] }
+  - { slug: miel, nom: "miel", substituts: [sirop-d-erable] }
+  - { slug: sirop-d-erable, nom: "sirop d'érable" }
+  - { slug: sirop-de-glucose, nom: "sirop de glucose", synonymes: ["glucose"] }
+  - { slug: confiture-d-abricot, nom: "confiture d'abricot", synonymes: ["nappage abricot"] }
+  - { slug: chocolat, nom: "chocolat" }
+  - { slug: chocolat-noir, parent: chocolat, nom: "chocolat noir", synonymes: ["chocolat noir à 64 %", "chocolat noir à pâtisser", "chocolat à pâtisser"] }
+  - { slug: chocolat-au-lait, parent: chocolat, nom: "chocolat au lait" }
+  - { slug: chocolat-blanc, parent: chocolat, nom: "chocolat blanc" }
+  - { slug: cacao-en-poudre, parent: chocolat, nom: "cacao en poudre", synonymes: ["cacao amer"] }

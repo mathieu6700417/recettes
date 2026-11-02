@@ -1,0 +1,152 @@
+---
+import Base from '../../layouts/Base.astro';
+import GrapheLocal from '../../components/GrapheLocal.astro';
+import Ref from '../../components/Ref.astro';
+import SousIngredients from '../../components/SousIngredients.astro';
+import {
+  ascendance, descendantsDe, enfantsDe, nomCourant, nomDe, parentDe, reseau, substitutsDe, suffixeVersion,
+  titreDe, usagesDe,
+} from '../../lib/site';
+
+// Une page par ingrédient du référentiel ET par famille.
+export function getStaticPaths() {
+  const r = reseau();
+  return [...r.parType('famille'), ...r.parType('ingredient')].map((n) => ({ params: { slug: n.slug } }));
+}
+
+const { slug } = Astro.params as { slug: string };
+const r = reseau();
+const n = r.noeud(slug)!;
+const estFamille = n.type === 'famille';
+const d = n.data;
+const titre = titreDe(slug);
+const chaine = ascendance(slug);
+const parent = parentDe(slug);
+const descendants = descendantsDe(slug).filter((s) => r.noeud(s)?.type === 'ingredient');
+const tous = [slug, ...descendants];
+const enDessous = new Set(descendants);
+
+// Préparations dont une version utilise l'ingrédient ou un de ses descendants.
+const usages = usagesDe(tous);
+// Note par préparation : seulement si une version non de référence ou un descendant est en jeu.
+// « référence ; Version maison de Mathieu (joue de bœuf) »
+const precision = (u: { version: string; ingredient: string }[]) => {
+  const parVersion = new Map<string, Set<string>>();
+  for (const x of u) {
+    if (!parVersion.has(x.version)) parVersion.set(x.version, new Set());
+    if (x.ingredient !== slug) parVersion.get(x.version)!.add(nomDe(x.ingredient));
+  }
+  const simple = [...parVersion].every(([v, via]) => r.noeud(v)?.data.reference === true && via.size === 0);
+  if (simple) return '';
+  return [...parVersion]
+    .sort(([a], [b]) => Number(r.noeud(b)?.data.reference === true) - Number(r.noeud(a)?.data.reference === true))
+    .map(([v, via]) => {
+      const nom = r.noeud(v)?.data.reference === true ? 'référence' : (r.noeud(v)?.data.titre ?? suffixeVersion(v));
+      return via.size ? `${nom} (${[...via].join(', ')})` : nom;
+    }).join(' ; ');
+};
+
+// Profils dont la composition le contient.
+const profils = [...new Set(tous.flatMap((s) => r.liensVers(s, 'composition').map((l) => l.de)))]
+  .filter((s) => r.noeud(s)).sort((a, b) => titreDe(a).localeCompare(titreDe(b), 'fr'));
+
+// Échanges de substitution qui le mentionnent.
+const echanges = r.liens
+  .filter((l) => l.type === 'substitution' && r.noeud(l.de))
+  .flatMap((l) => (l.echanges ?? []).filter((e) => tous.includes(e.de) || tous.includes(e.vers)).map((e) => ({ prep: l.de, e })));
+
+// Techniques avec lesquelles il s'accorde (les siennes, puis héritées de ses ancêtres).
+const accords: { t: string; de?: string }[] = [];
+for (const s of [slug, ...[...chaine].reverse()]) {
+  for (const l of r.liensDe(s, 'accord')) {
+    if (r.noeud(l.vers) && !accords.some((a) => a.t === l.vers)) accords.push({ t: l.vers, de: s === slug ? undefined : s });
+  }
+}
+const substituts = estFamille ? [] : substitutsDe(slug);
+const synonymes: string[] = Array.isArray(d.synonymes) ? d.synonymes : [];
+const nbEnfants = enfantsDe(slug).length;
+---
+<Base titre={titre} courant={slug} description={estFamille ? `Famille d'ingrédients : ${titre}.` : `${titre} : famille, substituts, techniques et préparations qui l'utilisent.`}>
+  <article class="fiche fiche-ingredient">
+    <header class="fiche-entete">
+      <nav class="ariane" aria-label="Famille">
+        <span class="type-noeud">{estFamille ? "Famille d'ingrédients" : 'Ingrédient'}</span>
+        {chaine.map((s) => <><Ref slug={s} /><span class="fleche" aria-hidden="true"> → </span></>)}
+        <span aria-current="page">{titre}</span>
+      </nav>
+      <h1>{titre}</h1>
+      {(synonymes.length > 0 || d.pluriel || d.placard) && (
+        <p class="resume">
+          {synonymes.length > 0 && <>Aussi : {synonymes.join(', ')}. </>}
+          {d.placard === true && <span class="badge">placard</span>}
+        </p>
+      )}
+      <p class="meta">
+        {!estFamille && <span>{nbEnfants} sous-ingrédient{nbEnfants > 1 ? 's' : ''}</span>}
+        {estFamille && <span>{descendants.length} ingrédient{descendants.length > 1 ? 's' : ''}</span>}
+        <span>{usages.size} préparation{usages.size > 1 ? 's' : ''}</span>
+      </p>
+    </header>
+
+    {parent && !estFamille && (
+      <section class="haut" aria-label="Parent">
+        <div class="groupe-liens t-parent">
+          <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>{parent.implicite ? 'Famille' : 'Variété de'}</h3>
+          <ul class="liens"><li><Ref slug={parent.vers} /></li></ul>
+        </div>
+      </section>
+    )}
+
+    <GrapheLocal slug={slug} />
+
+    <div class="milieu">
+      {descendants.length > 0 && (
+        <div class="groupe-liens t-parent">
+          <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>{estFamille ? 'Ingrédients de la famille' : 'Variétés et morceaux'}</h3>
+          <SousIngredients slug={slug} />
+        </div>
+      )}
+      {substituts.length > 0 && (
+        <div class="groupe-liens t-substitut">
+          <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Substituts</h3>
+          <p class="liens-en-ligne">{substituts.map((s, i) => <>{i > 0 && ' · '}<Ref slug={s} /></>)}</p>
+        </div>
+      )}
+      {accords.length > 0 && (
+        <div class="groupe-liens t-accord">
+          <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>S'accorde avec</h3>
+          <p class="liens-en-ligne">{accords.map((a, i) => <>{i > 0 && ' · '}<Ref slug={a.t} />{a.de && <span class="note"> (comme {nomDe(a.de).toLocaleLowerCase('fr-FR')})</span>}</>)}</p>
+        </div>
+      )}
+    </div>
+
+    <section class="bas" aria-labelledby="titre-usages">
+      <h2 id="titre-usages">Dans les préparations</h2>
+      {usages.size > 0 ? (
+        <div class="groupe-liens t-utilise">
+          <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Préparations qui l'utilisent</h3>
+          <ul class="liens">
+            {[...usages].map(([p, u]) => {
+              const note = precision(u);
+              return (<li><Ref slug={p} />{note && <span class="note"> — {note}</span>}</li>);
+            })}
+          </ul>
+        </div>
+      ) : <p class="vide">Aucune version ne l'utilise encore.</p>}
+      {profils.length > 0 && (
+        <div class="groupe-liens t-profil">
+          <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Profils aromatiques</h3>
+          <p class="liens-en-ligne">{profils.map((s, i) => <>{i > 0 && ' · '}<Ref slug={s} /></>)}</p>
+        </div>
+      )}
+      {echanges.length > 0 && (
+        <div class="groupe-liens t-substitution">
+          <h3 class="titre-groupe"><span class="puce" aria-hidden="true"></span>Échanges de substitution</h3>
+          <ul class="liens">
+            {echanges.map(({ prep, e }) => (<li><Ref slug={prep} /> <span class="echanges">{nomCourant(e.de)} → {nomCourant(e.vers)}</span></li>))}
+          </ul>
+        </div>
+      )}
+    </section>
+  </article>
+</Base>

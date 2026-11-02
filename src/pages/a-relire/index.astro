@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+import { majuscule } from '../../lib/format';
+import { STATUTS, reseau, titreDe, urlDe } from '../../lib/site';
+
+const r = reseau();
+const versions = r.parType('version');
+const ORDRE = ['a-relire', 'relu-agent', 'relu-mathieu'];
+const groupes = ORDRE.map((s) => ({
+  statut: s,
+  versions: versions.filter((v) => v.data.statut === s)
+    .sort((a, b) => titreDe(a.preparation ?? '').localeCompare(titreDe(b.preparation ?? ''), 'fr') || Number(b.data.reference === true) - Number(a.data.reference === true)),
+}));
+const autres = versions.filter((v) => !ORDRE.includes(v.data.statut));
+---
+<Base titre="À relire" description="Les versions chiffrées classées par statut de relecture.">
+  <article class="a-relire">
+    <h1>À relire</h1>
+    <p class="resume">Les versions chiffrées, par statut de relecture.</p>
+    <p class="meta">{groupes.map((g) => <span>{g.versions.length} {STATUTS[g.statut]}</span>)}</p>
+    {[...groupes, ...(autres.length ? [{ statut: 'autre', versions: autres }] : [])].map((g) => (
+      <section aria-labelledby={`statut-${g.statut}`}>
+        <h2 id={`statut-${g.statut}`}>{majuscule(STATUTS[g.statut] ?? 'statut inconnu')} ({g.versions.length})</h2>
+        {g.versions.length ? (
+          <ul class="liste-versions">
+            {g.versions.map((v) => (
+              <li>
+                <a href={urlDe(v.slug)}>{titreDe(v.preparation ?? '')}</a>
+                <span class="note"> — {v.data.titre}{v.data.reference === true && ' (référence)'}</span>
+              </li>
+            ))}
+          </ul>
+        ) : <p class="vide">Aucune.</p>}
+      </section>
+    ))}
+  </article>
+</Base>

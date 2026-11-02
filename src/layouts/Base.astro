@@ -2,16 +2,19 @@
 import '../styles/global.css';
 import Arbre from '../components/Arbre.astro';
 import Recherche from '../components/Recherche.astro';
-import { url } from '../lib/arbre';
+import { lentilleDe, reseau, url } from '../lib/site';
 
 interface Props {
   titre: string;
   description?: string;
+  /** slug du nœud de la page (surligné dans l'arbre) */
   courant?: string;
   classe?: string;
 }
-const { titre, description = 'Les recettes classées par technique, comme une généalogie.', courant, classe } = Astro.props;
+const { titre, description = 'Les recettes rangées en réseau : techniques, préparations de base, profils aromatiques et ingrédients.', courant, classe } = Astro.props;
 const titreComplet = titre === 'Généalogie des recettes' ? titre : `${titre} — Généalogie des recettes`;
+// Lentille proposée par défaut (si le visiteur n'en a pas encore choisi une).
+const indice = lentilleDe(courant ? reseau().noeud(courant)?.type : undefined) ?? 'cuisson';
 ---
 <!doctype html>
 <html lang="fr">
@@ -22,12 +25,13 @@ const titreComplet = titre === 'Généalogie des recettes' ? titre : `${titre} �
   <meta name="description" content={description} />
   <meta name="color-scheme" content="light dark" />
   <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
-  <script is:inline>
-    try { document.documentElement.dataset.axe = localStorage.getItem('recettes:axe') || 'cuisson'; }
-    catch (e) { document.documentElement.dataset.axe = 'cuisson'; }
+  <script is:inline define:vars={{ indice }}>
+    var l = null;
+    try { l = localStorage.getItem('recettes:lentille'); } catch (e) { l = null; }
+    document.documentElement.dataset.lentille = l || indice;
     document.documentElement.classList.add('js');
   </script>
-  <noscript><style>.enfants[hidden]{display:block!important}.axe{display:block!important}.bascule-axes,.ouvrir-arbre{display:none!important}.lateral{display:block!important}</style></noscript>
+  <noscript><style>.enfants[hidden]{display:block!important}.lentille{display:block!important}.choix-lentille,.ouvrir-arbre{display:none!important}.panneau-version[hidden]{display:block!important}</style></noscript>
 </head>
 <body class={classe}>
   <a class="evitement" href="#contenu">Aller au contenu</a>
@@ -41,6 +45,7 @@ const titreComplet = titre === 'Généalogie des recettes' ? titre : `${titre} �
       </div>
       <div class="lateral-corps lateral-defilant" id="lateral-corps">
         <Recherche />
+        <p class="liens-outils"><a href={url('cuisiner/')}>Cuisiner avec ce que j'ai</a></p>
         <Arbre courant={courant} />
       </div>
     </aside>
@@ -55,6 +60,9 @@ const titreComplet = titre === 'Généalogie des recettes' ? titre : `${titre} �
       const ouvrir = bouton.getAttribute('aria-expanded') !== 'true';
       bouton.setAttribute('aria-expanded', String(ouvrir));
       corps?.classList.toggle('ouvert', ouvrir);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && corps?.classList.contains('ouvert')) { bouton?.click(); bouton?.focus(); }
     });
   </script>
 </body>

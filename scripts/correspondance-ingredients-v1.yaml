@@ -1,0 +1,432 @@
+# Correspondance des ingrédients v1 -> référentiel v2 (pour le script de migration).
+# Une ligne v1 peut produire plusieurs entrées (« sel, poivre », bouquet garni).
+# ingredient: null + preparation: <slug> = la ligne v1 est une base (fond-blanc, fond-brun) et non un ingrédient.
+# Cas particuliers :
+#  - bouquet garni -> thym, laurier, persil (profil bouquet-garni) ; qte à reporter sur une seule entrée ou à ignorer.
+#  - vanille (1 gousse) -> gousse-de-vanille, qte 1, unite "" (le nom contient déjà « gousse »).
+#  - bâton de cannelle et feuille de laurier : nom de l'ingrédient contient l'unité, unite "".
+#  - blanquette-de-veau-maison : mêmes ingrédients que blanquette-de-veau (version de la préparation).
+- { recette: bigne-di-san-giuseppe, nom_v1: "eau", ingredient: eau, precision: "" }
+- { recette: bigne-di-san-giuseppe, nom_v1: "beurre", ingredient: beurre, precision: "" }
+- { recette: bigne-di-san-giuseppe, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: bigne-di-san-giuseppe, nom_v1: "sel", ingredient: sel, precision: "" }
+- { recette: bigne-di-san-giuseppe, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: bigne-di-san-giuseppe, nom_v1: "œufs", ingredient: oeuf, precision: "" }
+- { recette: bigne-di-san-giuseppe, nom_v1: "zeste d'orange non traitée", ingredient: orange, precision: "zeste, non traitée" }
+- { recette: bigne-di-san-giuseppe, nom_v1: "huile de friture", ingredient: huile-neutre, precision: "de friture" }
+- { recette: bigne-di-san-giuseppe, nom_v1: "lait entier", ingredient: lait-entier, precision: "" }
+- { recette: bigne-di-san-giuseppe, nom_v1: "jaunes d'œufs", ingredient: jaune-d-oeuf, precision: "" }
+- { recette: bigne-di-san-giuseppe, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: bigne-di-san-giuseppe, nom_v1: "fécule de maïs", ingredient: fecule-de-mais, precision: "" }
+- { recette: bigne-di-san-giuseppe, nom_v1: "zeste de citron non traité", ingredient: citron, precision: "zeste, non traité" }
+- { recette: bigne-di-san-giuseppe, nom_v1: "cerises amarena au sirop", ingredient: cerise-amarena, precision: "" }
+- { recette: bigne-di-san-giuseppe, nom_v1: "sucre glace", ingredient: sucre-glace, precision: "" }
+- { recette: blanquette-de-veau-maison, nom_v1: "veau à blanquette, en morceaux", ingredient: veau-a-blanquette, precision: "en morceaux" }
+- { recette: blanquette-de-veau-maison, nom_v1: "carottes", ingredient: carotte, precision: "" }
+- { recette: blanquette-de-veau-maison, nom_v1: "oignon jaune", ingredient: oignon-jaune, precision: "" }
+- { recette: blanquette-de-veau-maison, nom_v1: "petite boîte de champignons", ingredient: champignon-de-paris-en-boite, precision: "petite boîte" }
+- { recette: blanquette-de-veau-maison, nom_v1: "vin blanc", ingredient: vin-blanc, precision: "" }
+- { recette: blanquette-de-veau-maison, nom_v1: "cube de bouillon de poule", ingredient: cube-de-bouillon-de-volaille, precision: "" }
+- { recette: blanquette-de-veau-maison, nom_v1: "cube de bouillon de légumes", ingredient: cube-de-bouillon-de-legumes, precision: "" }
+- { recette: blanquette-de-veau-maison, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: blanquette-de-veau-maison, nom_v1: "beurre doux", ingredient: beurre-doux, precision: "" }
+- { recette: blanquette-de-veau-maison, nom_v1: "petit pot de crème fraîche", ingredient: creme-fraiche-epaisse, precision: "petit pot" }
+- { recette: blanquette-de-veau-maison, nom_v1: "jaune d'œuf", ingredient: jaune-d-oeuf, precision: "" }
+- { recette: blanquette-de-veau-maison, nom_v1: "citron", ingredient: citron, precision: "" }
+- { recette: blanquette-de-veau-maison, nom_v1: "sel, poivre", ingredient: sel, precision: "" }
+- { recette: blanquette-de-veau-maison, nom_v1: "sel, poivre", ingredient: poivre, precision: "" }
+- { recette: blanquette-de-veau, nom_v1: "veau à blanquette (épaule, tendron, poitrine), en morceaux de 5 cm", ingredient: veau-a-blanquette, precision: "épaule, tendron, poitrine, en morceaux de 5 cm" }
+- { recette: blanquette-de-veau, nom_v1: "oignon piqué de 2 clous de girofle", ingredient: oignon, precision: "piqué de 2 clous de girofle" }
+- { recette: blanquette-de-veau, nom_v1: "carottes", ingredient: carotte, precision: "" }
+- { recette: blanquette-de-veau, nom_v1: "blanc de poireau", ingredient: poireau, precision: "blanc" }
+- { recette: blanquette-de-veau, nom_v1: "bouquet garni (thym, laurier, persil)", ingredient: thym, precision: "bouquet garni" }
+- { recette: blanquette-de-veau, nom_v1: "bouquet garni (thym, laurier, persil)", ingredient: laurier, precision: "bouquet garni" }
+- { recette: blanquette-de-veau, nom_v1: "bouquet garni (thym, laurier, persil)", ingredient: persil, precision: "bouquet garni" }
+- { recette: blanquette-de-veau, nom_v1: "eau froide (ou fond blanc)", ingredient: eau, precision: "froide (ou fond blanc)" }
+- { recette: blanquette-de-veau, nom_v1: "gros sel", ingredient: gros-sel, precision: "" }
+- { recette: blanquette-de-veau, nom_v1: "champignons de Paris", ingredient: champignon-de-paris, precision: "" }
+- { recette: blanquette-de-veau, nom_v1: "petits oignons grelots", ingredient: petit-oignon-grelot, precision: "" }
+- { recette: blanquette-de-veau, nom_v1: "beurre", ingredient: beurre, precision: "" }
+- { recette: blanquette-de-veau, nom_v1: "jus de citron", ingredient: jus-de-citron, precision: "" }
+- { recette: blanquette-de-veau, nom_v1: "beurre", ingredient: beurre, precision: "" }
+- { recette: blanquette-de-veau, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: blanquette-de-veau, nom_v1: "jaunes d'œuf", ingredient: jaune-d-oeuf, precision: "" }
+- { recette: blanquette-de-veau, nom_v1: "crème fraîche épaisse", ingredient: creme-fraiche-epaisse, precision: "" }
+- { recette: blanquette-de-veau, nom_v1: "citron (jus)", ingredient: citron, precision: "jus" }
+- { recette: blanquette-de-veau, nom_v1: "sel, poivre blanc, noix de muscade", ingredient: sel, precision: "" }
+- { recette: blanquette-de-veau, nom_v1: "sel, poivre blanc, noix de muscade", ingredient: poivre-blanc, precision: "" }
+- { recette: blanquette-de-veau, nom_v1: "sel, poivre blanc, noix de muscade", ingredient: noix-de-muscade, precision: "" }
+- { recette: boeuf-bourguignon, nom_v1: "bœuf à braiser (paleron, joue, macreuse), en cubes de 5 cm", ingredient: boeuf-a-braiser, precision: "paleron, joue ou macreuse, en cubes de 5 cm" }
+- { recette: boeuf-bourguignon, nom_v1: "vin rouge corsé (bourgogne)", ingredient: vin-rouge, precision: "corsé (bourgogne)" }
+- { recette: boeuf-bourguignon, nom_v1: "oignon émincé", ingredient: oignon, precision: "émincé" }
+- { recette: boeuf-bourguignon, nom_v1: "carotte en rondelles", ingredient: carotte, precision: "en rondelles" }
+- { recette: boeuf-bourguignon, nom_v1: "ail", ingredient: ail, precision: "" }
+- { recette: boeuf-bourguignon, nom_v1: "bouquet garni", ingredient: thym, precision: "bouquet garni" }
+- { recette: boeuf-bourguignon, nom_v1: "bouquet garni", ingredient: laurier, precision: "bouquet garni" }
+- { recette: boeuf-bourguignon, nom_v1: "bouquet garni", ingredient: persil, precision: "bouquet garni" }
+- { recette: boeuf-bourguignon, nom_v1: "lardons fumés", ingredient: lardons, precision: "fumés" }
+- { recette: boeuf-bourguignon, nom_v1: "petits oignons grelots", ingredient: petit-oignon-grelot, precision: "" }
+- { recette: boeuf-bourguignon, nom_v1: "champignons de Paris", ingredient: champignon-de-paris, precision: "" }
+- { recette: boeuf-bourguignon, nom_v1: "beurre", ingredient: beurre, precision: "" }
+- { recette: boeuf-bourguignon, nom_v1: "huile", ingredient: huile-neutre, precision: "" }
+- { recette: boeuf-bourguignon, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: boeuf-bourguignon, nom_v1: "concentré de tomate", ingredient: concentre-de-tomate, precision: "" }
+- { recette: boeuf-bourguignon, nom_v1: "fond brun (ou bouillon de bœuf)", ingredient: null, preparation: fond-brun, precision: "ou bouillon de bœuf" }
+- { recette: boeuf-bourguignon, nom_v1: "sel, poivre", ingredient: sel, precision: "" }
+- { recette: boeuf-bourguignon, nom_v1: "sel, poivre", ingredient: poivre, precision: "" }
+- { recette: carbonade-flamande, nom_v1: "paleron ou macreuse de bœuf, en cubes de 5 cm", ingredient: boeuf-a-braiser, precision: "paleron ou macreuse, en cubes de 5 cm" }
+- { recette: carbonade-flamande, nom_v1: "oignons émincés", ingredient: oignon, precision: "émincés" }
+- { recette: carbonade-flamande, nom_v1: "beurre", ingredient: beurre, precision: "" }
+- { recette: carbonade-flamande, nom_v1: "bière brune d'abbaye", ingredient: biere-brune, precision: "d'abbaye" }
+- { recette: carbonade-flamande, nom_v1: "bouillon de bœuf", ingredient: bouillon-de-boeuf, precision: "" }
+- { recette: carbonade-flamande, nom_v1: "pain d'épices", ingredient: pain-d-epices, precision: "" }
+- { recette: carbonade-flamande, nom_v1: "moutarde forte", ingredient: moutarde-forte, precision: "" }
+- { recette: carbonade-flamande, nom_v1: "vinaigre de cidre", ingredient: vinaigre-de-cidre, precision: "" }
+- { recette: carbonade-flamande, nom_v1: "cassonade", ingredient: cassonade, precision: "" }
+- { recette: carbonade-flamande, nom_v1: "bouquet garni (thym, laurier)", ingredient: thym, precision: "bouquet garni" }
+- { recette: carbonade-flamande, nom_v1: "bouquet garni (thym, laurier)", ingredient: laurier, precision: "bouquet garni" }
+- { recette: carbonade-flamande, nom_v1: "sel, poivre", ingredient: sel, precision: "" }
+- { recette: carbonade-flamande, nom_v1: "sel, poivre", ingredient: poivre, precision: "" }
+- { recette: chouquettes, nom_v1: "eau", ingredient: eau, precision: "" }
+- { recette: chouquettes, nom_v1: "lait entier", ingredient: lait-entier, precision: "" }
+- { recette: chouquettes, nom_v1: "beurre", ingredient: beurre, precision: "" }
+- { recette: chouquettes, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: chouquettes, nom_v1: "sel", ingredient: sel, precision: "" }
+- { recette: chouquettes, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: chouquettes, nom_v1: "œufs", ingredient: oeuf, precision: "" }
+- { recette: chouquettes, nom_v1: "sucre perlé", ingredient: sucre-perle, precision: "" }
+- { recette: churros, nom_v1: "eau", ingredient: eau, precision: "" }
+- { recette: churros, nom_v1: "huile d'olive douce", ingredient: huile-d-olive, precision: "douce" }
+- { recette: churros, nom_v1: "sel", ingredient: sel, precision: "" }
+- { recette: churros, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: churros, nom_v1: "huile de friture", ingredient: huile-neutre, precision: "de friture" }
+- { recette: churros, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: churros, nom_v1: "cannelle en poudre", ingredient: cannelle-en-poudre, precision: "" }
+- { recette: churros, nom_v1: "chocolat noir", ingredient: chocolat-noir, precision: "" }
+- { recette: churros, nom_v1: "lait entier", ingredient: lait-entier, precision: "" }
+- { recette: churros, nom_v1: "fécule de maïs", ingredient: fecule-de-mais, precision: "" }
+- { recette: civet-de-lievre, nom_v1: "lièvre d'environ 2 kg, découpé, avec son sang et son foie", ingredient: lievre, precision: "d'environ 2 kg, découpé, avec son sang et son foie" }
+- { recette: civet-de-lievre, nom_v1: "vin rouge corsé", ingredient: vin-rouge, precision: "corsé" }
+- { recette: civet-de-lievre, nom_v1: "oignons émincés", ingredient: oignon, precision: "émincés" }
+- { recette: civet-de-lievre, nom_v1: "carottes", ingredient: carotte, precision: "" }
+- { recette: civet-de-lievre, nom_v1: "baies de genièvre", ingredient: baie-de-genievre, precision: "" }
+- { recette: civet-de-lievre, nom_v1: "bouquet garni", ingredient: thym, precision: "bouquet garni" }
+- { recette: civet-de-lievre, nom_v1: "bouquet garni", ingredient: laurier, precision: "bouquet garni" }
+- { recette: civet-de-lievre, nom_v1: "bouquet garni", ingredient: persil, precision: "bouquet garni" }
+- { recette: civet-de-lievre, nom_v1: "huile", ingredient: huile-neutre, precision: "" }
+- { recette: civet-de-lievre, nom_v1: "lard fumé, en lardons", ingredient: lardons, precision: "lard fumé, en lardons" }
+- { recette: civet-de-lievre, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: civet-de-lievre, nom_v1: "cognac", ingredient: cognac, precision: "" }
+- { recette: civet-de-lievre, nom_v1: "champignons de Paris", ingredient: champignon-de-paris, precision: "" }
+- { recette: civet-de-lievre, nom_v1: "petits oignons grelots", ingredient: petit-oignon-grelot, precision: "" }
+- { recette: civet-de-lievre, nom_v1: "sang du lièvre, mêlé de 1 c. à soupe de vinaigre", ingredient: sang-de-lievre, precision: "mêlé de 1 c. à soupe de vinaigre" }
+- { recette: civet-de-lievre, nom_v1: "sel, poivre", ingredient: sel, precision: "" }
+- { recette: civet-de-lievre, nom_v1: "sel, poivre", ingredient: poivre, precision: "" }
+- { recette: coq-au-vin, nom_v1: "coq (ou poulet fermier) de 1,8 kg, découpé en 8 morceaux", ingredient: coq, precision: "ou poulet fermier, de 1,8 kg, découpé en 8 morceaux" }
+- { recette: coq-au-vin, nom_v1: "vin rouge", ingredient: vin-rouge, precision: "" }
+- { recette: coq-au-vin, nom_v1: "oignon émincé", ingredient: oignon, precision: "émincé" }
+- { recette: coq-au-vin, nom_v1: "carotte en rondelles", ingredient: carotte, precision: "en rondelles" }
+- { recette: coq-au-vin, nom_v1: "bouquet garni", ingredient: thym, precision: "bouquet garni" }
+- { recette: coq-au-vin, nom_v1: "bouquet garni", ingredient: laurier, precision: "bouquet garni" }
+- { recette: coq-au-vin, nom_v1: "bouquet garni", ingredient: persil, precision: "bouquet garni" }
+- { recette: coq-au-vin, nom_v1: "lardons fumés", ingredient: lardons, precision: "fumés" }
+- { recette: coq-au-vin, nom_v1: "petits oignons grelots", ingredient: petit-oignon-grelot, precision: "" }
+- { recette: coq-au-vin, nom_v1: "champignons de Paris", ingredient: champignon-de-paris, precision: "" }
+- { recette: coq-au-vin, nom_v1: "beurre", ingredient: beurre, precision: "" }
+- { recette: coq-au-vin, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: coq-au-vin, nom_v1: "cognac", ingredient: cognac, precision: "" }
+- { recette: coq-au-vin, nom_v1: "ail", ingredient: ail, precision: "" }
+- { recette: coq-au-vin, nom_v1: "sang de volaille mêlé d'une cuillère de vinaigre (facultatif)", ingredient: sang-de-volaille, precision: "mêlé d'une cuillère de vinaigre, facultatif" }
+- { recette: coq-au-vin, nom_v1: "sel, poivre", ingredient: sel, precision: "" }
+- { recette: coq-au-vin, nom_v1: "sel, poivre", ingredient: poivre, precision: "" }
+- { recette: crema-catalana, nom_v1: "lait entier", ingredient: lait-entier, precision: "" }
+- { recette: crema-catalana, nom_v1: "jaunes d'œufs", ingredient: jaune-d-oeuf, precision: "" }
+- { recette: crema-catalana, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: crema-catalana, nom_v1: "fécule de maïs", ingredient: fecule-de-mais, precision: "" }
+- { recette: crema-catalana, nom_v1: "zeste de citron non traité", ingredient: citron, precision: "zeste, non traité" }
+- { recette: crema-catalana, nom_v1: "bâton de cannelle", ingredient: baton-de-cannelle, precision: "" }
+- { recette: crema-catalana, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: creme-brulee, nom_v1: "crème liquide entière", ingredient: creme-liquide, precision: "entière" }
+- { recette: creme-brulee, nom_v1: "jaunes d'œufs", ingredient: jaune-d-oeuf, precision: "" }
+- { recette: creme-brulee, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: creme-brulee, nom_v1: "vanille", ingredient: gousse-de-vanille, precision: "" }
+- { recette: creme-brulee, nom_v1: "cassonade", ingredient: cassonade, precision: "" }
+- { recette: creme-caramel, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: creme-caramel, nom_v1: "eau", ingredient: eau, precision: "" }
+- { recette: creme-caramel, nom_v1: "lait entier", ingredient: lait-entier, precision: "" }
+- { recette: creme-caramel, nom_v1: "œufs", ingredient: oeuf, precision: "" }
+- { recette: creme-caramel, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: creme-caramel, nom_v1: "vanille", ingredient: gousse-de-vanille, precision: "" }
+- { recette: daube-provencale, nom_v1: "gîte ou paleron de bœuf, en gros morceaux de 6 cm", ingredient: boeuf-a-braiser, precision: "gîte ou paleron, en gros morceaux de 6 cm" }
+- { recette: daube-provencale, nom_v1: "vin rouge (côtes-du-rhône)", ingredient: vin-rouge, precision: "côtes-du-rhône" }
+- { recette: daube-provencale, nom_v1: "oignons", ingredient: oignon, precision: "" }
+- { recette: daube-provencale, nom_v1: "carottes", ingredient: carotte, precision: "" }
+- { recette: daube-provencale, nom_v1: "ail", ingredient: ail, precision: "" }
+- { recette: daube-provencale, nom_v1: "zeste d'orange non traitée", ingredient: orange, precision: "zeste, non traitée" }
+- { recette: daube-provencale, nom_v1: "bouquet garni (thym, laurier, romarin)", ingredient: thym, precision: "bouquet garni" }
+- { recette: daube-provencale, nom_v1: "bouquet garni (thym, laurier, romarin)", ingredient: laurier, precision: "bouquet garni" }
+- { recette: daube-provencale, nom_v1: "bouquet garni (thym, laurier, romarin)", ingredient: romarin, precision: "bouquet garni" }
+- { recette: daube-provencale, nom_v1: "huile d'olive", ingredient: huile-d-olive, precision: "" }
+- { recette: daube-provencale, nom_v1: "lard maigre ou poitrine fumée, en gros dés", ingredient: poitrine-fumee, precision: "ou lard maigre, en gros dés" }
+- { recette: daube-provencale, nom_v1: "olives noires", ingredient: olive-noire, precision: "" }
+- { recette: daube-provencale, nom_v1: "concentré de tomate", ingredient: concentre-de-tomate, precision: "" }
+- { recette: daube-provencale, nom_v1: "sel, poivre", ingredient: sel, precision: "" }
+- { recette: daube-provencale, nom_v1: "sel, poivre", ingredient: poivre, precision: "" }
+- { recette: eclairs-au-chocolat, nom_v1: "eau", ingredient: eau, precision: "" }
+- { recette: eclairs-au-chocolat, nom_v1: "lait entier", ingredient: lait-entier, precision: "" }
+- { recette: eclairs-au-chocolat, nom_v1: "beurre", ingredient: beurre, precision: "" }
+- { recette: eclairs-au-chocolat, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: eclairs-au-chocolat, nom_v1: "sel", ingredient: sel, precision: "" }
+- { recette: eclairs-au-chocolat, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: eclairs-au-chocolat, nom_v1: "œufs", ingredient: oeuf, precision: "" }
+- { recette: eclairs-au-chocolat, nom_v1: "lait entier", ingredient: lait-entier, precision: "" }
+- { recette: eclairs-au-chocolat, nom_v1: "jaunes d'œufs", ingredient: jaune-d-oeuf, precision: "" }
+- { recette: eclairs-au-chocolat, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: eclairs-au-chocolat, nom_v1: "fécule de maïs", ingredient: fecule-de-mais, precision: "" }
+- { recette: eclairs-au-chocolat, nom_v1: "chocolat noir à 64 %", ingredient: chocolat-noir, precision: "à 64 %" }
+- { recette: eclairs-au-chocolat, nom_v1: "chocolat noir", ingredient: chocolat-noir, precision: "" }
+- { recette: eclairs-au-chocolat, nom_v1: "crème liquide", ingredient: creme-liquide, precision: "" }
+- { recette: flan-patissier, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: flan-patissier, nom_v1: "beurre froid", ingredient: beurre, precision: "froid" }
+- { recette: flan-patissier, nom_v1: "eau froide", ingredient: eau, precision: "froide" }
+- { recette: flan-patissier, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: flan-patissier, nom_v1: "sel", ingredient: sel, precision: "" }
+- { recette: flan-patissier, nom_v1: "lait entier", ingredient: lait-entier, precision: "" }
+- { recette: flan-patissier, nom_v1: "œufs", ingredient: oeuf, precision: "" }
+- { recette: flan-patissier, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: flan-patissier, nom_v1: "fécule de maïs", ingredient: fecule-de-mais, precision: "" }
+- { recette: flan-patissier, nom_v1: "vanille", ingredient: gousse-de-vanille, precision: "" }
+- { recette: gougeres, nom_v1: "eau", ingredient: eau, precision: "" }
+- { recette: gougeres, nom_v1: "lait entier", ingredient: lait-entier, precision: "" }
+- { recette: gougeres, nom_v1: "beurre", ingredient: beurre, precision: "" }
+- { recette: gougeres, nom_v1: "sel", ingredient: sel, precision: "" }
+- { recette: gougeres, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: gougeres, nom_v1: "œufs", ingredient: oeuf, precision: "" }
+- { recette: gougeres, nom_v1: "gruyère râpé", ingredient: gruyere, precision: "râpé" }
+- { recette: gougeres, nom_v1: "noix de muscade râpée", ingredient: noix-de-muscade, precision: "râpée" }
+- { recette: gougeres, nom_v1: "poivre", ingredient: poivre, precision: "" }
+- { recette: gougeres, nom_v1: "gruyère râpé", ingredient: gruyere, precision: "râpé" }
+- { recette: goulasch, nom_v1: "paleron de bœuf, en cubes de 3 cm", ingredient: paleron, precision: "en cubes de 3 cm" }
+- { recette: goulasch, nom_v1: "oignons émincés", ingredient: oignon, precision: "émincés" }
+- { recette: goulasch, nom_v1: "saindoux (ou huile)", ingredient: saindoux, precision: "ou huile" }
+- { recette: goulasch, nom_v1: "paprika doux", ingredient: paprika-doux, precision: "" }
+- { recette: goulasch, nom_v1: "paprika fort (facultatif)", ingredient: paprika-fort, precision: "facultatif" }
+- { recette: goulasch, nom_v1: "graines de cumin", ingredient: cumin-en-graines, precision: "" }
+- { recette: goulasch, nom_v1: "ail", ingredient: ail, precision: "" }
+- { recette: goulasch, nom_v1: "poivrons rouges", ingredient: poivron-rouge, precision: "" }
+- { recette: goulasch, nom_v1: "tomates pelées", ingredient: tomate-pelee, precision: "" }
+- { recette: goulasch, nom_v1: "bouillon de bœuf ou eau", ingredient: bouillon-de-boeuf, precision: "ou eau" }
+- { recette: goulasch, nom_v1: "pommes de terre", ingredient: pomme-de-terre, precision: "" }
+- { recette: goulasch, nom_v1: "feuille de laurier", ingredient: laurier, precision: "" }
+- { recette: goulasch, nom_v1: "sel, crème aigre pour servir", ingredient: sel, precision: "" }
+- { recette: goulasch, nom_v1: "sel, crème aigre pour servir", ingredient: creme-aigre, precision: "pour servir" }
+- { recette: ile-flottante, nom_v1: "lait entier", ingredient: lait-entier, precision: "" }
+- { recette: ile-flottante, nom_v1: "jaunes d'œufs", ingredient: jaune-d-oeuf, precision: "" }
+- { recette: ile-flottante, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: ile-flottante, nom_v1: "vanille", ingredient: gousse-de-vanille, precision: "" }
+- { recette: ile-flottante, nom_v1: "blancs d'œufs", ingredient: blanc-d-oeuf, precision: "" }
+- { recette: ile-flottante, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: ile-flottante, nom_v1: "sel", ingredient: sel, precision: "" }
+- { recette: ile-flottante, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: ile-flottante, nom_v1: "eau", ingredient: eau, precision: "" }
+- { recette: ile-flottante, nom_v1: "amandes effilées grillées", ingredient: amande-effilee, precision: "grillées" }
+- { recette: irish-stew, nom_v1: "collier et épaule d'agneau, avec l'os, en morceaux", ingredient: agneau-a-braiser, precision: "collier et épaule, avec l'os, en morceaux" }
+- { recette: irish-stew, nom_v1: "pommes de terre farineuses", ingredient: pomme-de-terre-farineuse, precision: "" }
+- { recette: irish-stew, nom_v1: "oignons", ingredient: oignon, precision: "" }
+- { recette: irish-stew, nom_v1: "carottes", ingredient: carotte, precision: "" }
+- { recette: irish-stew, nom_v1: "blanc de poireau", ingredient: poireau, precision: "blanc" }
+- { recette: irish-stew, nom_v1: "eau froide", ingredient: eau, precision: "froide" }
+- { recette: irish-stew, nom_v1: "thym", ingredient: thym, precision: "" }
+- { recette: irish-stew, nom_v1: "botte de persil haché", ingredient: persil, precision: "haché" }
+- { recette: irish-stew, nom_v1: "sel, poivre", ingredient: sel, precision: "" }
+- { recette: irish-stew, nom_v1: "sel, poivre", ingredient: poivre, precision: "" }
+- { recette: joue-de-boeuf-braisee, nom_v1: "joues de bœuf parées (environ 250 g chacune)", ingredient: joue-de-boeuf, precision: "parées, environ 250 g chacune" }
+- { recette: joue-de-boeuf-braisee, nom_v1: "huile", ingredient: huile-neutre, precision: "" }
+- { recette: joue-de-boeuf-braisee, nom_v1: "oignon", ingredient: oignon, precision: "" }
+- { recette: joue-de-boeuf-braisee, nom_v1: "carottes", ingredient: carotte, precision: "" }
+- { recette: joue-de-boeuf-braisee, nom_v1: "ail", ingredient: ail, precision: "" }
+- { recette: joue-de-boeuf-braisee, nom_v1: "concentré de tomate", ingredient: concentre-de-tomate, precision: "" }
+- { recette: joue-de-boeuf-braisee, nom_v1: "vin rouge", ingredient: vin-rouge, precision: "" }
+- { recette: joue-de-boeuf-braisee, nom_v1: "fond brun", ingredient: null, preparation: fond-brun, precision: "" }
+- { recette: joue-de-boeuf-braisee, nom_v1: "bouquet garni", ingredient: thym, precision: "bouquet garni" }
+- { recette: joue-de-boeuf-braisee, nom_v1: "bouquet garni", ingredient: laurier, precision: "bouquet garni" }
+- { recette: joue-de-boeuf-braisee, nom_v1: "bouquet garni", ingredient: persil, precision: "bouquet garni" }
+- { recette: joue-de-boeuf-braisee, nom_v1: "beurre froid, pour monter la sauce", ingredient: beurre, precision: "froid, pour monter la sauce" }
+- { recette: joue-de-boeuf-braisee, nom_v1: "sel, poivre", ingredient: sel, precision: "" }
+- { recette: joue-de-boeuf-braisee, nom_v1: "sel, poivre", ingredient: poivre, precision: "" }
+- { recette: navarin-d-agneau, nom_v1: "épaule et collier d'agneau, en morceaux", ingredient: agneau-a-braiser, precision: "épaule et collier, en morceaux" }
+- { recette: navarin-d-agneau, nom_v1: "huile", ingredient: huile-neutre, precision: "" }
+- { recette: navarin-d-agneau, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: navarin-d-agneau, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: navarin-d-agneau, nom_v1: "concentré de tomate", ingredient: concentre-de-tomate, precision: "" }
+- { recette: navarin-d-agneau, nom_v1: "fond brun (ou eau chaude)", ingredient: null, preparation: fond-brun, precision: "ou eau chaude" }
+- { recette: navarin-d-agneau, nom_v1: "ail", ingredient: ail, precision: "" }
+- { recette: navarin-d-agneau, nom_v1: "bouquet garni", ingredient: thym, precision: "bouquet garni" }
+- { recette: navarin-d-agneau, nom_v1: "bouquet garni", ingredient: laurier, precision: "bouquet garni" }
+- { recette: navarin-d-agneau, nom_v1: "bouquet garni", ingredient: persil, precision: "bouquet garni" }
+- { recette: navarin-d-agneau, nom_v1: "navets", ingredient: navet, precision: "" }
+- { recette: navarin-d-agneau, nom_v1: "carottes", ingredient: carotte, precision: "" }
+- { recette: navarin-d-agneau, nom_v1: "petits oignons grelots", ingredient: petit-oignon-grelot, precision: "" }
+- { recette: navarin-d-agneau, nom_v1: "pommes de terre nouvelles", ingredient: pomme-de-terre-nouvelle, precision: "" }
+- { recette: navarin-d-agneau, nom_v1: "petits pois frais ou surgelés", ingredient: petit-pois, precision: "frais ou surgelés" }
+- { recette: navarin-d-agneau, nom_v1: "sel, poivre", ingredient: sel, precision: "" }
+- { recette: navarin-d-agneau, nom_v1: "sel, poivre", ingredient: poivre, precision: "" }
+- { recette: osso-buco, nom_v1: "jarret de veau avec os, de 4 cm d'épaisseur", ingredient: jarret-de-veau, precision: "avec os, de 4 cm d'épaisseur" }
+- { recette: osso-buco, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: osso-buco, nom_v1: "beurre", ingredient: beurre, precision: "" }
+- { recette: osso-buco, nom_v1: "huile d'olive", ingredient: huile-d-olive, precision: "" }
+- { recette: osso-buco, nom_v1: "oignon", ingredient: oignon, precision: "" }
+- { recette: osso-buco, nom_v1: "carotte", ingredient: carotte, precision: "" }
+- { recette: osso-buco, nom_v1: "céleri", ingredient: celeri-branche, precision: "" }
+- { recette: osso-buco, nom_v1: "vin blanc sec", ingredient: vin-blanc, precision: "sec" }
+- { recette: osso-buco, nom_v1: "fond blanc de veau", ingredient: null, preparation: fond-blanc, precision: "de veau" }
+- { recette: osso-buco, nom_v1: "tomates pelées", ingredient: tomate-pelee, precision: "" }
+- { recette: osso-buco, nom_v1: "zeste de citron non traité", ingredient: citron, precision: "zeste, non traité" }
+- { recette: osso-buco, nom_v1: "ail haché", ingredient: ail, precision: "haché" }
+- { recette: osso-buco, nom_v1: "persil plat haché", ingredient: persil-plat, precision: "haché" }
+- { recette: osso-buco, nom_v1: "sel, poivre", ingredient: sel, precision: "" }
+- { recette: osso-buco, nom_v1: "sel, poivre", ingredient: poivre, precision: "" }
+- { recette: pasteis-de-nata, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: pasteis-de-nata, nom_v1: "beurre froid", ingredient: beurre, precision: "froid" }
+- { recette: pasteis-de-nata, nom_v1: "eau froide", ingredient: eau, precision: "froide" }
+- { recette: pasteis-de-nata, nom_v1: "sel", ingredient: sel, precision: "" }
+- { recette: pasteis-de-nata, nom_v1: "lait entier", ingredient: lait-entier, precision: "" }
+- { recette: pasteis-de-nata, nom_v1: "crème liquide", ingredient: creme-liquide, precision: "" }
+- { recette: pasteis-de-nata, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: pasteis-de-nata, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: pasteis-de-nata, nom_v1: "jaunes d'œufs", ingredient: jaune-d-oeuf, precision: "" }
+- { recette: pasteis-de-nata, nom_v1: "zeste de citron non traité", ingredient: citron, precision: "zeste, non traité" }
+- { recette: pasteis-de-nata, nom_v1: "bâton de cannelle", ingredient: baton-de-cannelle, precision: "" }
+- { recette: pets-de-nonne, nom_v1: "eau", ingredient: eau, precision: "" }
+- { recette: pets-de-nonne, nom_v1: "beurre", ingredient: beurre, precision: "" }
+- { recette: pets-de-nonne, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: pets-de-nonne, nom_v1: "sel", ingredient: sel, precision: "" }
+- { recette: pets-de-nonne, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: pets-de-nonne, nom_v1: "œufs", ingredient: oeuf, precision: "" }
+- { recette: pets-de-nonne, nom_v1: "citron non traité (zeste)", ingredient: citron, precision: "zeste, non traité" }
+- { recette: pets-de-nonne, nom_v1: "huile de friture", ingredient: huile-neutre, precision: "de friture" }
+- { recette: pets-de-nonne, nom_v1: "sucre glace", ingredient: sucre-glace, precision: "" }
+- { recette: pot-au-feu, nom_v1: "bœuf à bouillir (paleron, gîte, plat de côtes)", ingredient: boeuf-a-braiser, precision: "à bouillir (paleron, gîte, plat de côtes)" }
+- { recette: pot-au-feu, nom_v1: "jarret de bœuf avec os", ingredient: jarret-de-boeuf, precision: "avec os" }
+- { recette: pot-au-feu, nom_v1: "os à moelle", ingredient: os-a-moelle, precision: "" }
+- { recette: pot-au-feu, nom_v1: "eau froide", ingredient: eau, precision: "froide" }
+- { recette: pot-au-feu, nom_v1: "oignons dont un piqué de 3 clous de girofle", ingredient: oignon, precision: "dont un piqué de 3 clous de girofle" }
+- { recette: pot-au-feu, nom_v1: "bouquet garni", ingredient: thym, precision: "bouquet garni" }
+- { recette: pot-au-feu, nom_v1: "bouquet garni", ingredient: laurier, precision: "bouquet garni" }
+- { recette: pot-au-feu, nom_v1: "bouquet garni", ingredient: persil, precision: "bouquet garni" }
+- { recette: pot-au-feu, nom_v1: "gros sel", ingredient: gros-sel, precision: "" }
+- { recette: pot-au-feu, nom_v1: "carottes", ingredient: carotte, precision: "" }
+- { recette: pot-au-feu, nom_v1: "navets", ingredient: navet, precision: "" }
+- { recette: pot-au-feu, nom_v1: "poireaux", ingredient: poireau, precision: "" }
+- { recette: pot-au-feu, nom_v1: "céleri", ingredient: celeri-branche, precision: "" }
+- { recette: pot-au-feu, nom_v1: "pommes de terre à chair ferme", ingredient: pomme-de-terre-a-chair-ferme, precision: "" }
+- { recette: pot-au-feu, nom_v1: "gros sel, moutarde, cornichons, poivre", ingredient: gros-sel, precision: "" }
+- { recette: pot-au-feu, nom_v1: "gros sel, moutarde, cornichons, poivre", ingredient: moutarde, precision: "" }
+- { recette: pot-au-feu, nom_v1: "gros sel, moutarde, cornichons, poivre", ingredient: cornichon, precision: "" }
+- { recette: pot-au-feu, nom_v1: "gros sel, moutarde, cornichons, poivre", ingredient: poivre, precision: "" }
+- { recette: poule-au-pot, nom_v1: "poule de 1,8 kg environ, avec son foie", ingredient: poule, precision: "de 1,8 kg environ, avec son foie" }
+- { recette: poule-au-pot, nom_v1: "jarret de veau avec os", ingredient: jarret-de-veau, precision: "avec os" }
+- { recette: poule-au-pot, nom_v1: "eau froide", ingredient: eau, precision: "froide" }
+- { recette: poule-au-pot, nom_v1: "carottes", ingredient: carotte, precision: "" }
+- { recette: poule-au-pot, nom_v1: "poireaux", ingredient: poireau, precision: "" }
+- { recette: poule-au-pot, nom_v1: "navets", ingredient: navet, precision: "" }
+- { recette: poule-au-pot, nom_v1: "oignon piqué de 2 clous de girofle", ingredient: oignon, precision: "piqué de 2 clous de girofle" }
+- { recette: poule-au-pot, nom_v1: "bouquet garni", ingredient: thym, precision: "bouquet garni" }
+- { recette: poule-au-pot, nom_v1: "bouquet garni", ingredient: laurier, precision: "bouquet garni" }
+- { recette: poule-au-pot, nom_v1: "bouquet garni", ingredient: persil, precision: "bouquet garni" }
+- { recette: poule-au-pot, nom_v1: "gros sel", ingredient: gros-sel, precision: "" }
+- { recette: poule-au-pot, nom_v1: "chair à saucisse", ingredient: chair-a-saucisse, precision: "" }
+- { recette: poule-au-pot, nom_v1: "pain rassis trempé dans du lait", ingredient: pain-rassis, precision: "trempé dans du lait" }
+- { recette: poule-au-pot, nom_v1: "œuf", ingredient: oeuf, precision: "" }
+- { recette: poule-au-pot, nom_v1: "ail haché", ingredient: ail, precision: "haché" }
+- { recette: poule-au-pot, nom_v1: "persil haché", ingredient: persil, precision: "haché" }
+- { recette: poule-au-pot, nom_v1: "beurre", ingredient: beurre, precision: "" }
+- { recette: poule-au-pot, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: profiteroles, nom_v1: "eau", ingredient: eau, precision: "" }
+- { recette: profiteroles, nom_v1: "lait entier", ingredient: lait-entier, precision: "" }
+- { recette: profiteroles, nom_v1: "beurre", ingredient: beurre, precision: "" }
+- { recette: profiteroles, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: profiteroles, nom_v1: "sel", ingredient: sel, precision: "" }
+- { recette: profiteroles, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: profiteroles, nom_v1: "œufs", ingredient: oeuf, precision: "" }
+- { recette: profiteroles, nom_v1: "glace à la vanille", ingredient: glace-a-la-vanille, precision: "" }
+- { recette: profiteroles, nom_v1: "chocolat noir", ingredient: chocolat-noir, precision: "" }
+- { recette: profiteroles, nom_v1: "crème liquide", ingredient: creme-liquide, precision: "" }
+- { recette: profiteroles, nom_v1: "amandes effilées grillées", ingredient: amande-effilee, precision: "grillées" }
+- { recette: quiche-lorraine, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: quiche-lorraine, nom_v1: "beurre froid", ingredient: beurre, precision: "froid" }
+- { recette: quiche-lorraine, nom_v1: "eau froide", ingredient: eau, precision: "froide" }
+- { recette: quiche-lorraine, nom_v1: "sel", ingredient: sel, precision: "" }
+- { recette: quiche-lorraine, nom_v1: "lardons fumés", ingredient: lardons, precision: "fumés" }
+- { recette: quiche-lorraine, nom_v1: "œufs", ingredient: oeuf, precision: "" }
+- { recette: quiche-lorraine, nom_v1: "crème fraîche liquide", ingredient: creme-liquide, precision: "crème fraîche liquide" }
+- { recette: quiche-lorraine, nom_v1: "lait entier", ingredient: lait-entier, precision: "" }
+- { recette: quiche-lorraine, nom_v1: "noix de muscade râpée", ingredient: noix-de-muscade, precision: "râpée" }
+- { recette: quiche-lorraine, nom_v1: "sel, poivre", ingredient: sel, precision: "" }
+- { recette: quiche-lorraine, nom_v1: "sel, poivre", ingredient: poivre, precision: "" }
+- { recette: tajine-d-agneau-aux-pruneaux, nom_v1: "épaule d'agneau, en morceaux avec l'os", ingredient: epaule-d-agneau, precision: "en morceaux avec l'os" }
+- { recette: tajine-d-agneau-aux-pruneaux, nom_v1: "huile d'olive", ingredient: huile-d-olive, precision: "" }
+- { recette: tajine-d-agneau-aux-pruneaux, nom_v1: "oignons émincés", ingredient: oignon, precision: "émincés" }
+- { recette: tajine-d-agneau-aux-pruneaux, nom_v1: "gingembre moulu", ingredient: gingembre-moulu, precision: "" }
+- { recette: tajine-d-agneau-aux-pruneaux, nom_v1: "cannelle", ingredient: cannelle, precision: "" }
+- { recette: tajine-d-agneau-aux-pruneaux, nom_v1: "safran", ingredient: safran, precision: "" }
+- { recette: tajine-d-agneau-aux-pruneaux, nom_v1: "curcuma", ingredient: curcuma, precision: "" }
+- { recette: tajine-d-agneau-aux-pruneaux, nom_v1: "eau", ingredient: eau, precision: "" }
+- { recette: tajine-d-agneau-aux-pruneaux, nom_v1: "pruneaux dénoyautés", ingredient: pruneau, precision: "dénoyautés" }
+- { recette: tajine-d-agneau-aux-pruneaux, nom_v1: "miel", ingredient: miel, precision: "" }
+- { recette: tajine-d-agneau-aux-pruneaux, nom_v1: "amandes entières grillées", ingredient: amande, precision: "entières, grillées" }
+- { recette: tajine-d-agneau-aux-pruneaux, nom_v1: "graines de sésame", ingredient: graine-de-sesame, precision: "" }
+- { recette: tajine-d-agneau-aux-pruneaux, nom_v1: "sel, poivre", ingredient: sel, precision: "" }
+- { recette: tajine-d-agneau-aux-pruneaux, nom_v1: "sel, poivre", ingredient: poivre, precision: "" }
+- { recette: tarte-au-citron-meringuee, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: tarte-au-citron-meringuee, nom_v1: "beurre pommade", ingredient: beurre, precision: "pommade" }
+- { recette: tarte-au-citron-meringuee, nom_v1: "sucre glace", ingredient: sucre-glace, precision: "" }
+- { recette: tarte-au-citron-meringuee, nom_v1: "œuf", ingredient: oeuf, precision: "" }
+- { recette: tarte-au-citron-meringuee, nom_v1: "sel", ingredient: sel, precision: "" }
+- { recette: tarte-au-citron-meringuee, nom_v1: "œufs", ingredient: oeuf, precision: "" }
+- { recette: tarte-au-citron-meringuee, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: tarte-au-citron-meringuee, nom_v1: "jus de citron", ingredient: jus-de-citron, precision: "" }
+- { recette: tarte-au-citron-meringuee, nom_v1: "zestes de citron non traité", ingredient: citron, precision: "zestes, non traité" }
+- { recette: tarte-au-citron-meringuee, nom_v1: "beurre", ingredient: beurre, precision: "" }
+- { recette: tarte-au-citron-meringuee, nom_v1: "blancs d'œufs", ingredient: blanc-d-oeuf, precision: "" }
+- { recette: tarte-au-citron-meringuee, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: tarte-aux-pommes, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: tarte-aux-pommes, nom_v1: "beurre froid", ingredient: beurre, precision: "froid" }
+- { recette: tarte-aux-pommes, nom_v1: "eau froide", ingredient: eau, precision: "froide" }
+- { recette: tarte-aux-pommes, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: tarte-aux-pommes, nom_v1: "sel", ingredient: sel, precision: "" }
+- { recette: tarte-aux-pommes, nom_v1: "pommes golden", ingredient: pomme-golden, precision: "" }
+- { recette: tarte-aux-pommes, nom_v1: "sucre en poudre", ingredient: sucre-en-poudre, precision: "" }
+- { recette: tarte-aux-pommes, nom_v1: "beurre", ingredient: beurre, precision: "" }
+- { recette: tarte-aux-pommes, nom_v1: "confiture d'abricot", ingredient: confiture-d-abricot, precision: "" }
+- { recette: veau-marengo, nom_v1: "épaule de veau, en morceaux de 5 cm", ingredient: epaule-de-veau, precision: "en morceaux de 5 cm" }
+- { recette: veau-marengo, nom_v1: "huile d'olive", ingredient: huile-d-olive, precision: "" }
+- { recette: veau-marengo, nom_v1: "farine", ingredient: farine, precision: "" }
+- { recette: veau-marengo, nom_v1: "vin blanc sec", ingredient: vin-blanc, precision: "sec" }
+- { recette: veau-marengo, nom_v1: "fond blanc de veau (ou bouillon)", ingredient: null, preparation: fond-blanc, precision: "de veau, ou bouillon" }
+- { recette: veau-marengo, nom_v1: "tomates pelées", ingredient: tomate-pelee, precision: "" }
+- { recette: veau-marengo, nom_v1: "ail", ingredient: ail, precision: "" }
+- { recette: veau-marengo, nom_v1: "bouquet garni", ingredient: thym, precision: "bouquet garni" }
+- { recette: veau-marengo, nom_v1: "bouquet garni", ingredient: laurier, precision: "bouquet garni" }
+- { recette: veau-marengo, nom_v1: "bouquet garni", ingredient: persil, precision: "bouquet garni" }
+- { recette: veau-marengo, nom_v1: "zeste d'orange", ingredient: orange, precision: "zeste" }
+- { recette: veau-marengo, nom_v1: "champignons de Paris", ingredient: champignon-de-paris, precision: "" }
+- { recette: veau-marengo, nom_v1: "petits oignons grelots", ingredient: petit-oignon-grelot, precision: "" }
+- { recette: veau-marengo, nom_v1: "sel, poivre", ingredient: sel, precision: "" }
+- { recette: veau-marengo, nom_v1: "sel, poivre", ingredient: poivre, precision: "" }
+- { recette: waterzooi-de-poulet, nom_v1: "poulet fermier de 1,6 kg, découpé en 8 morceaux", ingredient: poulet, precision: "fermier, de 1,6 kg, découpé en 8 morceaux" }
+- { recette: waterzooi-de-poulet, nom_v1: "poireaux", ingredient: poireau, precision: "" }
+- { recette: waterzooi-de-poulet, nom_v1: "carottes", ingredient: carotte, precision: "" }
+- { recette: waterzooi-de-poulet, nom_v1: "céleri", ingredient: celeri-branche, precision: "" }
+- { recette: waterzooi-de-poulet, nom_v1: "oignon", ingredient: oignon, precision: "" }
+- { recette: waterzooi-de-poulet, nom_v1: "bouquet garni", ingredient: thym, precision: "bouquet garni" }
+- { recette: waterzooi-de-poulet, nom_v1: "bouquet garni", ingredient: laurier, precision: "bouquet garni" }
+- { recette: waterzooi-de-poulet, nom_v1: "bouquet garni", ingredient: persil, precision: "bouquet garni" }
+- { recette: waterzooi-de-poulet, nom_v1: "eau", ingredient: eau, precision: "" }
+- { recette: waterzooi-de-poulet, nom_v1: "beurre", ingredient: beurre, precision: "" }
+- { recette: waterzooi-de-poulet, nom_v1: "jaunes d'œuf", ingredient: jaune-d-oeuf, precision: "" }
+- { recette: waterzooi-de-poulet, nom_v1: "crème fraîche", ingredient: creme-fraiche-epaisse, precision: "" }
+- { recette: waterzooi-de-poulet, nom_v1: "citron (jus)", ingredient: citron, precision: "jus" }
+- { recette: waterzooi-de-poulet, nom_v1: "sel, poivre, persil", ingredient: sel, precision: "" }
+- { recette: waterzooi-de-poulet, nom_v1: "sel, poivre, persil", ingredient: poivre, precision: "" }
+- { recette: waterzooi-de-poulet, nom_v1: "sel, poivre, persil", ingredient: persil, precision: "" }

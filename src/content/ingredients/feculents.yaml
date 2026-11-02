@@ -1,0 +1,30 @@
+titre: Féculents
+ingredients:
+  - { slug: farine, nom: "farine", placard: true, synonymes: ["farine de blé", "farine T55"] }
+  - { slug: fecule, nom: "fécule" }
+  - { slug: fecule-de-mais, parent: fecule, nom: "fécule de maïs", synonymes: ["maïzena"] }
+  - { slug: fecule-de-pomme-de-terre, parent: fecule, nom: "fécule de pomme de terre" }
+  - { slug: riz, nom: "riz", techniques: [pocher, cuire-en-remuant, sauter, braiser] }
+  - { slug: riz-long, parent: riz, nom: "riz long", synonymes: ["riz long grain"] }
+  - { slug: riz-basmati, parent: riz, nom: "riz basmati" }
+  - { slug: riz-arborio, parent: riz, nom: "riz arborio", synonymes: ["riz à risotto"], techniques: [cuire-en-remuant] }
+  - { slug: riz-carnaroli, parent: riz, nom: "riz carnaroli", techniques: [cuire-en-remuant] }
+  - { slug: riz-rond, parent: riz, nom: "riz rond", synonymes: ["riz pour dessert"] }
+  - { slug: pomme-de-terre, nom: "pomme de terre", pluriel: "pommes de terre", techniques: [mijoter, pocher, rotir, frire] }
+  - { slug: pomme-de-terre-farineuse, parent: pomme-de-terre, nom: "pomme de terre farineuse", pluriel: "pommes de terre farineuses", synonymes: ["bintje", "agria"] }
+  - { slug: pomme-de-terre-a-chair-ferme, parent: pomme-de-terre, nom: "pomme de terre à chair ferme", pluriel: "pommes de terre à chair ferme", synonymes: ["charlotte", "ratte"] }
+  - { slug: pomme-de-terre-nouvelle, parent: pomme-de-terre, nom: "pomme de terre nouvelle", pluriel: "pommes de terre nouvelles", synonymes: ["grenaille"] }
+  - { slug: pain, nom: "pain" }
+  - { slug: pain-rassis, parent: pain, nom: "pain rassis", synonymes: ["pain trempé dans du lait"] }
+  - { slug: pain-de-mie, parent: pain, nom: "pain de mie" }
+  - { slug: muffin-anglais, parent: pain, nom: "muffin anglais", pluriel: "muffins anglais" }
+  - { slug: pain-d-epices, nom: "pain d'épices" }
+  - { slug: tortilla-de-mais, nom: "tortilla de maïs", pluriel: "tortillas de maïs" }
+  - { slug: chapelure, nom: "chapelure", synonymes: ["panure"] }
+  - { slug: semoule, nom: "semoule", synonymes: ["semoule de blé"] }
+  - { slug: couscous, nom: "couscous" }
+  - { slug: pates, nom: "pâtes", synonymes: ["spaghetti", "tagliatelle"] }
+  - { slug: haricot-rouge, nom: "haricot rouge", pluriel: "haricots rouges", elision: false, synonymes: ["haricots rouges en boîte"] }
+  - { slug: haricot-blanc, nom: "haricot blanc", pluriel: "haricots blancs", elision: false, synonymes: ["haricots lingots", "haricots cocos"] }
+  - { slug: pois-chiche, nom: "pois chiche", pluriel: "pois chiches" }
+  - { slug: lentille, nom: "lentille", pluriel: "lentilles", synonymes: ["lentilles vertes du Puy"] }
