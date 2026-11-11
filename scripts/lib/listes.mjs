@@ -119,6 +119,8 @@ export const PLATS = Object.fromEntries(Object.entries({
   'risotto-aux-champignons': 'IT', 'cepes-a-la-bordelaise': 'FR',
   'saint-jacques-a-la-fondue-de-poireaux': 'FR', 'tarte-tatin': 'FR', 'poires-belle-helene': 'FR',
   'crumble-aux-pommes': 'GB', 'mont-blanc': 'FR', 'pate-de-coing': 'FR',
+  // Soupes de moules
+  'billy-bi': 'FR', 'zuppa-di-cozze': 'IT', 'chowder-aux-moules': 'US',
 }).map(([slug, origine]) => [slug, { origine }]));
 
 const p = (parent, origine, titre) => ({ parent, origine, titre });

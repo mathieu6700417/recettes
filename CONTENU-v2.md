@@ -382,6 +382,14 @@ Recettes d'automne et d'hiver, de saison en novembre (20 plats) :
 | | mont-blanc | FR | composant meringue ; crème de marrons |
 | | pate-de-coing | FR | confire |
 
+Soupes de moules (3 plats) :
+
+| slug | origine | lien éprouvé |
+|---|---|---|
+| billy-bi | FR | cuire à la vapeur puis mijoter ; composant liaison crème et jaune |
+| zuppa-di-cozze | IT | mijoter ; moules ouvertes dans la sauce tomate |
+| chowder-aux-moules | US | mijoter ; lard, pommes de terre et lait |
+
 Corrections et reclassements de la migration : `pasteis-de-nata` → pâte feuilletée ;
 `crema-catalana` → `epaissir-a-l-amidon` (sur le feu, liée à la fécule) ; `tarte-au-citron-meringuee` → crème au
 citron ; `tajine-d-agneau-aux-pruneaux` → aucun composant, profil ras-el-hanout ;
