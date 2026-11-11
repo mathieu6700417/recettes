@@ -390,6 +390,15 @@ Soupes de moules (3 plats) :
 | zuppa-di-cozze | IT | mijoter ; moules ouvertes dans la sauce tomate |
 | chowder-aux-moules | US | mijoter ; lard, pommes de terre et lait |
 
+Restes de moules au curry (4 plats, 2 portions, une quinzaine de moules) :
+
+| slug | origine | lien éprouvé |
+|---|---|---|
+| veloute-de-moules-au-curry | FR | mijoter ; lait de coco |
+| tagliatelles-aux-moules-au-curry | FR | pocher les pâtes, sauter les moules |
+| riz-saute-aux-moules-au-curry | FR | sauter ; riz de la veille |
+| tartines-gratinees-aux-moules-au-curry | FR | gratiner |
+
 Corrections et reclassements de la migration : `pasteis-de-nata` → pâte feuilletée ;
 `crema-catalana` → `epaissir-a-l-amidon` (sur le feu, liée à la fécule) ; `tarte-au-citron-meringuee` → crème au
 citron ; `tajine-d-agneau-aux-pruneaux` → aucun composant, profil ras-el-hanout ;
